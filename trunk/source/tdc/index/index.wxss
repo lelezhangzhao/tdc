@@ -5,6 +5,8 @@ page {
   line-height: 1.6;
 }
 .page-swiper{
+  position:relative;
+  
   padding-top:60rpx;
 }
 .page-section-spacing{
@@ -14,22 +16,32 @@ page {
 
 .page-search{
   background-color: #FFFFFF;
-  position:absolute;
+  position:relative;
+  margin-top:-20rpx;
   display:block;
   width:400rpx;
   height:50rpx;
   left:50%;
-  top:350rpx;
   margin-left:-200rpx;
-  padding:0 10rpx;
+  padding:0 20rpx;
+  z-index: 1;
 }
+
 
 .border-radius-circle-30{
   border: 1rpx solid #CCCCCC;
   border-radius: 30rpx;
 }
 
-.search-holder{
+.search-place-holder{
   display:inline;
   float:right;
+  font-size:30rpx;
+  color: #AAA;
+}
+
+.page-find-t-s{
+  position:relative;
+  margin-top:20rpx;
+  padding:0 20rpx;
 }
