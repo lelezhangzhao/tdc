@@ -2,7 +2,8 @@
   "pages":[
     "pages/index/index",
     "pages/logs/logs",
-    "pages/weui/dist/example/index"
+
+    "tdc/index/index"
   ],
   "window":{
     "backgroundTextStyle":"light",
@@ -15,11 +16,8 @@
       "pagePath":"pages/index/index",
       "text":"Home"
     },{
-      "pagePath":"pages/logs/logs",
-      "text":"Log"
-    },{
-      "pagePath":"pages/weui/dist/example/index",
-      "text":"Example"
+      "pagePath":"tdc/index/index",
+      "text":"tdc"
     }]
   }
 }

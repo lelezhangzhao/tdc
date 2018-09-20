@@ -1,0 +1,35 @@
+page {
+  background-color: #F8F8F8;
+  height: 100%;
+  font-size: 32rpx;
+  line-height: 1.6;
+}
+.page-swiper{
+  padding-top:60rpx;
+}
+.page-section-spacing{
+  box-sizing: border-box;
+  padding: 0 80rpx;
+}
+
+.page-search{
+  background-color: #FFFFFF;
+  position:absolute;
+  display:block;
+  width:400rpx;
+  height:50rpx;
+  left:50%;
+  top:350rpx;
+  margin-left:-200rpx;
+  padding:0 10rpx;
+}
+
+.border-radius-circle-30{
+  border: 1rpx solid #CCCCCC;
+  border-radius: 30rpx;
+}
+
+.search-holder{
+  display:inline;
+  float:right;
+}

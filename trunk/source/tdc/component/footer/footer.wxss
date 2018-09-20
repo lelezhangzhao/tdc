@@ -1,0 +1,2 @@
+/* component/footer/footer.wxss */
+@import "../../style/weui.wxss";

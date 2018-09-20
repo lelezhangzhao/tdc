@@ -1,0 +1,18 @@
+<view class="page">
+  <view class="page-swiper">
+    <view class="page-section page-section-spacing swiper">
+      <swiper indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" circular="{{circular}}" >
+        <block wx:for="{{imgUrls}}" wx:key="*this">
+          <swiper-item>
+            <image src="{{item}}" class="slider-image" />
+          </swiper-item>
+        </block>
+      </swiper>
+    </view>
+  </view>
+  <view class="page-search border-radius-circle-30" bindtap="searchTap">
+      <icon class="weui-icon-search" type="search" size="14"></icon>
+      <view class="search-holder">搜索</view>
+  </view>
+  <component-footer />
+</view>
