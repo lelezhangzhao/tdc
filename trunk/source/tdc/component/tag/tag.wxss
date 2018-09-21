@@ -1,0 +1,8 @@
+/* tdc/component/tag/tag.wxss */
+.tagSelected{
+  background-image: url("../../image/tagSelected.png");
+}
+
+.tagUnselected{
+  background-image: url("../../image/tagUnselected.png");
+}

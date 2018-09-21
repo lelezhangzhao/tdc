@@ -13,4 +13,8 @@ class Index extends Controller{
         return "useranme" . $username . " " . "password" . $password;
         
     }
+    
+    public function getHighEvalList(){
+        return "ok";
+    }
 }

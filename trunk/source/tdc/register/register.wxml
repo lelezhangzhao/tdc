@@ -1,0 +1,33 @@
+<!--tdc/register/register.wxml-->
+<view class="page">
+  <form bindSubmit="registerSubmit">
+    <view class="page-username" style="display:inline;">
+      <text >用户名</text>
+      <input type="text" name="username" placeholder="请输入用户名"/>
+    </view>
+
+    <view class="page-password">
+      <text>密码</text>
+      <input type="text" name="password" password placeholder="请输入密码" />
+    </view>
+
+    <view class="page-confirm-password">
+      <text>确认密码</text>
+      <input type="text" name="confirmPassword" password placeholder="确认密码" />
+    </view>
+
+    <view class="page-tel">
+      <text>手机号</text>
+      <input type="number" name="tel" bindInput="telInput" placeholder="请输入手机号" />
+      <button type="default" loading="{{loading}}" bindtap="getTelIdentify">{{getTelIdentify}}</button>
+    </view>
+
+    <view class="tel-identify">
+      <text>验证码</text>
+      <input type="text" name="telIdentify" placeholder="请输入验证码" />
+    </view>
+    <view>
+      <button formType="submit">注册</button>
+    </view>
+  </form>
+</view>

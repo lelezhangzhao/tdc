@@ -1,23 +1,26 @@
 {
-  "pages":[
+  "pages": [
     "pages/index/index",
     "pages/logs/logs",
-
-    "tdc/index/index"
+    "tdc/index/index",
+    "tdc/register/register"
   ],
-  "window":{
-    "backgroundTextStyle":"light",
+  "window": {
+    "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "WeChat",
-    "navigationBarTextStyle":"black"
+    "navigationBarTextStyle": "black"
   },
-  "tabBar":{
-    "list":[{
-      "pagePath":"pages/index/index",
-      "text":"Home"
-    },{
-      "pagePath":"tdc/index/index",
-      "text":"tdc"
-    }]
+  "tabBar": {
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "Home"
+      },
+      {
+        "pagePath": "tdc/register/register",
+        "text": "tdc"
+      }
+    ]
   }
 }
