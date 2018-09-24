@@ -79,13 +79,16 @@ Page({
 
   getTelIdentify: function(e){
     var that = this;
+
+    
     if (that.data.loading === true){
       return;
     }
+
     //检测手机号
     var tel = that.data.tel;
     var warn = null;
-    if(tel.length === 0){
+    if(tel.trim().length === 0){
       warn = "号码不能为空";
     } else if (tel.trim().length !== 11 || !/^1\d{10}$/.test(tel)){
       warn = "手机号格式不正确";
@@ -97,13 +100,29 @@ Page({
       })
       return;
     }
+
+    wx.request({
+      url: "https://localtdc.com/index.php/tdc/register/getTelIdentify",
+
+      success: function (res) {
+        res = JSON.parse(res);
+        for (var i = 0; i < res.length; ++i) {
+          var item = res[i];
+          item.tag = item.tag.split(";");
+        }
+        this.setData(hiEvalList, res);
+      },
+      fail: function (res) {
+
+      }
+    });
+
+    that.setData({ loading: true });
+    var refreshID = setInterval(that.refreshRemainTime, 1000);
+    that.setData({ refreshID: refreshID})
+    that.setData({tel:tel});
     
-    if (that.data.loading === false) {
-      that.setData({ loading: true });
-      that.data.refreshID = setInterval(that.refreshRemainTime, 1000);
-    }
-
-
+    this.data.tel = tel;
   },
 
   registerSubmit: function(e){
@@ -114,8 +133,44 @@ Page({
     var confirmPassword = e.detail.value.confirmPassword;
     var telIdentify = eldetail.value.telIdentify;
 
-    //
+    //username 
+    var warn = null;
+    if(username.trim().length === 0){
+      warn = "用户名不能为空";
+    }else if(username.trim().length < 5){
+      warn = "用户名至少5个字符";
+    }else if(username.trim().length > 30){
+      warn = "用户名最多30个字符";
+    }
 
+    //password
+    if(password.trim().length === 0){
+      warn = "密码不能为空";
+    }else if(password.trim().length < 5){
+      warn = "密码至少5个字符";
+    }else if(password.trim().legnth > 30){
+      warn = "密码最多30个字符";
+    }
+
+    //confirmPassword
+    if(confirmPassword !== password){
+      warn = "两次密码不一致";
+    }
+
+    //telIdentify
+    if(telIdentify.trim().length === 0){
+      warn = "手机验证码不能为空";
+    }
+
+    that.setData({username: username});
+    that.setData({password: password});
+    that.setData({confirmPassword:confirmPassword});
+    that.setData({telIdentify:telIdentify});
+
+    wx.request({
+
+
+    });
 
   },
 
