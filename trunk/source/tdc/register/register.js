@@ -1,18 +1,21 @@
 // tdc/register/register.js
+var utilMd5 = require('../util/md5.js');
+var utilRequest = require("../util/request.js");
+
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    username: "",
-    password: "",
-    confirmPassword: "",
-    tel: "",
+    username: null,
+    password: null,
+    confirmPassword: null,
+    tel: null,
     getTelIdentify: "获取验证码",
-    telIdentify: "",
+    telIdentify: null,
     loading:false,
-    refreshTime: 120,
+    refreshTime: 2,
     refreshID:0,
 
   },
@@ -72,12 +75,16 @@ Page({
   },
 
   telInput: function(e){
-    this.setData({
+    var that = this;
+
+    that.setData({
       tel: e.detail.value
     })
   },
-
   getTelIdentify: function(e){
+
+    wx.removeStorageSync("PHPSESSID");
+
     var that = this;
 
     
@@ -87,8 +94,9 @@ Page({
 
     //检测手机号
     var tel = that.data.tel;
+
     var warn = null;
-    if(tel.trim().length === 0){
+    if(tel === null || tel.trim().length === 0){
       warn = "号码不能为空";
     } else if (tel.trim().length !== 11 || !/^1\d{10}$/.test(tel)){
       warn = "手机号格式不正确";
@@ -101,22 +109,38 @@ Page({
       return;
     }
 
-    wx.request({
-      url: "https://localtdc.com/index.php/tdc/register/getTelIdentify",
 
-      success: function (res) {
-        res = JSON.parse(res);
-        for (var i = 0; i < res.length; ++i) {
-          var item = res[i];
-          item.tag = item.tag.split(";");
-        }
-        this.setData(hiEvalList, res);
+    utilRequest.NetRequest({
+      url:"register/getTelIdentify",
+      data:{
+        tel: tel,
       },
-      fail: function (res) {
+      success:function(res){
 
-      }
+        var code = res.code;
+        var msg = res.msg;
+        var content = res.content;
+
+        var title = null;
+        if (code === "ERROR_STATUS_SUCCESS") {
+          title = "验证码发送成功";
+        } else if (code === "ERROR_STATUS_FAILED") {
+          title = "手机号发送失败，请稍后重试";
+        } else if (code === "ERROR_STATUS_TELFORMATERROR") {
+          title = "手机号格式有误";
+        } else if (code === "ERROR_STATUS_TELISALREADYEXIST") {
+          title = "手机号已存在";
+        }
+
+        if (title !== null) {
+          wx.showToast({ title: title, icon: "none" });
+
+        }
+      },
+      fail:function(res){
+        wx.showToast({ title: "服务器繁忙，请稍后重试" });
+      },
     });
-
     that.setData({ loading: true });
     var refreshID = setInterval(that.refreshRemainTime, 1000);
     that.setData({ refreshID: refreshID})
@@ -131,11 +155,12 @@ Page({
     var username = e.detail.value.username;
     var password = e.detail.value.password;
     var confirmPassword = e.detail.value.confirmPassword;
-    var telIdentify = eldetail.value.telIdentify;
+    var telIdentify = e.detail.value.telIdentify;
+    var tel = e.detail.value.tel;
 
     //username 
     var warn = null;
-    if(username.trim().length === 0){
+    if(username === null || username.trim().length === 0){
       warn = "用户名不能为空";
     }else if(username.trim().length < 5){
       warn = "用户名至少5个字符";
@@ -144,7 +169,7 @@ Page({
     }
 
     //password
-    if(password.trim().length === 0){
+    if(password === null || password.trim().length === 0){
       warn = "密码不能为空";
     }else if(password.trim().length < 5){
       warn = "密码至少5个字符";
@@ -153,13 +178,33 @@ Page({
     }
 
     //confirmPassword
-    if(confirmPassword !== password){
+    if(confirmPassword === null || confirmPassword !== password){
       warn = "两次密码不一致";
     }
 
+    //两次密码一致，加密密码
+    password = utilMd5.hexMD5(password);
+
+    //tel
+    if (tel === null || tel.trim().length === 0) {
+      warn = "号码不能为空";
+    } else if (tel.trim().length !== 11 || !/^1\d{10}$/.test(tel)) {
+      warn = "手机号格式不正确";
+    }
+
+
+
     //telIdentify
-    if(telIdentify.trim().length === 0){
+    if(telIdentify === null || telIdentify.trim().length === 0){
       warn = "手机验证码不能为空";
+    }
+
+    if(warn !== null){
+      wx.showModal({
+        title: "提示",
+        content: warn,
+      })
+      return;
     }
 
     that.setData({username: username});
@@ -167,9 +212,39 @@ Page({
     that.setData({confirmPassword:confirmPassword});
     that.setData({telIdentify:telIdentify});
 
-    wx.request({
-
-
+    utilRequest.NetRequest({
+      url:"register/register",
+      data:{
+        username: username,
+        password: password,
+        tel:tel,
+        telIdentify:telIdentify,
+      },
+      success:function(res){
+        var code = res.code;
+        var msg = res.msg;
+        var title = null;
+        
+        if(code === "ERROR_STATUS_SUCCESS"){
+          title = "注册成功";
+        } else if (code === "ERROR_STATUS_NOTGETTELIDENTIFY"){
+          title = "未获取手机验证码";
+        } else if (code === "ERROR_STATUS_TELISNOTEQUAL"){
+          title = "两次手机号不同";
+        } else if (code === "ERROR_STATUS_TELIDENTIFYERROR"){
+          title = "手机验证码错误";
+        } else if (code === "ERROR_STATUS_USERNAMEFORMATERROR"){
+          title = "用户名格式错误";
+        } else if (code === "ERROR_STATUS_USERNAMEISALREADYEXIST"){
+          title = "用户名已存在";
+        }
+        if(title !== null){
+          wx.showToast({title:title, icon:"none"});
+        }
+      },
+      fail:function(res){
+        wx.showToast({title:"服务器繁忙，请稍后重试", icon:"none"});
+      }
     });
 
   },
@@ -192,7 +267,7 @@ Page({
     var that = this;
     
     clearInterval(that.data.refreshID);
-    that.data.refreshTime = 120;
+    that.data.refreshTime = 2;
     that.setData({ getTelIdentify: "获取验证码" });
     that.setData({ loading: false });
   }

@@ -1,34 +1,37 @@
 <?php
 
-namespace app\etick\api;
+namespace app\tdc\api;
 
 class Status{
 
 
 
     static public $ERROR_STATUS = array(
-        'ERROR_STATUS_SUCCESS' => '正常',
-        'ERROR_STATUS_TEST' => '测试',
-        'ERROR_STATUS_USERNAMEFORMATERROR' => '用户名格式错误',
-        'ERROR_STATUS_USERNAMEISALREADYEXIST' => '用户名已存在',
-        'ERROR_STATUS_USERNAMEISNOTEXIST' => '用户名不存在',
-        'ERROR_STATUS_USERNAMEORPASSWORDERROR' => '用户名或密码错误',
-        'ERROR_STATUS_USERNAMEISFROZEN' => '用户已封号',
-        'ERROR_STATUS_PASSWORDFORMATERROR' => '密码格式错误',
-        'ERROR_STATUS_OLDPASSWORDISNOTRIGHT' => '旧密码不正确',
-        'ERROR_STATUS_NOTLOGIN' => '未登录',
-        'ERROR_STATUS_TELFORMATERROR' => '手机号格式错误',
-        'ERROR_STATUS_TELISALREADYEXIST' => '手机号已存在',
-        'ERROR_STATUS_TELIDENTIFYERROR' => '手机验证码错误',
-        'ERROR_STATUS_CAPTCHAEMPTY' => '图片验证码为空',
-        'ERROR_STATUS_CAPTCHAERROR' => '图片验证码错误',
-        'ERROR_STATUS_HACKER' => '非法访问，账号已冻结',
-        'ERROR_STATUS_PROGRESSERRORJUMPTOMATCH' => '流程错误，直接跳到主页',
-        'ERROR_STATUS_PARAMERROR' => '参数错误',
+        "ERROR_STATUS_SUCCESS" => "正常",
+        "ERROR_STATUS_FAILED" => "失败",
+        "ERROR_STATUS_TEST" => "测试",
+        "ERROR_STATUS_USERNAMEFORMATERROR" => "用户名格式错误",
+        "ERROR_STATUS_USERNAMEISALREADYEXIST" => "用户名已存在",
+        "ERROR_STATUS_USERNAMEISNOTEXIST" => "用户名不存在",
+        "ERROR_STATUS_USERNAMEORPASSWORDERROR" => "用户名或密码错误",
+        "ERROR_STATUS_USERNAMEISFROZEN" => "用户已封号",
+        "ERROR_STATUS_PASSWORDFORMATERROR" => "密码格式错误",
+        "ERROR_STATUS_OLDPASSWORDISNOTRIGHT" => "旧密码不正确",
+        "ERROR_STATUS_NOTLOGIN" => "未登录",
+        "ERROR_STATUS_TELFORMATERROR" => "手机号格式错误",
+        "ERROR_STATUS_NOTGETTELIDENTIFY" => "未获取手机验证码",
+        "ERROR_STATUS_TELISNOTEQUAL" => "两次手机号不相同",
+        "ERROR_STATUS_TELISALREADYEXIST" => "手机号已存在",
+        "ERROR_STATUS_TELIDENTIFYERROR" => "手机验证码错误",
+        "ERROR_STATUS_CAPTCHAEMPTY" => "图片验证码为空",
+        "ERROR_STATUS_CAPTCHAERROR" => "图片验证码错误",
+        "ERROR_STATUS_HACKER" => "非法访问，账号已冻结",
+        "ERROR_STATUS_PARAMERROR" => "参数错误",
+
     );
 
     static public function ReturnJson($code, $msg){
-        $json_arr = ['code' => $code, 'msg' => $msg];
+        $json_arr = ["code" => $code, "msg" => $msg];
         return json_encode($json_arr);
     }
 
@@ -37,7 +40,7 @@ class Status{
     }
 
     static public function ReturnJsonWithContent($code, $msg, $jsoncontent){
-        $json_arr = ['code' => $code, 'msg' => $msg, 'jsoncontent' => $jsoncontent];
+        $json_arr = ["code" => $code, "msg" => $msg, "jsoncontent" => $jsoncontent];
         return json_encode($json_arr);
     }
 }

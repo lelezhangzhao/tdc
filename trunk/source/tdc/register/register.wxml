@@ -1,6 +1,6 @@
 <!--tdc/register/register.wxml-->
 <view class="page">
-  <form bindSubmit="registerSubmit">
+  <form bindsubmit="registerSubmit">
     <view class="page-username" style="display:inline;">
       <text >用户名</text>
       <input type="text" name="username" placeholder="请输入用户名"/>
@@ -18,7 +18,7 @@
 
     <view class="page-tel">
       <text>手机号</text>
-      <input type="number" name="tel" bindInput="telInput" placeholder="请输入手机号" />
+      <input type="number" name="tel" bindinput="telInput" placeholder="请输入手机号" />
       <button type="default" loading="{{loading}}" bindtap="getTelIdentify">{{getTelIdentify}}</button>
     </view>
 

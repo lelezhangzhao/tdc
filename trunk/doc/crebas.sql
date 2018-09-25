@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2018/9/21 11:36:17                           */
+/* Created on:     2018/9/25 11:38:35                           */
 /*==============================================================*/
 
 
@@ -163,7 +163,7 @@ auto_increment = 0;
 /*==============================================================*/
 create table tdc_publish
 (
-   id                   int auto_increment,
+   id                   int not null auto_increment,
    publishobject        int comment '发布对象
             0 老师发布
             1 机构发布',
@@ -183,7 +183,8 @@ create table tdc_publish
    statusinfo           varchar(30),
    evaluateavg          float(2,2),
    evaluatecount        int,
-   tag                  varchar(50)
+   tag                  varchar(50),
+   primary key (id)
 )
 type = InnoDB
 auto_increment = 0;
@@ -277,7 +278,7 @@ create table tdc_user
             1 注册，未选择身份
             2 注册，未写个人信息
             4 封号',
-   statusinfo           varhcar(20),
+   statusinfo           varchar(20),
    role                 int comment '0 老师
             1 机构
             2 管理员',

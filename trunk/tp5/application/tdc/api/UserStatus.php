@@ -1,6 +1,6 @@
 <?php
 
-namespace app\etick\api;
+namespace app\tdc\api;
 
 use think\Session;
 
