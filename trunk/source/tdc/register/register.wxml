@@ -1,7 +1,7 @@
 <!--tdc/register/register.wxml-->
 <view class="page">
   <form bindsubmit="registerSubmit">
-    <view class="page-username" style="display:inline;">
+    <view class="page-username">
       <text >用户名</text>
       <input type="text" name="username" placeholder="请输入用户名"/>
     </view>

@@ -3,7 +3,8 @@
     "pages/index/index",
     "pages/logs/logs",
     "tdc/index/index",
-    "tdc/register/register"
+    "tdc/register/register",
+    "tdc/login/login"
   ],
   "window": {
     "backgroundTextStyle": "light",

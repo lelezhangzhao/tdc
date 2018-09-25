@@ -1,0 +1,24 @@
+<!--tdc/login/login.wxml-->
+<view class="page">
+  <form>
+    <view class="page-username">
+      <text>用户名</text>
+      <input type="text" name="username" placeholder="请输入用户名" />
+    </view>
+
+    <view class="page-password">
+      <text>密码</text>
+      <input type="password" name="password" placeholder="请输入密码" />
+    </view>
+
+    <view class="page-captcha">
+      <text>验证码</text>
+      <input type="text" name="captcha" placeholder="请输入验证码" />
+    </view>
+
+    <view>
+      <image src="https://localtdc.com/index.php/tdc/captcha/captcha"></image>
+    </view>
+
+  </form>
+</view>
