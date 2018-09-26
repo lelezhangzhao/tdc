@@ -4,7 +4,8 @@
     "pages/logs/logs",
     "tdc/index/index",
     "tdc/register/register",
-    "tdc/login/login"
+    "tdc/login/login",
+    "tdc/forgetPassword/fotgetPassword"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -19,7 +20,7 @@
         "text": "Home"
       },
       {
-        "pagePath": "tdc/register/register",
+        "pagePath": "tdc/login/login",
         "text": "tdc"
       }
     ]

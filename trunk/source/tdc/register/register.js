@@ -166,6 +166,8 @@ Page({
       warn = "用户名至少5个字符";
     }else if(username.trim().length > 30){
       warn = "用户名最多30个字符";
+    } else if (!/^[a-zA-Z]{1}$/.test(username)){
+      warn = "用户名至少包含一个字母";
     }
 
     //password

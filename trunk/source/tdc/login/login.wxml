@@ -1,6 +1,6 @@
 <!--tdc/login/login.wxml-->
 <view class="page">
-  <form>
+  <form bindsubmit="loginSubmit">
     <view class="page-username">
       <text>用户名</text>
       <input type="text" name="username" placeholder="请输入用户名" />
@@ -17,8 +17,16 @@
     </view>
 
     <view>
-      <image src="https://localtdc.com/index.php/tdc/captcha/captcha"></image>
+      <canvas class='canvas' style="width:{{cvs.width}};height:{{cvs.height}};" canvas-id="canvas" bindtap='onReady'></canvas>
     </view>
 
+    <view>
+      <button formType="submit">登录</button>
+    </view>
+
+    <view>
+      <button bindtap="register">注册</button>
+      <button bindtap="forgetpassword">忘记密码</button>
+    </view>
   </form>
 </view>
