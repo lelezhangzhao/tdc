@@ -12,7 +12,7 @@ use think\Session;
 
 
 class Register extends Controller{
-    public function getTelIdentify(Request $request){
+    public function GetTelIdentify(Request $request){
         $tel = $request->param("tel");
         //手机号格式错误
         if(preg_match("/^1\d{10}$/", $tel) === 0){
@@ -75,6 +75,9 @@ class Register extends Controller{
         //用户名合法
         $usernameLen = strlen($username);
         if($usernameLen < 5 || $usernameLen > 30){
+            return Status::ReturnErrorStatus("ERROR_STATUS_USERNAMEFORMATERROR");
+        }
+        if(preg_match("/^[a-zA-Z]{1}$/", $username) === 0){
             return Status::ReturnErrorStatus("ERROR_STATUS_USERNAMEFORMATERROR");
         }
 

@@ -22,6 +22,7 @@ class Status{
         "ERROR_STATUS_NOTGETTELIDENTIFY" => "未获取手机验证码",
         "ERROR_STATUS_TELISNOTEQUAL" => "两次手机号不相同",
         "ERROR_STATUS_TELISALREADYEXIST" => "手机号已存在",
+        "ERROR_STATUS_TELISNOTEXIST" => "手机号不存在",
         "ERROR_STATUS_TELIDENTIFYERROR" => "手机验证码错误",
         "ERROR_STATUS_CAPTCHAEMPTY" => "图片验证码为空",
         "ERROR_STATUS_CAPTCHAERROR" => "图片验证码错误",
