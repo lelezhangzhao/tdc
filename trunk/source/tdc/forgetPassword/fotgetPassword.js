@@ -68,7 +68,46 @@ Page({
 
   },
   forgetPasswordSubmit:function(e){
+    let that = this;
+    let tel = e.detail.value.tel;
+    let password = e.detail.value.password;
+    let confirmPassword = e.detail.value.confirmPassword;
 
+    if(password !== confirmPassword){
+      wx.showModal({
+        title: '错误',
+        content: '两次密码不同',
+      });
+      return;
+    }
+
+    utilRequest.NetRequest({
+      url: "forgetPassword/ForgetPasswordConfirm",
+      data: {
+        tel: tel,
+        password: password,
+      },
+      success: function (res) {
+        var code = res.code;
+        var msg = res.msg;
+
+        var title = null;
+        if (code === "ERROR_STATUS_SUCCESS") {
+          title = "密码重置成功";
+        } else if (code === "ERROR_STATUS_TELISNOTEQUAL") {
+          title = "再次手机号不同";
+        } else if (code === "ERROR_STATUS_TELISNOTEXIST") {
+          title = "手机号不存在";
+        }
+
+        if (title !== null) {
+          wx.showToast({ title: title, icon: "none" });
+        }
+      },
+      fail: function (res) {
+        wx.showToast({ title: "服务器繁忙，请稍后重试" });
+      },
+    })
   },
   getTelIdentify:function(e){
     let that = this;
