@@ -77,7 +77,7 @@ class Register extends Controller{
         if($usernameLen < 5 || $usernameLen > 30){
             return Status::ReturnErrorStatus("ERROR_STATUS_USERNAMEFORMATERROR");
         }
-        if(preg_match("/^[a-zA-Z]{1}$/", $username) === 0){
+        if(preg_match("/[a-zA-Z]{1}/", $username) === 0){
             return Status::ReturnErrorStatus("ERROR_STATUS_USERNAMEFORMATERROR");
         }
 
@@ -98,8 +98,35 @@ class Register extends Controller{
         $user->registertime = $currentTime;
         $user->evaluateavg = 0;
         $user->evaluatecount = 0;
-        $user->allowField(true)->save();
+
+        //注册成功直接登录
+        $user->lastlogintime = $currentTime;
+        $user->save();
+
+        Session::set("userid", $user->id);
 
         return Status::ReturnJson("ERROR_STATUS_SUCCESS", "注册成功");
+    }
+
+    public function RegisterAsTeacher(){
+
+        $userid = Session::get("userid");
+        $user = User::get($userid);
+
+        $user->role = 0;
+        $user->save();
+
+        return Status::ReturnErrorStatus("ERROR_STATUS_SUCCESS");
+    }
+
+    public function RegisterAsSchool(){
+        $userid = Session::get("userid");
+        $user = User::get($userid);
+
+        $user->role = 1;
+        $user->save();
+
+        return Status::ReturnErrorStatus("ERROR_STATUS_SUCCESS");
+
     }
 }

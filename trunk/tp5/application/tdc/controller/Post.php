@@ -1,6 +1,6 @@
 <?php
 
-namespace app\etick\controller;
+namespace app\tdc\controller;
 
 use think\Controller;
 

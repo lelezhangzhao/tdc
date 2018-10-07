@@ -152,6 +152,7 @@ Page({
   registerSubmit: function(e){
     var that = this;
 
+
     var username = e.detail.value.username;
     var password = e.detail.value.password;
     var confirmPassword = e.detail.value.confirmPassword;
@@ -166,7 +167,7 @@ Page({
       warn = "用户名至少5个字符";
     }else if(username.trim().length > 30){
       warn = "用户名最多30个字符";
-    } else if (!/^[a-zA-Z]{1}$/.test(username)){
+    } else if (!(/[a-zA-Z]{1}/.test(username))){
       warn = "用户名至少包含一个字母";
     }
 
@@ -228,7 +229,7 @@ Page({
         var title = null;
         
         if(code === "ERROR_STATUS_SUCCESS"){
-          title = "注册成功";
+          wx.navigateTo({url:"../index/index"});
         } else if (code === "ERROR_STATUS_NOTGETTELIDENTIFY"){
           title = "未获取手机验证码";
         } else if (code === "ERROR_STATUS_TELISNOTEQUAL"){

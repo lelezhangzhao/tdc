@@ -1,0 +1,8 @@
+insert into tdc_publish(publishobject, publishid, userid, status, evaluateavg, evaluatecount, tag)
+values
+()
+
+
+insert into tdc_publish_teacher(workaddress, introduction)
+values
+("广东省广州市天河区茅岗顶岗上街五巷三号", "我是一个很牛B的老师，我是一个很牛B的老师，我是一个很牛B的老师，我是一个很牛B的老师，我是一个很牛B的老师，我是一个很牛B的老师，我是一个很牛B的老师");

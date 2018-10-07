@@ -5,7 +5,10 @@
     "tdc/index/index",
     "tdc/register/register",
     "tdc/login/login",
-    "tdc/forgetPassword/fotgetPassword"
+    "tdc/forgetPassword/forgetPassword",
+    "tdc/registerjump/registerJump",
+    "tdc/mineteacher/mineteacher",
+    "tdc/mineschool/mineschool"
   ],
   "window": {
     "backgroundTextStyle": "light",

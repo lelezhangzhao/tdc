@@ -152,5 +152,20 @@ Page({
         wx.showToast({ title: "服务器繁忙，请稍后重试", icon: "none" });
       }
     });
+  },
+  register:function(e){
+    wx.navigateTo({
+      url: '../register/register',
+      success: function(res) {},
+      fail: function(res) {},
+      complete: function(res) {},
+    })
+  },
+  forgetPassword:function(e){
+    wx.navigateTo({
+      url: '../forgetPassword/forgetPassword',
+    })
   }
+
+
 })

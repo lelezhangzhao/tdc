@@ -1,0 +1,5 @@
+<!--tdc/registerjump/registerJump.wxml-->
+<view class="page">
+  <button bindtap='imteacher'>我是老师</button>
+  <button bindtap='imschool'>我是机构</button>
+</view>

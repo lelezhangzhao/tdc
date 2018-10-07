@@ -1,5 +1,5 @@
 <?php
-namespace app\index\controller;
+namespace app\tdc\controller;
 use think\Controller;
 
 class Captcha extends Controller
