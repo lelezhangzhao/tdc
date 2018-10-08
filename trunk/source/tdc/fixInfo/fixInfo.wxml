@@ -1,0 +1,41 @@
+<!--tdc/fixTeacherInfo/fixTeacherInfo.wxml-->
+<view class="page">
+  <view class="top">
+    <view bindtap="fixLogo">
+      <label>头像</label>
+      <label>{{logo}}</label>
+    </view>
+
+    <view bindtap="fixName">
+      <label>姓名</label>
+      <label>{{name}}</label>
+    </view>
+
+    <view bindtap="fixNickName">
+      <label>昵称</label>
+      <label>{{nickName}}</label>
+    </view>
+
+    <view bindtap="fixTel">
+      <label>手机</label>
+      <label>{{tel}}</label>
+    </view>
+  </view>
+
+  <view class="bottom">
+    <view bindtap="fixSex">
+      <label>性别</label>
+      <label>{{sex}}</label>
+    </view>
+
+    <view bindtap="fixBirthday">
+      <label>生日</label>
+      <label>{{birthday}}</label>
+    </view>
+
+    <view bindtap="fixAddress">
+      <label>所在地</label>
+      <label>{{address}}</label>
+    </view>
+  </view>
+</view>

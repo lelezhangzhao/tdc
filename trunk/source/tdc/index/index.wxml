@@ -27,8 +27,8 @@
   <view class="page-hi-eva-ls">
     <view class="weui-panel weui-panel_access">
       <view class="weui-panel__bd">
-        <view wx:for="{{hi-eval-list}}" wx:key="id">
-          <navigator url="" class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active">
+        <view wx:for="{{hiEvalList}}" wx:key="id">
+          <view id="{{item.id}}" bindtap="publishInfo" class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active">
             <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
               <image class="weui-media-box__thumb" src="{{item.logo}}" />
             </view>
@@ -37,11 +37,11 @@
               <view class="weui-media-box__title">
                 <span>{{item.name}}</span>
 
-                <view wx:if="{{item.role == 0}}">
-                  {{hi-eval-teacher}}
+                <view wx:if="{{item.publishobject == 0}}">
+                  {{hiEvalTeacher}}
                 </view>
-                <view wx:elif="{{item.role == 1}}">
-                  {{hi-eval-school}}
+                <view wx:elif="{{item.publishobject == 1}}">
+                  {{hiEvalSchool}}
                 </view>
 
                 <view wx:for="{{item.tag}}" wx:key="*this" wx:for-item="tagItem">
@@ -50,7 +50,7 @@
                 <view class="weui-media-box__desc">{{item.introduction}}</view>
               </view>
             </view>
-          </navigator>
+          </view>
         </view>
       </view>
     </view>

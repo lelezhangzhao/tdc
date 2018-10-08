@@ -1,4 +1,4 @@
 <!--tdc/component/tag/tag.wxml-->
 <view class="{{tagStatus}}">
-  <span>{{tagCaption}}</span>
+    <span>{{tagCaption}}</span>
 </view>

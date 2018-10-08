@@ -1,11 +1,12 @@
-// tdc/registerjump/registerJump.js
+// tdc/fixItem/fixItem.js
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-
+    caption:null,
+    value:null
   },
 
   /**
@@ -63,20 +64,14 @@ Page({
   onShareAppMessage: function () {
 
   },
-  imteacher:function(e){
-    wx.request({
-      url: 'https://localtdc.com/index.php/tdc/register/registerasteacher',
-    });
-    wx.navigateTo({
-      url: '../teacherPreview/teacherPreview',
+
+  fixValue:function(e){
+    var that = this;
+    that.setData({
+      value: e.detail.value
     });
   },
-  imschool:function(e){
-    wx.request({
-      url: 'https://localtdc.com/index.php/tdc/register/registerasschool',
-    });
-    wx.navigateTo({
-      url: '../schoolPreview/schoolPreview',
-    });
+  save:function(e){
+
   }
 })

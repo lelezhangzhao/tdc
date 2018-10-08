@@ -1,4 +1,4 @@
-// tdc/registerjump/registerJump.js
+// tdc/fixTeacherInfo/fixTeacherInfo.js
 Page({
 
   /**
@@ -63,20 +63,26 @@ Page({
   onShareAppMessage: function () {
 
   },
-  imteacher:function(e){
-    wx.request({
-      url: 'https://localtdc.com/index.php/tdc/register/registerasteacher',
-    });
-    wx.navigateTo({
-      url: '../teacherPreview/teacherPreview',
-    });
+
+  fixLogo:function(e){
+
   },
-  imschool:function(e){
-    wx.request({
-      url: 'https://localtdc.com/index.php/tdc/register/registerasschool',
-    });
-    wx.navigateTo({
-      url: '../schoolPreview/schoolPreview',
-    });
+  fixName:function(e){
+
+  },
+  fixNickName:function(e){
+
+  },
+  fixTel:function(e){
+
+  },
+  fixSex:function(e){
+
+  },
+  fixBirthday:function(e){
+
+  },
+  fixAddress:function(e){
+    
   }
 })

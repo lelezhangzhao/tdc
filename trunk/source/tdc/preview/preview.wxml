@@ -1,0 +1,27 @@
+<!--tdc/teacherPreview/teacherPreview.wxml-->
+<view class="page">
+  <view class="top">
+    <button bindtap="editInfo">个人信息</button>
+    <button bindtap="logout">退出</button>
+  </view>
+
+  <view class="info">
+    {{logo}}
+    {{name}}
+    {{nickName}}
+    {{tel}}
+    <button bindtap="publish">发布</button>
+
+  </view>
+
+  <view wx:for="{{tags}}" class="tag">
+    {{item}}
+    <button bindtap="editTag">编辑标签</button>
+  </view>
+
+  <view class="work_address">
+  </view>
+
+  <view class="presonalInfo">
+  </view>
+</view>

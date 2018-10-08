@@ -1,8 +1,22 @@
+insert into tdc_user(username, name, nickname, password, logo, tel, introduction, status, role)
+values
+("laoshi", "laoshi", "laoshi", "laoshi", "laoshi", "11111111111", "我是一个很牛B的老师，我是一个很牛B的老师，我是一个很牛B的老师，我是一个很牛B的老师，我是一个很牛B的老师，我是一个很牛B的老师，我是一个很牛B的老师", 0, 0),
+("jigou", "jigou", "jigou", "jigou", "jigou", "22222222222", "我是一个很牛B的机构，我是一个很牛B的机构，我是一个很牛B的机构，我是一个很牛B的机构，我是一个很牛B的机构，我是一个很牛B的机构，我是一个很牛B的机构", 0, 1);
+
 insert into tdc_publish(publishobject, publishid, userid, status, evaluateavg, evaluatecount, tag)
 values
-()
+(0, 1, 1, 0, 10, 10, "拉丁;兼职;现役;"),
+(1, 1, 2, 0, 10, 10, "拉丁;兼职;现役;包吃,包住,五险一金");
 
 
 insert into tdc_publish_teacher(workaddress, introduction)
 values
 ("广东省广州市天河区茅岗顶岗上街五巷三号", "我是一个很牛B的老师，我是一个很牛B的老师，我是一个很牛B的老师，我是一个很牛B的老师，我是一个很牛B的老师，我是一个很牛B的老师，我是一个很牛B的老师");
+
+insert into tdc_publish_school(workaddress, introduction, hirecount, wagesbyclassmin, wagesbyclassmax, wagesbyclass)
+values
+("广东省广州市天河区茅岗顶岗上街五巷三号", "我是一个很牛B的机构，我是一个很牛B的机构，我是一个很牛B的机构，我是一个很牛B的机构，我是一个很牛B的机构，我是一个很牛B的机构，我是一个很牛B的机构", 3, 300, 500, true);	
+
+insert into tdc_tag(dancetype, worktype, teachertype, welfare)
+values
+("拉丁,摩登", "兼职,全职", "在校,现役", "五险一金,包吃,包住");

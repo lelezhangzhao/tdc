@@ -19,7 +19,7 @@ class MineTeacher extends Controller{
     }
 
     public function GetPublishInfo(Request $request){
-        $publishId = $request->param("puoblishId");
+        $publishId = $request->param("publishId");
 
 
     }

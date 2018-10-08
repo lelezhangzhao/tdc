@@ -1,4 +1,4 @@
-// tdc/registerjump/registerJump.js
+// tdc/teacherPreview/teacherPreview.js
 Page({
 
   /**
@@ -62,21 +62,5 @@ Page({
    */
   onShareAppMessage: function () {
 
-  },
-  imteacher:function(e){
-    wx.request({
-      url: 'https://localtdc.com/index.php/tdc/register/registerasteacher',
-    });
-    wx.navigateTo({
-      url: '../teacherPreview/teacherPreview',
-    });
-  },
-  imschool:function(e){
-    wx.request({
-      url: 'https://localtdc.com/index.php/tdc/register/registerasschool',
-    });
-    wx.navigateTo({
-      url: '../schoolPreview/schoolPreview',
-    });
   }
 })

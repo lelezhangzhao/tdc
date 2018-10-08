@@ -1,14 +1,18 @@
 {
   "pages": [
-    "pages/index/index",
-    "pages/logs/logs",
     "tdc/index/index",
+    "tdc/find/find",
+    "tdc/publish/publish",
     "tdc/register/register",
     "tdc/login/login",
     "tdc/forgetPassword/forgetPassword",
-    "tdc/registerjump/registerJump",
-    "tdc/mineteacher/mineteacher",
-    "tdc/mineschool/mineschool"
+    "tdc/registerJump/registerJump",
+    "tdc/mine/mine",
+    "tdc/preview/preview",
+    "tdc/fixInfo/fixInfo",
+    "tdc/fixItem/fixItem",
+    "tdc/chat/chat",
+    "tdc/info/info"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -19,12 +23,24 @@
   "tabBar": {
     "list": [
       {
-        "pagePath": "pages/index/index",
-        "text": "Home"
+        "pagePath": "tdc/index/index",
+        "text": "首页"
       },
       {
-        "pagePath": "tdc/login/login",
-        "text": "tdc"
+        "pagePath": "tdc/find/find",
+        "text": "发现"
+      },
+      {
+        "pagePath": "tdc/preview/preview",
+        "text": "发布"
+      },
+      {
+        "pagePath": "tdc/chat/chat",
+        "text": "消息"
+      },
+      {
+        "pagePath": "tdc/mine/mine",
+        "text": "我的"
       }
     ]
   }

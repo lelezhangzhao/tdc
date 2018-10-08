@@ -229,7 +229,7 @@ Page({
         var title = null;
         
         if(code === "ERROR_STATUS_SUCCESS"){
-          wx.navigateTo({url:"../index/index"});
+          wx.navigateTo({url:"../registerJump/registerJump"});
         } else if (code === "ERROR_STATUS_NOTGETTELIDENTIFY"){
           title = "未获取手机验证码";
         } else if (code === "ERROR_STATUS_TELISNOTEQUAL"){

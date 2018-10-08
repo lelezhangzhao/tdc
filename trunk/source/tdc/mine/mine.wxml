@@ -1,0 +1,19 @@
+<!--tdc/mineteacher/mineteacher.wxml-->
+<view cass="page">
+  <view>
+    {{nickName}}
+    <view bindtap="preview">
+      {{logo}}
+    </view>
+  </view>
+
+  <view>
+    <button bindtap="publishRecord">发布</button>
+    <button bindtap="collectionRecord">收藏</button>
+    <button bindtap="footerRecord">足迹</button>
+  </view>
+
+  <view wx:for="{{recordList}}" wx:key="*this">
+    {{item}}
+  </view>
+</view>

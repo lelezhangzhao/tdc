@@ -1,3 +1,6 @@
+var utilRequest = require("../util/request.js");
+
+
 Page({
   data:{
     imgUrls: ["../image/1.png", "../image/2.png", "../image/3.png"],
@@ -7,19 +10,41 @@ Page({
     displayMultiipleItems:3,
     hiEvalList:[],
     hiEvalTeacher:"高评教师",
-    hiEvalSchool:"高评机构"
+    hiEvalSchool:"高评机构",
+    begin:0
   },
   onShow: function(){
+
+    var that = this;
     //获取高评用户
-    wx.request({
-      url:"https://localtdc.com/index.php/index/index/GetHighEvalList",
+    utilRequest.NetRequest({
+      url:"index/gethighevallist",
+      data:{
+        begin: that.data.begin
+      },
       success:function(res){
-        res = JSON.parse(res);
-        for(var i = 0; i < res.length; ++i){
-          var item = res[i];
+        var jsoncontent = JSON.parse(res.jsoncontent);
+        for (var i = 0; i < jsoncontent.length; ++i){
+          var item = jsoncontent[i];
           item.tag = item.tag.split(";");
         }
-        this.setData(hiEvalList, res);
+        that.setData({ hiEvalList: jsoncontent});
+      },
+      fail:function(res){
+
+      }
+    });
+  },
+  publishInfo:function(e){
+    var id = e.currentTarget.id;
+    utilRequest.NetRequest({
+      url:"index/getpublishinfo",
+      data:{
+        id:id
+      },
+      success:function(res){
+        var jsoncontent = JSON.parse(res.jsoncontent);
+        
       },
       fail:function(res){
 

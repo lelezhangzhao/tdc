@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2018/9/25 11:38:35                           */
+/* Created on:     2018/10/8 13:50:26                           */
 /*==============================================================*/
 
 
@@ -42,7 +42,6 @@ create table tdc_arbitration
    status               int comment '0 提交
             1 撤销
             2 管理员判定完成',
-   statusinfo           varchar(30),
    result               int comment '0 管理员取消
             1 仲裁人减少评价分 
             2 仲裁人增加评价分
@@ -52,7 +51,6 @@ create table tdc_arbitration
             6 被仲裁人封号
             
             这里操作的是平均评价分',
-   resultinfo           varchar(30),
    evalutescore         int comment '如果增加或减少评价分，则用这个参数表示评价分',
    submittime           datetime,
    arbitrationtime      datetime,
@@ -115,7 +113,6 @@ create table tdc_evaluate
    disabledtime         datetime,
    status               int comment '0 评论
             1 管理员删除',
-   statusinfo           varchar(30),
    primary key (id)
 )
 type = InnoDB
@@ -180,7 +177,6 @@ create table tdc_publish
             1 不显示
             2 删除
             3 管理员删除',
-   statusinfo           varchar(30),
    evaluateavg          float(2,2),
    evaluatecount        int,
    tag                  varchar(50),
@@ -270,7 +266,7 @@ create table tdc_user
    username             varchar(30),
    name                 varchar(10),
    nickname             varchar(30),
-   password             varchar(30),
+   password             varchar(32),
    logo                 varchar(50),
    tel                  varchar(11),
    introduction         varchar(1000),
@@ -278,11 +274,9 @@ create table tdc_user
             1 注册，未选择身份
             2 注册，未写个人信息
             4 封号',
-   statusinfo           varchar(20),
    role                 int comment '0 老师
             1 机构
             2 管理员',
-   roleinfo             varchar(20),
    rmb                  float(10,2),
    score                float(10,2) comment '0-10',
    sex                  int comment '0 男
