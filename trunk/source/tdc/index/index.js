@@ -36,12 +36,23 @@ Page({
     });
   },
   publishInfo:function(e){
+    var that = this;
     var publishId = e.currentTarget.id;
-    var publishObject = e.currentTarget.publishobject;
+    var publishObject = null;
+    
+    for(var i = 0; i < that.data.hiEvalList.length; ++i){
+      if(that.data.hiEvalList[i].id == publishId){
+        publishObject = that.data.hiEvalList[i].publishobject;
+        break;
+      }
+    }
+    if(publishObject == null){
+      return;
+    }
     var teacher = publishObject == 0 ? true : false;
     var school = !teacher;
     wx.navigateTo({
-      url: '../info/info?teacher=teacher&school=school&publishId=id',
+      url: '../info/info?teacher=' + teacher + '&school=' + school + '&publishId=' + publishId,
     })
   }
 })

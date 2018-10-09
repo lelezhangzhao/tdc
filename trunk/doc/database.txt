@@ -6,7 +6,8 @@ values
 insert into tdc_publish(publishobject, publishid, userid, status, evaluateavg, evaluatecount, tag)
 values
 (0, 1, 1, 0, 10, 10, "拉丁;兼职;现役;"),
-(1, 1, 2, 0, 10, 10, "拉丁;兼职;现役;包吃,包住,五险一金");
+(1, 1, 2, 0, 10, 10, "拉丁;兼职;现役;包吃,包住,五险一金"),
+(0, 1, 1, 0, 10, 10, "拉丁;兼职;现役;");
 
 
 insert into tdc_publish_teacher(workaddress, introduction)

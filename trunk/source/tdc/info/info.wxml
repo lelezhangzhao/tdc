@@ -28,8 +28,6 @@
 
   </view>
 
-
-
   <view wx:elif="{{school}}">
     <view>
       {{nickName}}
@@ -48,7 +46,7 @@
         招聘{{worktype}}{{dancetype}}老师{{count}}位
         要求：{{teachertype}}
         福利：
-        <view wx:for="{{welfareList}}" wx:key="*this">
+        <view wx:for="{{welfareList}}" wx:key="">
           {{item}}
         </view>
       </view>
@@ -63,16 +61,14 @@
     </view>
 
 
-    <view wx:for="{{evaluateList}}" wx:key="*this">
+    <view wx:for="{{evaluateList}}" wx:key="">
       {{item.evaluateScore}}
       {{item.evaluateInfo}}
     </view>
-
   </view>
 
-      <view>
-      <button bindtap="chat">在线聊天</button>
-      <button bindtap="tel">电话</button>
-    </view>
-
+  <view>
+    <button bindtap="chat">在线聊天</button>
+    <button bindtap="tel">电话</button>
+  </view>
 </view>

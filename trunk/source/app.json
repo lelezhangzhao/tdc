@@ -12,7 +12,8 @@
     "tdc/fixInfo/fixInfo",
     "tdc/fixItem/fixItem",
     "tdc/chat/chat",
-    "tdc/info/info"
+    "tdc/info/info",
+    "tdc/chatonline/chatonline"
   ],
   "window": {
     "backgroundTextStyle": "light",

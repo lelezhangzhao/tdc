@@ -23,10 +23,11 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    console.log(options);
     var that = this;
     
-    that.setData({teacher:options.teacher});
-    that.setData({school:options.school});
+    that.setData({teacher:options.teacher == "true"});
+    that.setData({school:options.school == "true"});
     that.setData({publishId:options.publishId});
 
     if(that.data.teacher){
@@ -129,8 +130,8 @@ Page({
   chat:function(e){
     var that = this;
     wx.navigateTo({
-      url: '../chat/chat?publishId=' + that.data.publishId,
-    })
+      url:'../chatonline/chatonline',
+    });
   },
   tel:function(e){
 

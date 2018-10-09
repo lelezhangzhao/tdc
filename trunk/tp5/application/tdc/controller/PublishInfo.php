@@ -47,7 +47,7 @@ class PublishInfo extends Controller{
         $collection_arr = explode(";", $collectionid);
         $collection_len = count($collection_arr);
         if($collection_len == 10){
-            RebuildArray($collection_arr, 10);
+            PublishInfo::RebuildArray($collection_arr, 10);
             $collection_len -= 1;
         }
         $collection_arr[$collection_len] = $publishId;

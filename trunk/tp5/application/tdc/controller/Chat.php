@@ -19,8 +19,8 @@ class Chat extends Contrller{
     }
 
 
-    //获取即时聊天信息
-    public function GetUnChatInfo(Request $request){
+    //获取未读聊天信息
+    public function GetUnReadInfo(Request $request){
 
     }
 
