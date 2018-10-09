@@ -36,19 +36,12 @@ Page({
     });
   },
   publishInfo:function(e){
-    var id = e.currentTarget.id;
-    utilRequest.NetRequest({
-      url:"index/getpublishinfo",
-      data:{
-        id:id
-      },
-      success:function(res){
-        var jsoncontent = JSON.parse(res.jsoncontent);
-        
-      },
-      fail:function(res){
-
-      }
-    });
+    var publishId = e.currentTarget.id;
+    var publishObject = e.currentTarget.publishobject;
+    var teacher = publishObject == 0 ? true : false;
+    var school = !teacher;
+    wx.navigateTo({
+      url: '../info/info?teacher=teacher&school=school&publishId=id',
+    })
   }
 })

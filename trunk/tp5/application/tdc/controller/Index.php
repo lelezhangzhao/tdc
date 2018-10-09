@@ -33,7 +33,7 @@ limit 20 offset '.$begin;
 
 
         if(empty($result)){
-            return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "高评用户列表为空", "");
+            return Status::ReturnJsonWithContent("ERROR_STATUS_LISTISNULL", "高评用户列表为空", "");
         }
 
         return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "获取成功", json_encode($result));
@@ -41,8 +41,6 @@ limit 20 offset '.$begin;
     }
 
 
-    public function GetPublishInfo(Request $request){
 
-    }
 
 }

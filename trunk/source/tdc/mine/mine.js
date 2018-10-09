@@ -64,7 +64,7 @@ Page({
 
   },
 
-  pPreview:function(e){
+  preview:function(e){
     wx.navigateTo({
       url: '../preview/preview',
     });

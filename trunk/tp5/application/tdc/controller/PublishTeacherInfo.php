@@ -8,16 +8,13 @@
 
 namespace app\tdc\controller;
 
+use app\tdc\api\Status;
 use think\Controller;
 use think\Request;
+use think\Db;
 
 
 class PublishTeacherInfo extends Controller{
-    public function GetPublishTeacherInfo(Request $request){
-        $publishId = $request->param("publishId");
-
-        $sql = 'select * from '
-    }
 
 
 }

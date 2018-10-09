@@ -28,7 +28,8 @@ class Status{
         "ERROR_STATUS_CAPTCHAERROR" => "图片验证码错误",
         "ERROR_STATUS_HACKER" => "非法访问，账号已冻结",
         "ERROR_STATUS_PARAMERROR" => "参数错误",
-
+        "ERROR_STATUS_PUBLISHALREADYDELETE" => "发布已删除",
+        "ERROR_STATUS_LISTISNULL" => "列表为空",
     );
 
     static public function ReturnJson($code, $msg){

@@ -20,7 +20,11 @@ class Chat extends Contrller{
 
 
     //获取即时聊天信息
-    public function GetChatInfo(Request $request){
+    public function GetUnChatInfo(Request $request){
+
+    }
+
+    public function GetHistoryInfo(Request $request){
 
     }
 

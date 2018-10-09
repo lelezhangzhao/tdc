@@ -2,7 +2,7 @@
 <view class="page">
   <view class="top">
     <button bindtap="collection">收藏</button>
-    <button bindtap="share">分享</button>
+    <button open-type="share">分享</button>
   </view>
 
   <view wx:if="{{teacher}}">
@@ -26,10 +26,6 @@
       {{item.evaluateInfo}}
     </view>
 
-    <view>
-      <button bindtap="chatWithTeacher">在线聊天</button>
-      <button bindtap="telTeacher">电话</button>
-    </view>
   </view>
 
 
@@ -72,10 +68,11 @@
       {{item.evaluateInfo}}
     </view>
 
-    <view>
-      <button bindtap="chatWithSchool">在线聊天</button>
-      <button bindtap="telSchool">电话</button>
+  </view>
+
+      <view>
+      <button bindtap="chat">在线聊天</button>
+      <button bindtap="tel">电话</button>
     </view>
 
-  </view>
 </view>
