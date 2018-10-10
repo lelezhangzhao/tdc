@@ -2,6 +2,8 @@ let Mcaptcha = require('../util/mcaptcha.js');
 let utilMd5 = require('../util/md5.js');
 var utilRequest = require("../util/request.js");
 
+var app = getApp();
+
 // tdc/login/login.js
 Page({
 
@@ -92,7 +94,7 @@ Page({
     let that = this;
     let username = e.detail.value.username;
     let password = e.detail.value.password;
-    let captcha = e.detail.value.captch;
+    let captcha = e.detail.value.captcha;
 
     var warn = null;
 
@@ -118,7 +120,7 @@ Page({
     //captcha
     if(captcha === null || captcha.trim().length === 0){
       warn = "验证码不能为空";
-    } else if (captcha !== that.data.captcha){
+    } else if (captcha.toLowerCase() !== that.data.captcha.toLowerCase()){
       warn = "验证码有误";
     }
     if(warn !== null){
@@ -133,12 +135,17 @@ Page({
         password: password,
       },
       success: function (res) {
+        console.log(app);
         var code = res.code;
         var msg = res.msg;
+        var jsoncontent = JSON.parse(res.jsoncontent);
         var title = null;
 
         if (code === "ERROR_STATUS_SUCCESS") {
-          title = "登录成功";
+          app.globalData.userid = jsoncontent.userid;
+          wx.switchTab({
+            url: '../index/index',
+          });
         } else if (code === "ERROR_STATUS_USERNAMEFORMATERROR") {
           title = "用户名格式错误";
         } else if (code === "ERROR_STATUS_USERNAMEORPASSWORDERROR") {

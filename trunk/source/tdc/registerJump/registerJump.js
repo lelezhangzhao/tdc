@@ -68,7 +68,7 @@ Page({
       url: 'https://localtdc.com/index.php/tdc/register/registerasteacher',
     });
     wx.navigateTo({
-      url: '../teacherPreview/teacherPreview',
+      url: '../preview/preview',
     });
   },
   imschool:function(e){
@@ -76,7 +76,7 @@ Page({
       url: 'https://localtdc.com/index.php/tdc/register/registerasschool',
     });
     wx.navigateTo({
-      url: '../schoolPreview/schoolPreview',
+      url: '../preview/preview',
     });
   }
 })

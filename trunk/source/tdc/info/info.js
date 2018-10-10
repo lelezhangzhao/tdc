@@ -15,8 +15,7 @@ Page({
     tel:null,
     address:null,
     workaddress:null,
-    introductioni:null,
-    publishId:null
+    introduction:null,
   },
 
   /**
@@ -130,7 +129,7 @@ Page({
   chat:function(e){
     var that = this;
     wx.navigateTo({
-      url:'../chatonline/chatonline',
+      url:'../chatonline/chatonline?publishId=' + that.data.publishId,
     });
   },
   tel:function(e){

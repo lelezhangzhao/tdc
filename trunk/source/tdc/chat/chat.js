@@ -17,13 +17,14 @@ Page({
     nickName: '',
     avatarUrl: '',
     news_input_val: '',
-    tabdata: ''
+    tabdata: '',
+    theOtherId: null,
   },
-  bindChange: function(e) {
+  bindChange: function (e) {
     message = e.detail.value
   },
   //事件处理函数
-  add: function(e) {
+  add: function (e) {
     // var that = this
     // var data = {
     //   program_id: app.jtappid,
@@ -53,34 +54,36 @@ Page({
     // }
     // });
   },
-  onLoad: function(options) {
+  onLoad: function (options) {
     // openid_talk = options.openid_talk;
     // zx_info_id = options.zx_info_id;
+    var publishId = options.publishId;
+    console.log("options");
     console.log(options);
+    
     //调用应用实例的方法获取全局数据
     this.setData({
       // zx_info_id: zx_info_id,
       // nickName: app.nickName,
       // avatarUrl: app.avatarUrl,
     });
-    this.loaddata()
+    
+    this.loaddata(publishId)
   },
   // 页面加载  
-  loaddata: function(a) {
+  loaddata: function (publishId) {
     var that = this;
     var is_img = true;
-    var data = {
-      // program_id: app.jtappid,
-      // openid: app._openid,
-      // zx_info_id: zx_info_id,
-      // openid_talk: openid_talk
-    };
     utilRequest.NetRequest({
-      url:"chat/getunreadinfo",
-      data:{
-
+      url: "chat/getunreadinfo",
+      data: {
+        // program_id: app.jtappid,
+        // openid: app._openid,
+        // zx_info_id: zx_info_id,
+        // openid_talk: openid_talk
+        publishId: publishId,
       },
-      success:function(res) {
+      success: function (res) {
         console.log(res);
         // if (res.data.k1) {
         //   res.data.k1.time_agree = util.js_date_time(res.data.k1.time_agree)
@@ -107,9 +110,12 @@ Page({
         //     that.bottom()
         //   }, 500);
         // }
+      },
+      fail:function(res){
+
       }
-    })
-    setTimeout(function() {
+    });
+    setTimeout(function () {
       if (that.data.centendata.length != length) {
         length = that.data.centendata.length
       }

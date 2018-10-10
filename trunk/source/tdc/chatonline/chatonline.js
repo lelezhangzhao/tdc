@@ -17,7 +17,8 @@ Page({
     nickName: '',
     avatarUrl: '',
     news_input_val: '',
-    tabdata: ''
+    tabdata: '',
+    publishId:null,
   },
   bindChange: function (e) {
     message = e.detail.value
@@ -54,31 +55,31 @@ Page({
     // });
   },
   onLoad: function (options) {
+    var that = this;
     // openid_talk = options.openid_talk;
     // zx_info_id = options.zx_info_id;
-    console.log(options);
+    that.setData({publishId:options.publishId});
+
+
     //调用应用实例的方法获取全局数据
-    this.setData({
-      // zx_info_id: zx_info_id,
-      // nickName: app.nickName,
-      // avatarUrl: app.avatarUrl,
-    });
-    this.loaddata()
+    // this.setData({
+    //   // zx_info_id: zx_info_id,
+    //   // nickName: app.nickName,
+    //   // avatarUrl: app.avatarUrl,
+    // });
+
+    that.loaddata()
   },
   // 页面加载  
-  loaddata: function (a) {
+  loaddata: function () {
+    
     var that = this;
     var is_img = true;
-    var data = {
-      // program_id: app.jtappid,
-      // openid: app._openid,
-      // zx_info_id: zx_info_id,
-      // openid_talk: openid_talk
-    };
     utilRequest.NetRequest({
       url: "chat/getunreadinfo",
       data: {
 
+        publishId: that.data.publishId
       },
       success: function (res) {
         console.log(res);
@@ -107,14 +108,17 @@ Page({
         //     that.bottom()
         //   }, 500);
         // }
+      },
+      fail: function (res) {
+
       }
-    })
+    });
     setTimeout(function () {
       if (that.data.centendata.length != length) {
         length = that.data.centendata.length
       }
       that.loaddata()
-    }, 3000);
+    }, 1000);
   },
   // 获取hei的id节点然后屏幕焦点调转到这个节点
   // bottom: function() {
