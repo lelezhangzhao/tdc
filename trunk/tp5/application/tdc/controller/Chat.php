@@ -40,22 +40,14 @@ class Chat extends Controller{
         $publishId = $request->param("publishId");
 
         //发布人的id
-        $sql = "select userid from tdc_publish where id = $publishId";
+        $sql = "select * from tdc_publish where id = $publishId";
 
-        $result = Db::query($sql);
+        $publishUserId = Db::name("publish")->where("id", $publishId)->value("userid");
 
-        if(empty($result)){
+        if(empty($publishUserId)){
             return Status::ReturnErrorStatus("ERROR_STATUS_PUBLISHALREADYDELETE");
         }
         $userid = Session::get("userid");
-
-        while($row = $result->fetch()){
-            return $row[userid];
-        }
-        return json_encode($result.);
-
-        $publishUserId = json_encode($result).userid;
-
 
 
         //是否有未读消息
