@@ -21,3 +21,16 @@ values
 insert into tdc_tag(dancetype, worktype, teachertype, welfare)
 values
 ("拉丁,摩登", "兼职,全职", "在校,现役", "五险一金,包吃,包住");
+
+insert into tdc_chat(content, fromuserid, touserid, sendtime, isread)
+values 
+("你好", 1, 3, "2018-10-11 9:01:00", false),
+("你好", 3, 1, "2018-10-11 9:02:00", false),
+("好", 1, 3, "2018-10-11 9:03:00", false),
+("我也好", 3, 1, "2018-10-11 9:04:00", false),
+("恩，都好", 1, 3, "2018-10-11 9:05:00", false);
+
+insert into tdc_chatassist(fromuserid, touserid, hasunreadmsg)
+values
+(1, 3, true),
+(3, 1, true);
