@@ -1,18 +1,31 @@
 // tdc/find/find.js
+
+var utilRequest = require("../util/request.js");
+
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-
+    newsList:null
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    var that = this;
+    utilRequest.NetRequest({
+      url:"find/getfindlist",
+      success:function(res){
+        var jsoncontent = JSON.parse(res.jsoncontent);
+        that.setData({newsList: jsoncontent});
+      },
+      fail:function(res){
 
+      }
+    });
   },
 
   /**
@@ -62,5 +75,12 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+  newsinfo: function(e){
+    var id = e.currentTarget.id;
+
+    wx.navigateTo({
+      url: '../news/news?newsId=' + id,
+    })
   }
 })

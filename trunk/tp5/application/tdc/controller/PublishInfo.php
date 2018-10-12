@@ -20,7 +20,7 @@ class PublishInfo extends Controller{
         $publishId = $request->param("publishId");
 
 
-        $sql = "select * from (select b.name,b.nickname,b.tel,a.id,a.status,c.workaddress,c.introduction from tdc_publish as a left join tdc_user as b on a.userid = b.id left join tdc_publish_teacher as c on a.publishid = c.id) as d where status = 0 and id = $publishId";
+        $sql = "select * from (select b.id as publishUserId, b.name,b.nickname,b.tel,a.id,a.status,c.workaddress,c.introduction from tdc_publish as a left join tdc_user as b on a.userid = b.id left join tdc_publish_teacher as c on a.publishid = c.id) as d where status = 0 and id = $publishId";
 
         $result = Db::query($sql);
         if(empty($result)){

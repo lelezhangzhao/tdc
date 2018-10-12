@@ -3,6 +3,7 @@
   <view>
     {{nickName}}
     <view bindtap="preview">
+      <image src="https://localtdc.com/static/image/my.png" />
       {{logo}}
     </view>
   </view>

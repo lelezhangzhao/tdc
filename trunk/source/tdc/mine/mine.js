@@ -72,7 +72,7 @@ Page({
   },
 
   preview:function(e){
-    wx.navigateTo({
+    wx.switchTab({
       url: '../preview/preview',
     });
   },

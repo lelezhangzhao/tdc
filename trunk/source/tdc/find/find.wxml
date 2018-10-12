@@ -1,2 +1,9 @@
 <!--tdc/find/find.wxml-->
-<text>tdc/find/find.wxml</text>
+<view class="page">
+  <view wx:for="{{newsList}}" wx:key="">
+    <view id="{{item.id}}" bindtap="newsinfo">
+      {{item.id}}
+      {{item.title}}
+    </view>
+  </view>
+</view>

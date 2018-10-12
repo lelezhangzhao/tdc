@@ -13,7 +13,8 @@
     "tdc/fixItem/fixItem",
     "tdc/chat/chat",
     "tdc/info/info",
-    "tdc/chatonline/chatonline"
+    "tdc/chatonline/chatonline",
+    "tdc/news/news"
   ],
   "window": {
     "backgroundTextStyle": "light",

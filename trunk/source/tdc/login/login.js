@@ -143,6 +143,7 @@ Page({
 
         if (code === "ERROR_STATUS_SUCCESS") {
           app.globalData.userid = jsoncontent.userid;
+          app.globalData.role = jsoncontent.role;
           wx.switchTab({
             url: '../index/index',
           });

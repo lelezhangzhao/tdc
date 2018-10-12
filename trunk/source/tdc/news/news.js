@@ -1,23 +1,38 @@
-// tdc/fixTeacherInfo/fixTeacherInfo.js
+// tdc/news/news.js
+var utilRequest = require("../util/request.js");
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    logo:null,
-    name:null,
-    nickName:null,
-    tel:null,
-    sex:null,
-    birthday:null,
-    address:null,
+    newsId:null,
+    news:null
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    var that = this;
+    var newsId = options.newsId;
+    that.setData({ newsId: newsId});
+
+    utilRequest.NetRequest({
+      url:"find/getfindinfo",
+      data:{
+        newsId: that.data.newsId
+      },
+      success:function(res){
+        if(res.code == "ERROR_STATUS_SUCCESS"){
+          var jsoncontent = res.jsoncontent;
+          that.setData({news: jsoncontent});
+        }
+      },
+      fail:function(res){
+
+      }
+    })
 
   },
 
@@ -68,27 +83,5 @@ Page({
    */
   onShareAppMessage: function () {
 
-  },
-
-  fixLogo:function(e){
-
-  },
-  fixName:function(e){
-
-  },
-  fixNickName:function(e){
-
-  },
-  fixTel:function(e){
-
-  },
-  fixSex:function(e){
-
-  },
-  fixBirthday:function(e){
-
-  },
-  fixAddress:function(e){
-    
   }
 })

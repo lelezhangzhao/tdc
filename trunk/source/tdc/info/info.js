@@ -10,6 +10,7 @@ Page({
     teacher:false,
     school:false,
     publishId:0,
+    publishUserId:null,
     name:null,
     nickName:null,
     tel:null,
@@ -38,6 +39,7 @@ Page({
         success: function (res) {
           if(res.code == "ERROR_STATUS_SUCCESS"){
             var jsoncontent = JSON.parse(res.jsoncontent)[0];
+            that.setData({ publishUserId: jsoncontent.publishUserId });
             that.setData({ name: jsoncontent.name });
             that.setData({ nickName: jsoncontent.nickname });
             that.setData({ tel: jsoncontent.tel });
@@ -107,7 +109,7 @@ Page({
     var that = this;
     return{
       title:"TDC",
-      path:"tdc/info/info?teacher=" + that.data.teacher + "&school=" + that.data.school + "&publishId=" + that.data.publishId
+      path: "tdc/info/info?teacher=" + that.data.teacher + "&school=" + that.data.school + "&publishId=" + that.data.publishId
     }
   },
   collection:function(e){
@@ -129,7 +131,7 @@ Page({
   chat:function(e){
     var that = this;
     wx.navigateTo({
-      url:'../chatonline/chatonline?publishId=' + that.data.publishId,
+      url: "../chatonline/chatonline?theOtherUserId=" + that.data.publishUserId,
     });
   },
   tel:function(e){

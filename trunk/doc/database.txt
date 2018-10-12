@@ -34,3 +34,10 @@ insert into tdc_chatassist(fromuserid, touserid, hasunreadmsg)
 values
 (1, 3, true),
 (3, 1, true);
+
+insert into tdc_news(status, title, titleone, contentone, titletwo, contenttwo, titlethree, contentthree, publishtime)
+values
+(0, "hello php", "echo", "echo php", "var", "var php", "let", "let php", "2018-10-12 13:00:00"),
+(0, "hello java", "echo", "echo java", "var", "var java", "let", "let java", "2018-10-12 13:10:00"),
+(0, "hello c++", "echo", "echo c++", "var", "var c++", "let", "let c++", "2018-10-12 13:20:00"),
+(0, "hello node", "echo", "echo node", "var", "var node", "let", "let node", "2018-10-12 13:30:00");

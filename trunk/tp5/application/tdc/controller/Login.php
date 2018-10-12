@@ -47,7 +47,7 @@ class Login extends Controller{
 
         Session::set("userid", $user->id);
 
-        $return_arr = array("userid"=>$user->id);
+        $return_arr = array("userid" => $user->id, "role" => $user->role);
         return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "", json_encode($return_arr));
     }
 }

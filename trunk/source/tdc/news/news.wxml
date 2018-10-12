@@ -1,0 +1,5 @@
+<!--tdc/news/news.wxml-->
+<view class="page">
+  {{news}}
+
+</view>

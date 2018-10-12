@@ -1,4 +1,7 @@
 // tdc/teacherPreview/teacherPreview.js
+
+var app = getApp();
+
 Page({
 
   /**
@@ -8,7 +11,7 @@ Page({
     logo:null,
     name:null,
     nickName:null,
-    tel:null
+    tel:null,
     
   },
 
@@ -16,6 +19,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    var that = this;
 
   },
 
@@ -69,8 +73,9 @@ Page({
   },
 
   editInfo:function(e){
+    var that = this;
     wx.navigateTo({
-      url: '../fixTeacherInfo/fixTeacherInfo',
+      url: '../fixInfo/fixInfo',
     })
   },
 

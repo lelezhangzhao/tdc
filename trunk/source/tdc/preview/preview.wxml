@@ -14,7 +14,7 @@
 
   </view>
 
-  <view wx:for="{{tags}}" class="tag">
+  <view wx:for="{{tags}}" wx:key="" class="tag">
     {{item}}
     <button bindtap="editTag">编辑标签</button>
   </view>

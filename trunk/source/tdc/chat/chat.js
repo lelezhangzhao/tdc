@@ -5,7 +5,7 @@ var app = getApp();
 Page({
   data: {
     chatList:null,
-
+    theOtherUserId:null
   },
   //事件处理函数
   onLoad: function (options) {
@@ -24,7 +24,11 @@ Page({
    }); 
   },
   chatInfo:function(e){
-    
+    var that = this;
+    that.setData({ theOtherUserId: e.currentTarget.id});
+    wx.navigateTo({
+      url:"../chatonline/chatonline?theOtherUserId=" + that.data.theOtherUserId
+    })
   }
 
 })

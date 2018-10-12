@@ -16,7 +16,7 @@ Page({
     nickName: '',
     avatarUrl: '',
     tabdata: '',
-    publishId:null,
+    theOtherUserId:null,
     userid:null,
     loadDataInterval:null,
   },
@@ -32,7 +32,7 @@ Page({
       url:"chat/addchatinfo",
       data:{
         content: message,
-        publishId: that.data.publishId,
+        theOtherUserId: that.data.theOtherUserId,
         sendTime:sendTime,
       },
       success:function(res) {
@@ -58,7 +58,7 @@ Page({
     // openid_talk = options.openid_talk;
     // zx_info_id = options.zx_info_id;
     that.setData({userid:app.globalData.userid});
-    that.setData({publishId:options.publishId});
+    that.setData({ theOtherUserId: options.theOtherUserId});
 
     that.loadHistoryData()
   },
@@ -67,12 +67,13 @@ Page({
     utilRequest.NetRequest({
       url: "chat/gethistoryinfo",
       data: {
-
-        publishId: that.data.publishId
+        theOtherUserId: that.data.theOtherUserId
       },
       success: function (res) {
-        var jsoncontent = JSON.parse(res.jsoncontent);
-        that.setData({ contentData: jsoncontent});
+        if(res.code == "ERROR_STATUS_SUCCESS"){
+          var jsoncontent = JSON.parse(res.jsoncontent);
+          that.setData({ contentData: jsoncontent });
+        }
       },
       fail: function (res) {
 
@@ -92,7 +93,7 @@ Page({
       url: "chat/getunreadinfo",
       data: {
 
-        publishId: that.data.publishId
+        theOtherUserId: that.data.theOtherUserId
       },
       success: function (res) {
         if(res.code == "ERROR_STATUS_SUCCESS"){
