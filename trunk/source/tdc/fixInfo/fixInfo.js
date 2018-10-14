@@ -1,4 +1,6 @@
 // tdc/fixTeacherInfo/fixTeacherInfo.js
+var utilRequest = require("../util/request.js");
+var app = getApp();
 Page({
 
   /**
@@ -18,6 +20,36 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    var that = this;
+    if(app.globalData.role == 0){
+      utilRequest.NetRequest({
+        url: "mine_teacher/getteacherinfo",
+        success: function (res) {
+          var jsoncontent = JSON.parse(res.jsoncontent);
+          that.setData({ logo: jsoncontent.logo });
+          that.setData({ name: jsoncontent.name });
+          that.setData({ nickName: jsoncontent.nickName });
+          that.setData({ tel: jsoncontent.tel });
+          that.setData({ sex: jsoncontent.sex });
+          that.setData({ birthday: jsoncontent.birthday });
+          that.setData({address:jsoncontent.address});
+        },
+        fail: function (res) {
+
+        }
+      });
+    }else if(app.globalData.role == 1){
+      utilRequest.NetRequest({
+        url:"mine_school/getschoolinfo",
+        success:function(res){
+          var jsoncontent = JSON.parse(res.jsoncontent);
+          
+        },
+        fail:function(res){
+
+        }
+      })
+    }
 
   },
 

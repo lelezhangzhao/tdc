@@ -92,6 +92,13 @@ class MineTeacher extends Controller{
     public function Logout(){
 
     }
+    
+    public function GetTeacherInfo(){
+        $userid = Session::get("userid");
+
+
+
+    }
 
 
 
