@@ -3,7 +3,7 @@ var utilRequest = require("../util/request.js");
 
 Page({
   data:{
-    imgUrls: ["../image/1.png", "../image/2.png", "../image/3.png"],
+    imgUrls: ["../image/1.jpg", "../image/2.jpg", "../image/3.jpg"],
     indicatorDots:true,
     autoplay:true,
     circular:true,

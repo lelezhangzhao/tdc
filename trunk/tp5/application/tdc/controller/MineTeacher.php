@@ -64,34 +64,71 @@ class MineTeacher extends Controller{
     }
 
     public function FixTeacherName(Request $request){
+        $name = $request->param("name");
+        $userid = Session::get("userid");
+
+        $sql = "update tdc_user set name = '" . $name . "' where id = $userid";
+        Db::execute($sql);
+
+        return Status::ReturnJson("ERROR_STATUS_SUCCESS", "修改成功");
 
     }
 
     public function FixTeacherNickName(Request $request){
+        $nickName = $request->param("nickname");
+        $userid = Session::get("userid");
 
+        $sql = "update tdc_user set nickname = '" . $nickName . "' where id = $userid";
+        Db::execute($sql);
+
+        return Status::ReturnErrorStatus("ERROR_STATUS_SUCCESS");
     }
 
     public function FixTeacherTel(Request $request){
-
+        $tel = $request->param("tel");
+        $userid = Session::get("userid");
+        $sql = "update tdc_user set tel = '" . $tel . "' where id = $userid";
+        Db::execute($sql);
+        return Status::ReturnErrorStatus("ERROR_STATUS_SUCCESS");
     }
 
     public function FixTeacherSex(Request $request){
-
+        $sex = $request->param("sex");
+        $userid = Session::get("userid");
+        $sql = "update tdc_user set sex = $sex where id = $userid";
+        Db::execute($sql);
+        return Status::ReturnErrorStatus("ERROR_STATUS_SUCCESS");
     }
 
     public function FixTeacherBirthday(Request $request){
-
+        $birthday = $request->param("birthday");
+        $userid = Session::get("userid");
+        $sql = "update tdc_user set birthday = $birthday where id = $userid";
+        Db::execute($sql);
+        return Status::ReturnErrorStatus("ERROR_STATUS_SUCCESS");
     }
 
     public function FixTeacherAddress(Request $request){
-
+        $address = $request->param("address");
+        $userid = Session::get("address");
+        $sql = "update tdc_user set address = $address where id = $userid";
+        Db::execute($sql);
+        return Status::ReturnErrorStatus("ERROR_STATUS_SUCCESS");
     }
 
     public function Arbitration(Request $request){
 
     }
 
-    public function Logout(){
+    public function Logout(Request $request){
+        $logoutTime = $request->param("logoutTime");
+        $userid = Session::get("userid");
+        $sql = "update tdc_user set logouttime = $logoutTime where id = $userid";
+        Db::execute($sql);
+
+        Session::delete("userid");
+
+        return Status::ReturnErrorStatus("ERROR_STATUS_SUCCESS");
 
     }
     

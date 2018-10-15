@@ -172,24 +172,39 @@ Page({
   },
   fixName:function(e){
     var that = this;
+    var fixItemType = 0;
+    if(app.globalData.role == 0){
+      fixItemType = 1;
+    }else if(app.globalData.role == 1){
+      fixItemType = 4;
+    }
 
-    that.setData({fixItemType: 1});
+    that.setData({ fixItemType: fixItemType});
     that.fixItem();
 
   },
   fixNickName:function(e){
     var that = this;
-    var param = {};
-    param.caption = "修改昵称";
-    param.value = that.data.nickName;
-    that.fixItem(param);
+    var fixItemType = 0;
+    if (app.globalData.role == 0) {
+      fixItemType = 2;
+    } else if (app.globalData.role == 1) {
+      fixItemType = 5;
+    }
+
+    that.setData({ fixItemType: fixItemType });
+    that.fixItem();
   },
   fixTel:function(e){
     var that = this;
-    var param = {};
-    param.caption = "修改电话";
-    param.value = that.data.tel;
-    that.fixItem(param);
+    var fixItemType = 0;
+    if (app.globalData.role == 0) {
+      fixItemType = 3;
+    } else if (app.globalData.role == 1) {
+      fixItemType = 6;
+    }
+    that.setData({ fixItemType: fixItemType });
+    that.fixItem();
   },
   fixSex:function(e){
     var that = this;
@@ -202,10 +217,19 @@ Page({
           }else if(res.tapIndex == 1){
             that.setData({ sex: "女" })
           }
+          utilRequest.NetRequest({
+            url: "mine_teacher/fixteachersex?sex=" + res.tapIndex,
+            success:function(res){
+
+            },
+            fail:function(res){
+
+            }
+          });
         }
-        utilRequest.NetRequest({
-          url:"mine_teacher/fixteachersex?sex=" + that.data.sex,
-        });
+      },
+      fail:function(res){
+
       }
     });
   },
@@ -214,6 +238,12 @@ Page({
     that.setData({birthday: e.detail.value});
     utilRequest.NetRequest({
       url:"mine_teacher/fixteacherbirthday?birthday=" + that.data.birthday,
+      success:function(res){
+
+      },
+      fail:function(res){
+
+      }
     });
   },
   fixAddress:function(e){
@@ -221,6 +251,32 @@ Page({
   },
   fixItem:function(param){
     var that = this;
+
+    switch(that.data.fixItemType){
+      case 1:
+      case 4:      
+        that.setData({
+          caption: "修改姓名",
+          value: that.data.name
+          });
+      break;
+      case 2:
+      case 5:
+        that.setData({ 
+          caption: "修改昵称",
+          value: that.data.nickName 
+          });
+      break;
+      case 3:
+      case 6:
+        that.setData({ 
+          caption: "修改电话",
+          value: that.data.tel 
+          });
+      break;
+
+    }
+    
     that.setData({ fixItem: true});
 
   },
@@ -266,6 +322,17 @@ Page({
     }
     utilRequest.NetRequest({
       url:url,
+      success:function(res){
+        console.log(res);
+      },
+      fail:function(res){
+
+      }
+    });
+
+    that.setData({
+      fixItem: false,
+      fixItemType: 0,
       });
   }
 
