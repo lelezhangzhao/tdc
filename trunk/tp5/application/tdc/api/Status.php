@@ -13,6 +13,7 @@ class Status{
         "ERROR_STATUS_USERNAMEFORMATERROR" => "用户名格式错误",
         "ERROR_STATUS_USERNAMEISALREADYEXIST" => "用户名已存在",
         "ERROR_STATUS_USERNAMEISNOTEXIST" => "用户名不存在",
+        "ERROR_STATUS_USERISNOTEXIST" => "用户不存在",
         "ERROR_STATUS_USERNAMEORPASSWORDERROR" => "用户名或密码错误",
         "ERROR_STATUS_USERNAMEISFROZEN" => "用户已封号",
         "ERROR_STATUS_PASSWORDFORMATERROR" => "密码格式错误",

@@ -1,0 +1,17 @@
+<view class="view">
+  <view class="window">
+    <image class="cover-9" src="{{tempImagePath}}"></image>
+    <button bindtap="confirm">确定</button>
+    <button bindtap="rephoto">重拍</button>
+  </view>
+ 
+  <camera class="camera" device-position="{{device?'back':'front'}}" wx:if="{{camera}}" flash="off">
+    <cover-view class="cover-1" bindtap="camera">
+    </cover-view>
+    <cover-image class="cover-3" src="/images/xx2.png" style="width:60rpx;height:60rpx;" bindtap="close"></cover-image>
+    <cover-image class="cover-4" src="/images/zh.png" style="width:80rpx;height:60rpx;" bindtap="devicePosition"></cover-image>
+  </camera>
+
+
+</view>
+
