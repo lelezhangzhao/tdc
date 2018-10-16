@@ -1,6 +1,7 @@
 // tdc/teacherPreview/teacherPreview.js
 
 var app = getApp();
+var utilRequest = require("../util/request.js");
 
 Page({
 
@@ -20,6 +21,7 @@ Page({
    */
   onLoad: function (options) {
     var that = this;
+
 
   },
 

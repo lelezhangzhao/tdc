@@ -14,7 +14,30 @@
     <button bindtap="footerRecord">足迹</button>
   </view>
 
-  <view wx:for="{{recordList}}" wx:key="*this">
-    {{item}}
+  <view>
+    <view wx:if="{{isPublishList}}">
+      <view wx:for="{{publishList}}" wx:key="">
+        <view bindtap="publishInfo" data-id="{{item.id}}">
+          {{item.id}}
+        </view>
+      </view>
+    </view>
+
+    <view wx:if="{{isCollectionList}}">
+      <view wx:for="{{collectionList}}" wx:key="">
+        <view bindtap="collectionInfo" data-id="{{item.id}}" data-object="{{item.publishobject}}">
+          {{item.id}}
+        </view>
+      </view>
+    </view>
+
+    <view wx:if="{{isFooterList}}">
+      <view wx:for="{{footerList}}" wx:key="">
+        <view bindtap="footerInfo" data-id="{{item.id}}" data-object="{{item.publishobject}}">
+          {{item.id}}
+        </view>
+      </view>
+    </view>
   </view>
+
 </view>

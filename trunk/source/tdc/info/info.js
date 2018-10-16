@@ -38,6 +38,7 @@ Page({
         },
         success: function (res) {
           if(res.code == "ERROR_STATUS_SUCCESS"){
+            console.log(res);
             var jsoncontent = JSON.parse(res.jsoncontent)[0];
             that.setData({ publishUserId: jsoncontent.publishUserId });
             that.setData({ name: jsoncontent.name });

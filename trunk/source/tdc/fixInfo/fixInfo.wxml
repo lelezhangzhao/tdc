@@ -37,9 +37,11 @@
         </picker>
       </view>
 
-      <view bindtap="fixAddress">
+      <view>
         <label>所在地</label>
-        <label>{{address}}</label>
+        <picker mode="region" bindchange="fixAddress" value="{{region}}" >
+          <label>{{region[0]}}-{{region[1]}}-{{region[2]}}</label>
+        </picker>
       </view>
     </view>
   </view>

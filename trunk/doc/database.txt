@@ -41,3 +41,26 @@ values
 (0, "hello java", "echo", "echo java", "var", "var java", "let", "let java", "2018-10-12 13:10:00"),
 (0, "hello c++", "echo", "echo c++", "var", "var c++", "let", "let c++", "2018-10-12 13:20:00"),
 (0, "hello node", "echo", "echo node", "var", "var node", "let", "let node", "2018-10-12 13:30:00");
+
+update tdc_user set publishid = "1;2;3" where id = 3;
+
+insert tdc_publish(publishobject, publishid, userid, status, evaluateavg, evaluatecount, tag)
+values
+(0, 1, 3, 0, 10, 10, "拉丁;全职;现役;"),
+(0, 2, 3, 0, 10, 10, "拉丁;全职;现役;"),
+(0, 3, 3, 0, 10, 10, "拉丁;全职;现役;"),
+(0, 1, 1, 0, 10, 9, "拉丁;全职;现役;");
+
+insert tdc_publish_teacher(workaddress, introduction)
+values
+("广东省-广州市-天河区", "我是一个贼SB的程序员！！！，想做一个贼NB的老师"),
+("广东省-广州市-黄埔区", "我是一个贼SB的程序员！！！，想做一个贼NB的老师"),
+("广东省-广州市-白云区", "我是一个贼SB的程序员！！！，想做一个贼NB的老师");
+
+insert tdc_collection(userid, publishid)
+values
+(3, "1;6");
+
+insert tdc_history(userid, publishid)
+values
+(3, "1;2;3;4");

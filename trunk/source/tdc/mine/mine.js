@@ -1,5 +1,6 @@
 // tdc/mineteacher/mineteacher.js
 var app = getApp();
+var utilRequest = require("../util/request.js");
 
 Page({
 
@@ -7,6 +8,13 @@ Page({
    * 页面的初始数据
    */
   data: {
+    publishList:null,
+    collectionList:null,
+    footerList:null,
+
+    isPublishList:false,
+    isCollectionList:false,
+    isFooterList:false,
 
   },
 
@@ -77,12 +85,99 @@ Page({
     });
   },
   publishRecord:function(e){
+    var that = this;
+    utilRequest.NetRequest({
+      url:"mine_teacher/getpublishlist",
+      success:function(res){
+        console.log(res);
+        if(res.code == "ERROR_STATUS_SUCCESS"){
+          that.resizeData();
+          var jsoncontent = JSON.parse(res.jsoncontent);
+          that.setData({
+            isPublishList: true,
+            publishList: jsoncontent,
+          });
+        }
+      },
+      fail:function(res){
 
+      }
+    });
   },
   collectionRecord:function(e){
+    var that = this;
+    utilRequest.NetRequest({
+      url: "mine_teacher/getcollectionlist",
+      success: function (res) {
+        if (res.code == "ERROR_STATUS_SUCCESS") {
+          console.log(res);
+          that.resizeData();
+          var jsoncontent = JSON.parse(res.jsoncontent);
+          that.setData({
+            collectionList: jsoncontent,
+            isCollectionList: true,
+          });
+        }
+      },
+      fail: function (res) {
 
+      }
+    });
   },
   footerRecord:function(e){
+    var that = this;
+    utilRequest.NetRequest({
+      url: "mine_teacher/getfooterlist",
+      success: function (res) {
+        if (res.code == "ERROR_STATUS_SUCCESS") {
+          that.resizeData();
+          var jsoncontent = JSON.parse(res.jsoncontent);
+          that.setData({
+            footerList: jsoncontent,
+            isFooterList: true,
+          });
+        }
+      },
+      fail: function (res) {
 
+      }
+    });
+  },
+  resizeData:function(){
+    var that = this;
+    that.setData({
+      isPublishList:false,
+      isCollectionList:false,
+      isFooterList:false,
+    });
+  },
+  publishInfo:function(e){
+    var publishId = e.currentTarget.dataset.id;
+    var isTeacher = app.globalData.role == 0 ? true : false;
+
+    wx.navigateTo({
+      url: '../info/info?teacher=' + isTeacher + '&school=' + !isTeacher + '&publishId=' + publishId,
+    });
+  },
+  collectionInfo:function(e){
+    var publishId = e.currentTarget.dataset.id;
+    var publishObject = e.currentTarget.dataset.object;
+
+    var isTeacher = publishObject == 0 ? true : false;
+
+    wx.navigateTo({
+      url: '../info/info?teacher=' + isTeacher + '&school=' + !isTeacher + '&publishId=' + publishId,
+    });
+  },
+  footerInfo:function(e){
+    var publishId = e.currentTarget.dataset.id;
+    var publishObject = e.currentTarget.dataset.object;
+
+    var isTeacher = publishObject == 0 ? true : false;
+
+    wx.navigateTo({
+      url: '../info/info?teacher=' + isTeacher + '&school=' + !isTeacher + '&publishId=' + publishId,
+    });
   }
+  
 })

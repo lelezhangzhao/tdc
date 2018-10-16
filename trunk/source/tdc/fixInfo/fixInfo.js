@@ -13,7 +13,7 @@ Page({
     tel:null,
     sex:null,
     birthday:null,
-    address:null,
+    region: ["广东省", "广州市", "天河区"],
 
     camera:false,
     tempImagePath:null,
@@ -47,9 +47,11 @@ Page({
             that.setData({ name: jsoncontent.name });
             that.setData({ nickName: jsoncontent.nickname });
             that.setData({ tel: jsoncontent.tel });
-            that.setData({ sex: jsoncontent.sex });
+            that.setData({ sex: jsoncontent.sex == 0 ? "男" : "女"});
             that.setData({ birthday: jsoncontent.birthday });
-            that.setData({ address: jsoncontent.address });
+            var address = jsoncontent.address;
+            var addressArr = address.split("-");
+            that.setData({ region: addressArr });
           }
         },
         fail: function (res) {
@@ -236,10 +238,11 @@ Page({
   fixBirthday:function(e){
     var that = this;
     that.setData({birthday: e.detail.value});
+    console.log(e.detail.value);
     utilRequest.NetRequest({
       url:"mine_teacher/fixteacherbirthday?birthday=" + that.data.birthday,
       success:function(res){
-
+        console.log(res);
       },
       fail:function(res){
 
@@ -247,7 +250,23 @@ Page({
     });
   },
   fixAddress:function(e){
-    
+    var that = this;
+    that.setData({
+      region: e.detail.value
+    });
+
+    var address = that.data.region[0] + "-" + that.data.region[1] + "-" + that.data.region[2];
+    utilRequest.NetRequest({
+      url: "mine_teacher/fixteacheraddress?address=" + address,
+      success:function(res){
+        console.log(res);
+      },
+      fail:function(res){
+
+      }
+
+    })
+
   },
   fixItem:function(param){
     var that = this;
@@ -305,7 +324,7 @@ Page({
         url = "mine_teacher/fixteachername?name=" + that.data.name;
       break;
       case 2:
-        url = "mine_teacher/fixteachernickname?nickname=" + that.data.nickname;
+        url = "mine_teacher/fixteachernickname?nickname=" + that.data.nickName;
       break;
       case 3:
         url = "mine_teacher/fixteachertel?tel=" + that.data.tel;
@@ -314,7 +333,7 @@ Page({
         url = "mine_school/fixschoolname?name=" + that.data.name;
       break;
       case 5:
-        url = "mine_school/fixschoolnickname?nickname=" + that.data.nickname;
+        url = "mine_school/fixschoolnickname?nickname=" + that.data.nickName;
       break;
       case 6:
         url = "mine_school/fixschooltel?tel=" + that.data.tel;
