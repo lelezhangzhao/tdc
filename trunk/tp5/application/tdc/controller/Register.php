@@ -8,6 +8,7 @@ use app\tdc\model\User;
 use think\Controller;
 use think\Request;
 use think\Session;
+use think\Db;
 
 
 
@@ -92,25 +93,42 @@ class Register extends Controller{
         $user->username = $username;
         $user->password = $password;
         $user->tel = $tel;
+        $user->logo = "static/image/logo/logo.png";
         $user->status = 1; //注册，未选择身份
         $user->rmb = 0;
         $user->score = 0;
         $user->registertime = $currentTime;
         $user->evaluateavg = 0;
         $user->evaluatecount = 0;
+        $user->sex = 0;
+        $user->name = "姓名";
+        $user->nickname = "昵称";
+        $user->tel = "电话";
+        $user->workaddress = "工作地址";
+        $user->tag = "拉丁;全职;在校;";
+        $user->introduction = "";
 
         //注册成功直接登录
         $user->lastlogintime = $currentTime;
         $user->save();
 
-        Session::set("userid", $user->id);
+        $userid = $user->id;
+        Session::set("userid", $userid);
 
-        return Status::ReturnJson("ERROR_STATUS_SUCCESS", "注册成功");
+        //增加配套数据表
+        $sql = "insert into tdc_collection(userid) values ($userid)";
+        Db::execute($sql);
+
+        $sql = "insert into tdc_history(userid) values ($userid)";
+        Db::execute($sql);
+
+        return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "注册成功", "$userid");
     }
 
     public function RegisterAsTeacher(){
 
         $userid = Session::get("userid");
+
         $user = User::get($userid);
 
         $user->role = 0;

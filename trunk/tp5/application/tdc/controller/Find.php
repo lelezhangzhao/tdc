@@ -15,11 +15,13 @@ use think\Db;
 
 class Find extends Controller{
     public function GetFindList(){
+
         $sql = "select id, title from tdc_news where status = 0";
         $result = Db::query($sql);
 
         if(empty($result)){
             return Status::ReturnErrorStatus("ERROR_STATUS_LISTISNULL");
+
         }
 
         return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "", json_encode($result));

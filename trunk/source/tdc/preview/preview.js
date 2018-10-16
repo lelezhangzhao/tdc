@@ -13,6 +13,10 @@ Page({
     name:null,
     nickName:null,
     tel:null,
+    tags:[],
+    workAddress:null,
+    introduction:null,
+    role:null,
     
   },
 
@@ -21,6 +25,45 @@ Page({
    */
   onLoad: function (options) {
     var that = this;
+    var role = app.globalData.role;
+    that.setData({ role: role});
+
+    //获取个人信息
+    if(role == 0){
+      utilRequest.NetRequest({
+        url: "mine_teacher/getpreviewinfo",
+        success:function(res){
+          if(res.code == "ERROR_STATUS_SUCCESS"){
+            var jsoncontent = JSON.parse(res.jsoncontent)[0];
+            console.log(jsoncontent);
+            var tags = jsoncontent.tag.split(";");
+            that.setData({
+              logo: jsoncontent.logo,
+              name: jsoncontent.name,
+              nickName: jsoncontent.nickname,
+              tel: jsoncontent.tel,
+              tags: tags,
+              workAddress: jsoncontent.workaddress,
+              introduction: jsoncontent.introduction,
+            });
+          }
+        },
+        fail:function(res){
+
+        }
+      });
+    }else if(role == 1){
+      utilRequest.NetRequest({
+        url:"mine_teacher/getpreviewinfo",
+        success:function(res){
+
+        },
+        fail:function(res){
+
+        }
+      });
+    }
+
 
 
   },

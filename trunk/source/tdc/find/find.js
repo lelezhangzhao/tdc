@@ -19,8 +19,12 @@ Page({
     utilRequest.NetRequest({
       url:"find/getfindlist",
       success:function(res){
-        var jsoncontent = JSON.parse(res.jsoncontent);
-        that.setData({newsList: jsoncontent});
+        if(res.code == "ERROR_STATUS_SUCCESS"){
+          var jsoncontent = JSON.parse(res.jsoncontent);
+          that.setData({ newsList: jsoncontent });
+        } else if (res.code == "ERROR_STATUS_LISTISNULL"){
+          
+        }
       },
       fail:function(res){
 

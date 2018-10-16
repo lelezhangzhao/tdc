@@ -13,7 +13,7 @@ Page({
     utilRequest.NetRequest({
     url:"chat/getchatlist",
     success:function(res){
-      if(res.code = "ERROR_STATUS_SUCCESS"){
+      if(res.code == "ERROR_STATUS_SUCCESS"){
         var jsoncontent = JSON.parse(res.jsoncontent);
         that.setData({chatList: jsoncontent});
       }

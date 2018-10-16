@@ -1,6 +1,7 @@
 // tdc/register/register.js
 var utilMd5 = require('../util/md5.js');
 var utilRequest = require("../util/request.js");
+var app = getApp();
 
 Page({
 
@@ -229,6 +230,9 @@ Page({
         var title = null;
         
         if(code === "ERROR_STATUS_SUCCESS"){
+          //记住userid
+          var jsoncontent = res.jsoncontent;
+          app.globalData.userid = jsoncontent;
           wx.navigateTo({url:"../registerJump/registerJump"});
         } else if (code === "ERROR_STATUS_NOTGETTELIDENTIFY"){
           title = "未获取手机验证码";

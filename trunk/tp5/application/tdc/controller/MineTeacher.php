@@ -24,6 +24,7 @@ class MineTeacher extends Controller{
 
         $publishId = $result[0]["publishid"];
 
+
         $publishIdArr = explode(";", $publishId);
 
         if(count($publishIdArr) == 0){
@@ -251,8 +252,15 @@ class MineTeacher extends Controller{
 
 
         return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "", json_encode($result));
+    }
 
+    public function GetPreviewInfo(){
+        $userid = Session::get("userid");
 
+        $sql = "select name, nickname, logo, tel, introduction, workaddress, photos, tag from tdc_user where id = $userid";
+        $result = Db::query($sql);
+
+        return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "", json_encode($result));
     }
 
 

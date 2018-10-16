@@ -12,6 +12,7 @@ use app\tdc\api\Status;
 
 use think\Controller;
 use think\Request;
+use think\Session;
 use think\Db;
 
 
@@ -20,6 +21,8 @@ class Index extends Controller{
 
         //返回evaluateavg为10的项，每次返回20个
         $begin = $request->param("begin");
+
+
 
 
 

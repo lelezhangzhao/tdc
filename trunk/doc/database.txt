@@ -42,7 +42,7 @@ values
 (0, "hello c++", "echo", "echo c++", "var", "var c++", "let", "let c++", "2018-10-12 13:20:00"),
 (0, "hello node", "echo", "echo node", "var", "var node", "let", "let node", "2018-10-12 13:30:00");
 
-update tdc_user set publishid = "1;2;3" where id = 3;
+update tdc_user set publishid = "4;5;6" where id = 3;
 
 insert tdc_publish(publishobject, publishid, userid, status, evaluateavg, evaluatecount, tag)
 values

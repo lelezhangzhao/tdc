@@ -16,12 +16,14 @@
 
   <view wx:for="{{tags}}" wx:key="" class="tag">
     {{item}}
-    <button bindtap="editTag">编辑标签</button>
   </view>
+  <button bindtap="editTag">编辑标签</button>
 
   <view class="work_address">
+    {{workAddress}}
   </view>
 
-  <view class="presonalInfo">
+  <view class="personalInfo">
+    {{introduction}}
   </view>
 </view>

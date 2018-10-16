@@ -1,6 +1,8 @@
 // tdc/fixTeacherInfo/fixTeacherInfo.js
 var utilRequest = require("../util/request.js");
 var app = getApp();
+
+var Server = "https://localtdc.com/index.php/tdc/"
 Page({
 
   /**
@@ -43,7 +45,8 @@ Page({
         success: function (res) {
           if(res.code == "ERROR_STATUS_SUCCESS"){
             var jsoncontent = JSON.parse(res.jsoncontent)[0];
-            that.setData({ logo: jsoncontent.logo });
+            var ServerLogo = Server + jsoncontent.logo;
+            that.setData({ logo: ServerLogo });
             that.setData({ name: jsoncontent.name });
             that.setData({ nickName: jsoncontent.nickname });
             that.setData({ tel: jsoncontent.tel });

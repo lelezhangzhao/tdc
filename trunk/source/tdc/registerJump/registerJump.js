@@ -1,4 +1,6 @@
 // tdc/registerjump/registerJump.js
+var app = getApp();
+var utilRequest = require("../util/request.js");
 Page({
 
   /**
@@ -64,19 +66,41 @@ Page({
 
   },
   imteacher:function(e){
-    wx.request({
-      url: 'https://localtdc.com/index.php/tdc/register/registerasteacher',
-    });
-    wx.navigateTo({
-      url: '../preview/preview',
-    });
+    app.globalData.role = 0;
+    
+    utilRequest.NetRequest({
+      url:"register/registerasteacher",
+      success:function(res){
+        if(res.code == "ERROR_STATUS_SUCCESS"){
+          wx.switchTab({
+            url: '../preview/preview',
+          });
+        }
+      },
+      fail:function(res){
+
+      }
+    })
+    
   },
   imschool:function(e){
-    wx.request({
-      url: 'https://localtdc.com/index.php/tdc/register/registerasschool',
-    });
-    wx.navigateTo({
-      url: '../preview/preview',
-    });
+    app.globalData.role = 1;
+
+    utilRequest.NetRequest({
+      url:"register/registerasschool",
+      success:function(res){
+        if(res.code == "ERROR_STATUS_SUCCESS"){
+
+
+          wx.switchTab({
+            url: '../preview/preview',
+          });
+        }
+      },
+      fail:function(res){
+
+      }
+    })
+    
   }
 })
