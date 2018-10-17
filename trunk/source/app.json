@@ -15,7 +15,9 @@
     "tdc/chatonline/chatonline",
     "tdc/news/news",
     "tdc/test/test",
-    "tdc/camera/camera"
+    "tdc/camera/camera",
+    "tdc/searchItem/searchItem",
+    "tdc/search/search"
   ],
   "window": {
     "backgroundTextStyle": "light",

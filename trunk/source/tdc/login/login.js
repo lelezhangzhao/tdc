@@ -135,21 +135,18 @@ Page({
         password: password,
       },
       success: function (res) {
-        console.log(app);
-        var code = res.code;
-        var msg = res.msg;
-        var jsoncontent = JSON.parse(res.jsoncontent);
         var title = null;
-
-        if (code === "ERROR_STATUS_SUCCESS") {
+        
+        if (res.code == "ERROR_STATUS_SUCCESS") {
+        var jsoncontent = JSON.parse(res.jsoncontent);
           app.globalData.userid = jsoncontent.userid;
           app.globalData.role = jsoncontent.role;
           wx.switchTab({
             url: '../index/index',
           });
-        } else if (code === "ERROR_STATUS_USERNAMEFORMATERROR") {
+        } else if (res.code == "ERROR_STATUS_USERNAMEFORMATERROR") {
           title = "用户名格式错误";
-        } else if (code === "ERROR_STATUS_USERNAMEORPASSWORDERROR") {
+        } else if (res.code == "ERROR_STATUS_USERNAMEORPASSWORDERROR") {
           title = "用户名或密码错误";
         }
         if (title !== null) {

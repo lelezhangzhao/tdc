@@ -1,0 +1,36 @@
+<!--tdc/searchTeacher/searchTeacher.wxml-->
+<view class="page">
+  <view>
+    <input type="text" placeholder="搜索">{{search}}</input>
+    
+  </view>
+
+  <view>
+    <picker mode="region" bindchange="reginonChange" value="{{region}}">
+      <label >{{region[2]}}</label>
+    </picker>
+
+    <picker mode="selector" range="{{danceTypeRange}}" bindchange="danceTypeChange" value="{{danceType}}">
+      <label >{{danceType}}</label>
+    </picker>
+
+    <picker mode="selector" range="{{welfareRange}}" bindchange="welfareChange" value="{{welfare}}">
+      <label>{{welfare}}</label>
+    </picker>
+
+    <picker mode="selector" range="{{otherRange}}" bindchange="otherChange" value="{{other}}">
+      <label>{{other}}</label>
+    </picker>
+
+  </view>
+
+  <view>
+    <view wx:for="{{itemList}}" wx:key="">
+      <view data-id="{{item.id}}" bindtap="publishInfo">
+        {{item.id}}
+      </view>
+
+
+    </view>
+  </view>
+</view>

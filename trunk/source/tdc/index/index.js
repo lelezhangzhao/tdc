@@ -54,5 +54,25 @@ Page({
     wx.navigateTo({
       url: '../info/info?teacher=' + teacher + '&school=' + school + '&publishId=' + publishId,
     })
+  },
+  findTeacher:function(e){
+    var that = this;
+
+    wx.navigateTo({
+      url: '../searchitem/searchitem?searchtype=0',
+    })
+  },
+  findSchool:function(e){
+    var that = this;
+    wx.navigateTo({
+      url: '../searchitem/searchitem?searchtype=1',
+    })
+  },
+  searchTap:function(e){
+    var that = this;
+
+    wx.navigateTo({
+      url: '../search/search',
+    })
   }
 })

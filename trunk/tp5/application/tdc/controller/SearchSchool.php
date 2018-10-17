@@ -10,10 +10,16 @@ namespace app\tdc\controller;
 
 use think\Controller;
 use think\Request;
+use think\Db;
+
+use app\tdc\api\Status;
 
 class SearchSchool extends Controller{
     public function GetDefaultSchoolList(){
-
+        //获取评价最高的10个
+        $sql = "select * from tdc_publish where publishobject = 1 order by evaluateavg desc limit 10";
+        $result = Db::query($sql);
+        return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "", json_encode($result));
     }
 
     public function GetSchoolListByCondition(Request $request){

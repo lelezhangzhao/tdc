@@ -1,0 +1,23 @@
+<!--tdc/search/search.wxml-->
+<view>
+
+  <view>
+    <input type="text" placeholder="搜索"></input>
+  </view>
+
+  <view>
+    <view wx:for="{{searchHistory}}" wx:key="">
+      <view bindtap="searchByHistory" data-id="{{item.id}}">
+        {{item.id}}
+      </view>
+    </view>
+  </view>
+
+  <view>
+    <view wx:for="{{searchHot}}" wx:key="">
+      <view bindtap="searchByHot" data-id="{{item.id}}">
+        {{item.id}}
+      </view>
+    </view>
+  </view>
+</view>
