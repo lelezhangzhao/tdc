@@ -1,10 +1,14 @@
 // tdc/search/search.js
+var app = getApp();
+var utilRequest = require("../util/request.js");
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
+    searchHistory:[],
+    searchHot:[],
 
   },
 
@@ -61,6 +65,28 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
+
+  },
+  searchByHistory:function(e){
+    var historyKeyWords = e.currentTarget.dataset.keywords;
+
+    utilRequest.NetRequest({
+      url: "../search/searchbykeywords",
+      data:{
+        keywords: historyKeyWords,
+      },
+      success:function(res){
+        if(res.code == "ERROR_STATUS_SUCCESS"){
+          var jsoncontent = res.jsoncontent;
+        }
+      },
+      fail:function(res){
+
+      }
+    })
+
+  },
+  searchByHot:function(e){
 
   }
 })

@@ -35,7 +35,7 @@ class MineTeacher extends Controller{
 
         foreach($publishIdArr as $item){
 
-            $sql = "select a.id, a.publishobject, a.evaluateavg, a.evaluatecount, a.tag, b.workaddress, b.introduction, b.photos from tdc_publish as a join tdc_publish_teacher as b on a.publishid = b.id where a.id = $item";
+            $sql = "select a.id, a.publishobject, a.evaluateavg, a.evaluatecount, a.tag, a.workaddress, a.introduction, a.photos from tdc_publish as a where a.id = $item";
             $result = Db::query($sql);
 
             $publish = json_encode($result);
@@ -89,9 +89,9 @@ class MineTeacher extends Controller{
             $sql = "select * from tdc_publish where id = $item";
             $result = Db::query($sql);
             if($result[0]["publishobject"] == 0){
-                $sql = "select a.id, a.publishobject, a.evaluateavg, a.evaluatecount, a.tag, b.workaddress, b.introduction, b.photos from tdc_publish as a join tdc_publish_teacher as b on a.publishid = b.id where a.id = $item and a.publishobject = 0";
+                $sql = "select a.id, a.publishobject, a.evaluateavg, a.evaluatecount, a.tag, a.workaddress, a.introduction, a.photos from tdc_publish as a where a.id = $item and a.publishobject = 0";
             }else if($result[0]["publishobject"] == 1){
-                $sql = "select c.id, c.publishobject, c.evaluateavg, c.evaluatecount, c.tag, d.workaddress, d.introduction, d.photos from tdc_publish as c join tdc_publish_school as d on c.publishid = d.id where c.id = $item and c.publishobject = 1";
+                $sql = "select a.id, a.publishobject, a.evaluateavg, a.evaluatecount, a.tag, a.workaddress, a.introduction, a.photos from tdc_publish as a where a.id = $item and a.publishobject = 1";
             }
 
             $result = Db::query($sql);
@@ -131,9 +131,9 @@ class MineTeacher extends Controller{
             $sql = "select * from tdc_publish where id = $item";
             $result = Db::query($sql);
             if($result[0]["publishobject"] == 0){
-                $sql = "select a.id, a.publishobject, a.evaluateavg, a.evaluatecount, a.tag, b.workaddress, b.introduction, b.photos from tdc_publish as a join tdc_publish_teacher as b on a.publishid = b.id where a.id = $item and a.publishobject = 0";
+                $sql = "select a.id, a.publishobject, a.evaluateavg, a.evaluatecount, a.tag, a.workaddress, a.introduction, a.photos from tdc_publish as a where a.id = $item and a.publishobject = 0";
             }else if($result[0]["publishobject"] == 1){
-                $sql = "select c.id, c.publishobject, c.evaluateavg, c.evaluatecount, c.tag, d.workaddress, d.introduction, d.photos from tdc_publish as c join tdc_publish_school as d on c.publishid = d.id where c.id = $item and c.publishobject = 1";
+                $sql = "select a.id, a.publishobject, a.evaluateavg, a.evaluatecount, a.tag, a.workaddress, a.introduction, a.photos from tdc_publish as a where a.id = $item and a.publishobject = 1";
             }
 
             $result = Db::query($sql);

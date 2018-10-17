@@ -7,16 +7,16 @@
 
   <view>
     <view wx:for="{{searchHistory}}" wx:key="">
-      <view bindtap="searchByHistory" data-id="{{item.id}}">
-        {{item.id}}
+      <view bindtap="searchByHistory" data-keywords="{{item}}">
+        {{item}}
       </view>
     </view>
   </view>
 
   <view>
     <view wx:for="{{searchHot}}" wx:key="">
-      <view bindtap="searchByHot" data-id="{{item.id}}">
-        {{item.id}}
+      <view bindtap="searchByHot" data-keywords="{{item}}">
+        {{item}}
       </view>
     </view>
   </view>

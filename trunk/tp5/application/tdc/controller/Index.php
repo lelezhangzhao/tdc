@@ -27,9 +27,9 @@ class Index extends Controller{
 
 
         $sql = 'select id,publishobject,evaluateavg, tag, introduction from (
-(select a.id,a.publishobject,a.evaluateavg,a.tag,b.introduction from tdc_publish as a left join tdc_publish_teacher as b on a.publishid = b.id where a.evaluateavg = 10 and a.publishobject = 0)
+(select a.id,a.publishobject,a.evaluateavg,a.tag,b.introduction from tdc_publish as a where a.evaluateavg = 10 and a.publishobject = 0)
  union
- (select a.id,a.publishobject,a.evaluateavg,a.tag,b.introduction from tdc_publish as a left join tdc_publish_school as b on a.publishid = b.id where a.evaluateavg = 10 and a.publishobject = 1)) as c
+ (select a.id,a.publishobject,a.evaluateavg,a.tag,b.introduction from tdc_publish as a where a.evaluateavg = 10 and a.publishobject = 1)) as c
 limit 20 offset '.$begin;
 
         $result = Db::query($sql);

@@ -59,13 +59,13 @@ Page({
     var that = this;
 
     wx.navigateTo({
-      url: '../searchitem/searchitem?searchtype=0',
+      url: '../searchItem/searchItem?searchtype=0',
     })
   },
   findSchool:function(e){
     var that = this;
     wx.navigateTo({
-      url: '../searchitem/searchitem?searchtype=1',
+      url: '../searchItem/searchItem?searchtype=1',
     })
   },
   searchTap:function(e){

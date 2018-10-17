@@ -2,7 +2,6 @@
   "pages": [
     "tdc/index/index",
     "tdc/find/find",
-    "tdc/publish/publish",
     "tdc/register/register",
     "tdc/login/login",
     "tdc/forgetPassword/forgetPassword",
