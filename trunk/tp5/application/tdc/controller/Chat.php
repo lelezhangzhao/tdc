@@ -115,13 +115,16 @@ class Chat extends Controller{
     }
 
     public function AddChatInfo(Request $request){
+
+        $systemTime = Times::GetSystemTime();
+
         $theOtherUserId = $request->param("theOtherUserId");
 
 //        $publishId = $request->param("publishId");
         $content = $request->param("content");
-        $sendTime = $request->param('sendTime');
 
-        $systemTime = date("Y-m-d H:i:s", $sendTime);
+//        $sendTime = $request->param('sendTime');
+//        $systemTime = date("Y-m-d H:i:s", $sendTime);
 
 
         $userid = Session::get("userid");

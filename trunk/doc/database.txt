@@ -6,7 +6,7 @@ values
 
 insert into tdc_tag(dancetype, worktype, teachertype, welfare)
 values
-("拉丁,摩登", "兼职,全职", "在校,现役", "五险一金,包吃,包住");
+("拉丁,摩登,编舞,音乐剪辑", "兼职,全职", "在校,现役,应届毕业生", "五险一金,包吃,包住,双包");
 
 insert into tdc_chat(content, fromuserid, touserid, sendtime, isread)
 values 
@@ -28,7 +28,6 @@ values
 (0, "hello c++", "echo", "echo c++", "var", "var c++", "let", "let c++", "2018-10-12 13:20:00"),
 (0, "hello node", "echo", "echo node", "var", "var node", "let", "let node", "2018-10-12 13:30:00");
 
-update tdc_user set publishid = "1" where id = 3;
 
 
 insert into tdc_publish(publishobject, userid, workaddress, status, evaluateavg, evaluatecount, tag, introduction, photos, wagesbymonthmin, wagesbymonthmax, wagesbyclassmin, wagesbyclassmax, wagesfacetoface, wagesbymonth, wagesbyclass, hirecount)
@@ -43,3 +42,5 @@ values
 insert tdc_history(userid, publishid)
 values
 (3, "1");
+
+

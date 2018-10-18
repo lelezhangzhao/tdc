@@ -26,14 +26,14 @@ Page({
   //事件处理函数
   add: function (e) {
     var that = this
-    var sendTime = Date.parse(new Date());
+    // var sendTime = Date.parse(new Date());
 
     utilRequest.NetRequest({
       url:"chat/addchatinfo",
       data:{
         content: message,
         theOtherUserId: that.data.theOtherUserId,
-        sendTime:sendTime,
+        // sendTime:sendTime,
       },
       success:function(res) {
         that.setData({

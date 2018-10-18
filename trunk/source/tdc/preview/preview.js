@@ -13,7 +13,10 @@ Page({
     name:null,
     nickName:null,
     tel:null,
-    tags:[],
+    tagDanceType:[],
+    tagWorkType:[],
+    tagTeacherType:[],
+    tagWelfare:[],
     workAddress:null,
     introduction:null,
     role:null,
@@ -59,12 +62,20 @@ Page({
           if (res.code == "ERROR_STATUS_SUCCESS") {
             var jsoncontent = JSON.parse(res.jsoncontent)[0];
             var tags = jsoncontent.tag.split(";");
+            var tagDanceType = tags[0].split(",");
+            var tagWorkType = tags[1].split(",");
+            var tagTeacherType = tags[2].split(",");
+            var tagWelfare = tags[3].split(",");
+
             that.setData({
               logo: jsoncontent.logo,
               name: jsoncontent.name,
               nickName: jsoncontent.nickname,
               tel: jsoncontent.tel,
-              tags: tags,
+              tagDanceType: tagDanceType,
+              tagWorkType: tagWorkType,
+              tagTeacherType: tagTeacherType,
+              tagWelfare: tagWelfare,
               workAddress: jsoncontent.workaddress,
               introduction: jsoncontent.introduction,
             });
@@ -137,14 +148,16 @@ Page({
     var that = this;
     var role = that.data.role;
     var url = null;
+    var tagDanceType = that.data.tagDanceType.join(","); 
+    var tagWorkType = that.data.tagWorkType.join(","); 
+    var tagTeacherType = that.data.tagTeacherType.join(","); 
+    var tagWelfare = that.data.tagWelfare.join(","); 
+    var tag = tagDanceType + ";" + tagWorkType + ";" + tagTeacherType + ";" + tagWelfare;
     if(role == 0){
       utilRequest.NetRequest({
         url: "mine_teacher/publishteacherinfo",
         data:{
-          name : that.data.name,
-          nickName: that.data.nickName,
-          tel: that.data.tel,
-          tag: that.data.tag,
+          tag: tag,
           workaddress: that.data.workaddress,
           introduction: that.data.introduction,
         },

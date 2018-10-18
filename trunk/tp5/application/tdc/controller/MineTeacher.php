@@ -8,7 +8,9 @@
 
 namespace app\tdc\controller;
 
+use app\tdc\api\GlobalData;
 use app\tdc\api\Status;
+use app\tdc\api\Times;
 use app\tdc\model\Publish;
 use think\Controller;
 use think\Session;
@@ -158,30 +160,56 @@ class MineTeacher extends Controller{
     }
 
     public function PublishTeacherInfo(Request $request){
-        $name = $request->param("name");
-        $nickName = $request->param("nickName");
-        $tel = $request->param("tel");
+        $systemTime = Times::GetSystemTime();
+
+        $userid = Session::get("userid");
+
+        $userPublishId = Db::name("user")->where("id", $userid)->field("publishid")->find();
+
+
+
+        if($userPublishId["publishid"] != null){
+
+            $publishIdArr = explode(";", $userPublishId);
+
+            $publish_len = count($publishIdArr);
+
+            if($publish_len >= GlobalData::$maxPublishCount){
+                return Status::ReturnErrorStatus("ERROR_STATUS_PUBLISHLISTISFULL");
+            }
+        }
+
+
         $tag = $request->param("tag");
         $workaddress = $request->param("workaddress");
         $introduction = $request->param("introduction");
 
+
+        //插入publish
         $newPublish = new Publish();
-        $newPublish->publishobject = 1;
+        $newPublish->publishobject = 0;
+        $newPublish->userid = $userid;
+        $newPublish->workaddress = $workaddress;
+        $newPublish->publishtime = $systemTime;
+        $newPublish->status = 0;
+        $newPublish->evaluateavg = 0;
+        $newPublish->evaluatecount = 0;
+        $newPublish->tag = $tag;
+        $newPublish->introduction = $introduction;
         $newPublish->save();
-        return $newPublish->id;
 
-        $userid = Session::get("userid");
-        $userPublishId = Db::name("user")->where("id", $userid)->value("publishid")->find();
-        $publishIdArr = explode(";", $userPublishId);
+        $newPublishId = $newPublish->id;
 
-        $publish_len = count($publishIdArr);
-        if($publish_len == 10){
-            MineTeacher::RebuildArray($publishIdArr, 10);
-            $publish_len -= 1;
+
+        if($userPublishId["publishid"] != null){
+            $userPublishId = $userPublishId["publishid"] . ";" . $newPublishId;
+        }else{
+            $userPublishId = $newPublishId;
         }
-        $publishIdArr[$publish_len] = $publishId;
-        $collectionid = implode(";", $collection_arr);
+        $sql = "update tdc_user set publishid = $userPublishId where id = $userid";
+        Db::execute($sql);
 
+        return Status::ReturnJson("ERROR_STATUS_SUCCESS", "发布成功");
     }
 
     public function EditTeacherTag(Request $request){
@@ -290,11 +318,6 @@ class MineTeacher extends Controller{
         return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "", json_encode($result));
     }
 
-    private function RebuildArray(&$arr, $len){
-        for($i = 0; $i < $len - 1; ++$i){
-            $arr[$i] = $arr[$i + 1];
-        }
-    }
 
 
 }
