@@ -9,13 +9,18 @@ Page({
   data: {
     searchHistory:[],
     searchHot:[],
+    searchResult:[],
+    searchText:null,
 
+    hasSearch:false,
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    var that = this;
+    that.setData({hasSearch: false});
 
   },
 
@@ -88,5 +93,45 @@ Page({
   },
   searchByHot:function(e){
 
+  },
+  search:function(e){
+    var that = this;
+    utilRequest.NetRequest({
+      url: "search/searchbykeywords",
+      data:{
+        keywords: that.data.searchText,
+      },
+      success:function(res){
+        console.log(res);
+        if(res.code == "ERROR_STATUS_SUCCESS"){
+          var jsoncontent = JSON.parse(res.jsoncontent);
+          that.setData({ 
+            searchResult: jsoncontent,
+            hasSearch: true,
+          });
+        }
+      }, 
+      fail:function(res){
+
+      }
+    })
+
+  },
+  searchTextChange:function(e){
+    var that = this;
+    that.setData({searchText: e.detail.value})
+  },
+  searchInfo:function(e){
+    var that = this;
+    var publishId = e.currentTarget.dataset.publishid;
+
+    var role = e.currentTarget.dataset.role;
+
+    var teacher = role == 0 ? true : false;
+    var school = !teacher;
+
+    wx.navigateTo({
+      url: '../info/info?teacher=' + teacher + '&school=' + school + '&publishId=' + publishId,
+    })
   }
 })

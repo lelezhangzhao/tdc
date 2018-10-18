@@ -2,7 +2,7 @@
 var utilRequest = require("../util/request.js");
 var app = getApp();
 
-var Server = "https://localtdc.com/index.php/tdc/"
+var Server = "https://localtdc.com/"
 Page({
 
   /**

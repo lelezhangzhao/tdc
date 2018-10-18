@@ -24,48 +24,11 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    var that = this;
-    var role = app.globalData.role;
-    that.setData({ role: role});
-
-    //获取个人信息
-    if(role == 0){
-      utilRequest.NetRequest({
-        url: "mine_teacher/getpreviewinfo",
-        success:function(res){
-          if(res.code == "ERROR_STATUS_SUCCESS"){
-            var jsoncontent = JSON.parse(res.jsoncontent)[0];
-            console.log(jsoncontent);
-            var tags = jsoncontent.tag.split(";");
-            that.setData({
-              logo: jsoncontent.logo,
-              name: jsoncontent.name,
-              nickName: jsoncontent.nickname,
-              tel: jsoncontent.tel,
-              tags: tags,
-              workAddress: jsoncontent.workaddress,
-              introduction: jsoncontent.introduction,
-            });
-          }
-        },
-        fail:function(res){
-
-        }
-      });
-    }else if(role == 1){
-      utilRequest.NetRequest({
-        url:"mine_teacher/getpreviewinfo",
-        success:function(res){
-
-        },
-        fail:function(res){
-
-        }
-      });
-    }
-
-
-
+    // if (app.globalData.userid == null) {
+    //   wx.navigateTo({
+    //     url: '../login/login',
+    //   })
+    // }
   },
 
   /**
@@ -79,7 +42,49 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    var that = this;
+    if(app.globalData.userid == null){
+      wx.navigateTo({
+        url: '../login/login',
+      })
+      return;
+    }
+    var role = app.globalData.role;
+    that.setData({ role: role });
+    //获取个人信息
+    if (role == 0) {
+      utilRequest.NetRequest({
+        url: "mine_teacher/getpreviewinfo",
+        success: function (res) {
+          if (res.code == "ERROR_STATUS_SUCCESS") {
+            var jsoncontent = JSON.parse(res.jsoncontent)[0];
+            var tags = jsoncontent.tag.split(";");
+            that.setData({
+              logo: jsoncontent.logo,
+              name: jsoncontent.name,
+              nickName: jsoncontent.nickname,
+              tel: jsoncontent.tel,
+              tags: tags,
+              workAddress: jsoncontent.workaddress,
+              introduction: jsoncontent.introduction,
+            });
+          }
+        },
+        fail: function (res) {
 
+        }
+      });
+    } else if (role == 1) {
+      utilRequest.NetRequest({
+        url: "mine_teacher/getpreviewinfo",
+        success: function (res) {
+
+        },
+        fail: function (res) {
+
+        }
+      });
+    }
   },
 
   /**
@@ -129,7 +134,41 @@ Page({
   },
 
   publish:function(e){
+    var that = this;
+    var role = that.data.role;
+    var url = null;
+    if(role == 0){
+      utilRequest.NetRequest({
+        url: "mine_teacher/publishteacherinfo",
+        data:{
+          name : that.data.name,
+          nickName: that.data.nickName,
+          tel: that.data.tel,
+          tag: that.data.tag,
+          workaddress: that.data.workaddress,
+          introduction: that.data.introduction,
+        },
+        success:function(res){
+          console.log(res);
+        },
+        fail:function(res){
 
+        }
+      });
+    }else if(role == 1){
+      utilRequest.NetRequest({
+        url: "mine_school/publishschoolinfo",
+        data:{
+
+        },
+        success:function(res){
+
+        },
+        fail:function(res){
+
+        }
+      })
+    }
   },
 
   editTag:function(e){

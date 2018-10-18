@@ -3,20 +3,6 @@ values
 ("laoshi", "laoshi", "laoshi", "laoshi", "laoshi", "11111111111", "我是一个很牛B的老师，我是一个很牛B的老师，我是一个很牛B的老师，我是一个很牛B的老师，我是一个很牛B的老师，我是一个很牛B的老师，我是一个很牛B的老师", 0, 0),
 ("jigou", "jigou", "jigou", "jigou", "jigou", "22222222222", "我是一个很牛B的机构，我是一个很牛B的机构，我是一个很牛B的机构，我是一个很牛B的机构，我是一个很牛B的机构，我是一个很牛B的机构，我是一个很牛B的机构", 0, 1);
 
-insert into tdc_publish(publishobject, publishid, userid, status, evaluateavg, evaluatecount, tag)
-values
-(0, 1, 1, 0, 10, 10, "拉丁;兼职;现役;"),
-(1, 1, 2, 0, 10, 10, "拉丁;兼职;现役;包吃,包住,五险一金"),
-(0, 1, 1, 0, 10, 10, "拉丁;兼职;现役;");
-
-
-insert into tdc_publish_teacher(workaddress, introduction)
-values
-("广东省广州市天河区茅岗顶岗上街五巷三号", "我是一个很牛B的老师，我是一个很牛B的老师，我是一个很牛B的老师，我是一个很牛B的老师，我是一个很牛B的老师，我是一个很牛B的老师，我是一个很牛B的老师");
-
-insert into tdc_publish_school(workaddress, introduction, hirecount, wagesbyclassmin, wagesbyclassmax, wagesbyclass)
-values
-("广东省广州市天河区茅岗顶岗上街五巷三号", "我是一个很牛B的机构，我是一个很牛B的机构，我是一个很牛B的机构，我是一个很牛B的机构，我是一个很牛B的机构，我是一个很牛B的机构，我是一个很牛B的机构", 3, 300, 500, true);	
 
 insert into tdc_tag(dancetype, worktype, teachertype, welfare)
 values
@@ -42,25 +28,18 @@ values
 (0, "hello c++", "echo", "echo c++", "var", "var c++", "let", "let c++", "2018-10-12 13:20:00"),
 (0, "hello node", "echo", "echo node", "var", "var node", "let", "let node", "2018-10-12 13:30:00");
 
-update tdc_user set publishid = "4;5;6" where id = 3;
+update tdc_user set publishid = "1" where id = 3;
 
-insert tdc_publish(publishobject, publishid, userid, status, evaluateavg, evaluatecount, tag)
-values
-(0, 1, 3, 0, 10, 10, "拉丁;全职;现役;"),
-(0, 2, 3, 0, 10, 10, "拉丁;全职;现役;"),
-(0, 3, 3, 0, 10, 10, "拉丁;全职;现役;"),
-(0, 1, 1, 0, 10, 9, "拉丁;全职;现役;");
 
-insert tdc_publish_teacher(workaddress, introduction)
+insert into tdc_publish(publishobject, userid, workaddress, status, evaluateavg, evaluatecount, tag, introduction, photos, wagesbymonthmin, wagesbymonthmax, wagesbyclassmin, wagesbyclassmax, wagesfacetoface, wagesbymonth, wagesbyclass, hirecount)
 values
-("广东省-广州市-天河区", "我是一个贼SB的程序员！！！，想做一个贼NB的老师"),
-("广东省-广州市-黄埔区", "我是一个贼SB的程序员！！！，想做一个贼NB的老师"),
-("广东省-广州市-白云区", "我是一个贼SB的程序员！！！，想做一个贼NB的老师");
+(0, 4, "河北省-衡水市-故城县", 0, 10, 14, "拉丁,摩登;全职,兼职;现役;", "我是一个贼SB的程序员！！！，想做一个贼NB的老师", "static/image/photo/1.png;static/image/photo/2.png;static/image/photo/3.png;statuc/image/photo/4.png", 4000, 5000, 300, 500, false, true, true, 0),
+(1, 2, "湖北省-武汉市-黄石区", 0, 10, 14, "拉丁,摩登;全职,兼职;现役;五险一金", "我是一个老NB的机构！！！，想找一个贼SB的程序员做老师", "static/image/photo/1.png;static/image/photo/2.png;static/image/photo/3.png;statuc/image/photo/4.png", 4000, 5000, 300, 500, false, true, true, 4);
 
 insert tdc_collection(userid, publishid)
 values
-(3, "1;6");
+(3, "1;2");
 
 insert tdc_history(userid, publishid)
 values
-(3, "1;2;3;4");
+(3, "1");

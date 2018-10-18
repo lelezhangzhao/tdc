@@ -2,21 +2,29 @@
 <view>
 
   <view>
-    <input type="text" placeholder="搜索"></input>
+    <input type="text" placeholder="搜索" bindinput="searchTextChange" value="{{searchText}}"></input>
+    <button bindtap="search">搜索</button>
   </view>
 
-  <view>
+  <view wx:if="{{!hasSearch}}">
     <view wx:for="{{searchHistory}}" wx:key="">
       <view bindtap="searchByHistory" data-keywords="{{item}}">
         {{item}}
       </view>
     </view>
-  </view>
 
-  <view>
-    <view wx:for="{{searchHot}}" wx:key="">
-      <view bindtap="searchByHot" data-keywords="{{item}}">
-        {{item}}
+    <view>
+      <view wx:for="{{searchHot}}" wx:key="">
+        <view bindtap="searchByHot" data-keywords="{{item}}">
+          {{item}}
+        </view>
+      </view>
+    </view>
+  </view>
+  <view wx:elif="{{hasSearch}}">
+    <view wx:for="{{searchResult}}" wx:key="">
+      <view data-publishid="{{item.id}}" data-role="{{item.publishobject}}" bindtap="searchInfo">
+        {{item.id}}
       </view>
     </view>
   </view>

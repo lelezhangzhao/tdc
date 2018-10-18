@@ -38,22 +38,22 @@ class Search extends Controller{
         //以tag/地址/introduction/进行模糊搜索
 
         $results = [];
-        foreach($keyWordsArr as $keyWords){
-            $sql = "select * from tdc_publish where tag like %$keyWords% or workaddress like %$keyWords% or introduction like %$keyWords%";
+        foreach($keyWordsArr as $item){
+            $sql = 'select * from tdc_publish where tag like "%' . $item . '%" or workaddress like "%' . $item . '%" or introduction like "%' . $item . '%"';
             $result = Db::query($sql);
+
             if(!empty($result)){
-                $result = json_encode($result);
-                $result = $result.substr($result, 1, strlen($result) - 2);
-                $result = json_decode($result);
-                array_push($results, $result);
+                foreach($result as $resultItem){
+                    array_push($results, $resultItem);
+                }
             }
         }
 
-        if(empty($result)){
+        if(empty($results)){
             return Status::ReturnErrorStatus("ERROR_STATUS_LISTISNULL");
         }
 
-        return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "", json_encode($result));
+        return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "", json_encode($results));
     }
 
 }

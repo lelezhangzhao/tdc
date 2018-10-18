@@ -9,6 +9,7 @@
 namespace app\tdc\controller;
 
 use app\tdc\api\Status;
+use app\tdc\model\Publish;
 use think\Controller;
 use think\Session;
 use think\Request;
@@ -78,6 +79,9 @@ class MineTeacher extends Controller{
             return Status::ReturnErrorStatus("ERROR_STATUS_LISTISNULL");
         }
         $publishid = $result[0]["publishid"];
+        if(empty($publishid)){
+            return Status::ReturnErrorStatus("ERROR_STATUS_LISTISNULL");
+        }
         $publishIdArr = explode(";", $publishid);
 
         $publishes = array();
@@ -154,6 +158,29 @@ class MineTeacher extends Controller{
     }
 
     public function PublishTeacherInfo(Request $request){
+        $name = $request->param("name");
+        $nickName = $request->param("nickName");
+        $tel = $request->param("tel");
+        $tag = $request->param("tag");
+        $workaddress = $request->param("workaddress");
+        $introduction = $request->param("introduction");
+
+        $newPublish = new Publish();
+        $newPublish->publishobject = 1;
+        $newPublish->save();
+        return $newPublish->id;
+
+        $userid = Session::get("userid");
+        $userPublishId = Db::name("user")->where("id", $userid)->value("publishid")->find();
+        $publishIdArr = explode(";", $userPublishId);
+
+        $publish_len = count($publishIdArr);
+        if($publish_len == 10){
+            MineTeacher::RebuildArray($publishIdArr, 10);
+            $publish_len -= 1;
+        }
+        $publishIdArr[$publish_len] = $publishId;
+        $collectionid = implode(";", $collection_arr);
 
     }
 
@@ -263,6 +290,11 @@ class MineTeacher extends Controller{
         return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "", json_encode($result));
     }
 
+    private function RebuildArray(&$arr, $len){
+        for($i = 0; $i < $len - 1; ++$i){
+            $arr[$i] = $arr[$i + 1];
+        }
+    }
 
 
 }

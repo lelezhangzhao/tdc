@@ -22,12 +22,11 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log(app);
-    if (app.globalData.userid == null){
-      wx.navigateTo({
-        url: '../login/login',
-      })
-    }
+    // if (app.globalData.userid == null){
+    //   wx.navigateTo({
+    //     url: '../login/login',
+    //   })
+    // }
   },
 
   /**
@@ -41,7 +40,12 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    if(app.globalData.userid == null){
+      wx.navigateTo({
+        url: '../login/login',
+      })
+      return;
+    }
   },
 
   /**
@@ -89,14 +93,19 @@ Page({
     utilRequest.NetRequest({
       url:"mine_teacher/getpublishlist",
       success:function(res){
-        console.log(res);
+        that.resizeData();
+        
         if(res.code == "ERROR_STATUS_SUCCESS"){
-          that.resizeData();
           var jsoncontent = JSON.parse(res.jsoncontent);
           that.setData({
             isPublishList: true,
             publishList: jsoncontent,
           });
+        }else if(res.code == "ERROR_STATUS_LISTISNULL"){
+          that.setData({
+            isPublishList: true,
+            publishList: null,
+          })
         }
       },
       fail:function(res){
@@ -109,14 +118,19 @@ Page({
     utilRequest.NetRequest({
       url: "mine_teacher/getcollectionlist",
       success: function (res) {
+        that.resizeData();
+
         if (res.code == "ERROR_STATUS_SUCCESS") {
-          console.log(res);
-          that.resizeData();
           var jsoncontent = JSON.parse(res.jsoncontent);
           that.setData({
             collectionList: jsoncontent,
             isCollectionList: true,
           });
+        }else if(res.code == "ERROR_STATUS_LISTISNULL"){
+          that.setData({
+            collectionList: null,
+            isCollectionList: true,
+          })
         }
       },
       fail: function (res) {
@@ -129,13 +143,19 @@ Page({
     utilRequest.NetRequest({
       url: "mine_teacher/getfooterlist",
       success: function (res) {
+        that.resizeData();
+        
         if (res.code == "ERROR_STATUS_SUCCESS") {
-          that.resizeData();
           var jsoncontent = JSON.parse(res.jsoncontent);
           that.setData({
             footerList: jsoncontent,
             isFooterList: true,
           });
+        }else if(res.code == "ERROR_STATUS_LISTISNULL"){
+          that.setData({
+            footerList: null,
+            isFooterList: true,
+          })
         }
       },
       fail: function (res) {
