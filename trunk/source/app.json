@@ -16,7 +16,8 @@
     "tdc/test/test",
     "tdc/camera/camera",
     "tdc/searchItem/searchItem",
-    "tdc/search/search"
+    "tdc/search/search",
+    "tdc/tag/tag"
   ],
   "window": {
     "backgroundTextStyle": "light",

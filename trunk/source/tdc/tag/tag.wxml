@@ -1,0 +1,32 @@
+<!--tdc/tag/tag.wxml-->
+<view class="page">
+  <view>
+    <checkbox-group bindchange="danceTypeChange">
+      <view wx:for="{{tag.danceType}}" wx:key="" >
+        <checkbox value="{{item.item}}" checked="{{item.hasItem}}">{{item.item}}</checkbox>
+      </view>
+    </checkbox-group>
+    <checkbox-group bindchange="workTypeChange">
+      <view  wx:for="{{tag.workType}}" wx:key="">
+        <checkbox value="{{item.item}}" checked="{{item.hasItem}}">{{item.item}}</checkbox>
+      </view>
+    </checkbox-group>
+    <checkbox-group bindchange="teacherTypeChange">
+      <view  wx:for="{{tag.teacherType}}" wx:key="">
+        <checkbox value="{{item.item}}" checked="{{item.hasItem}}">{{item.item}}</checkbox>
+      </view>
+    </checkbox-group>
+  </view>
+
+  <view wx:if="{{role == 1}}">
+    <checkbox-group bindchange="welfareChange">
+      <view wx:for="{{tag.welfare}}" wx:key="">
+        <checkbox value="{{item.item}}" checked="{{item.hasItem}}">{{item.item}}</checkbox>
+      </view>
+    </checkbox-group>
+  </view>
+
+  <view>
+    <button bindtap="confirm">确定</button>
+  </view>
+</view>

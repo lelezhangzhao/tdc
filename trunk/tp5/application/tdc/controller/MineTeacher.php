@@ -213,7 +213,12 @@ class MineTeacher extends Controller{
     }
 
     public function EditTeacherTag(Request $request){
+        $tag = $request->param("tag");
 
+        $userid = Session::get("userid");
+        $sql = "update tdc_user set tag = '" . $tag . "' where id = $userid";
+        Db::execute($sql);
+        return Status::ReturnJson("ERROR_STATUS_SUCCESS", "标签修改成功");
     }
 
     public function FixTeacherLogo(Request $request){

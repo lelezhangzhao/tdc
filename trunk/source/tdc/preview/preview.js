@@ -185,6 +185,15 @@ Page({
   },
 
   editTag:function(e){
+    var that = this;
+    var tagDanceType = that.data.tagDanceType.join(",");
+    var tagWorkType = that.data.tagWorkType.join(",");
+    var tagTeacherType = that.data.tagTeacherType.join(",");
+    var tagWelfare = that.data.tagWelfare.join(",");
+    var tag = tagDanceType + ";" + tagWorkType + ";" + tagTeacherType + ";" + tagWelfare;
 
+    wx.navigateTo({
+      url: '../tag/tag?tag=' + tag,
+    })
   }
 })
