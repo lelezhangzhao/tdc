@@ -27,43 +27,63 @@
 .login-username{
   position: absolute;
   top: 450rpx;
-  left: 50rpx;
+  left: 10%;
   height: 30rpx;
+  width: 90%;
 }
 .login-username-input-line{
   position: absolute;
   top: 60rpx;
+  width: 90%;
 }
 .login-password{
   position: absolute;
   top: 550rpx;
-  left: 50rpx;
+  left: 10%;
+  height: 30rpx;
+  width: 90%;
 }
 .login-password-input-line{
   position: absolute;
   top: 60rpx;
+  width: 90%;
 }
 .login-captcha{
   position: absolute;
   top: 650rpx;
-  left: 50rpx;
+  left: 10%;
+  height: 30rpx;
+  width: 90%;
+}
+.login-captcha-input{
+  width: 300rpx;
 }
 .login-captcha-input-line{
   position: absolute;
   top: 60rpx;
+  width: 90%;
 }
 .login-canvas{
   position: absolute;
   top: 0rpx;
-  left: 480rpx;
+  left: 450rpx;
   height: 60rpx;
   width: 160rpx;
 }
 .login-forgetpassword{
   position: absolute;
   top: 730rpx;
-  left: 550rpx;
+  left: 75%;
   font-size: 28rpx;
+}
+.login-forgetpassword-input{
+    width: 300rpx;
+}
+.login-forget-passwordinput-line{
+  position: absolute;
+  top: 45rpx;
+  width: 100%;
+  left: 0rpx;
 }
 .bottom-view{
   display: flex;
@@ -76,10 +96,11 @@
 }
 .login-button{
   position: absolute;
-  top: 0rpx;
-  left: 30%;
-  width: 40%;
+  top: 30rpx;
+  left: 10%;
+  width: 80%;
   height: 100rpx;
+  font-size: 36rpx;
 }
 .login-input-line{
   height: 2rpx;
@@ -87,7 +108,7 @@
 .wx-logo{
   position: absolute;
   top: 240rpx;
-  left: 42%;
+  left: 43%;
   height: 100rpx;
   width: 100rpx;
 }
@@ -98,10 +119,22 @@
   margin: 0 auto;
   color: #999;
 }
+.login-third-part-line-left{
+  position: absolute;
+  top: 200rpx;
+  left: 5%;
+  width: 20%;
+}
+.login-third-part-line-right{
+  position: absolute;
+  top: 200rpx;
+  right: 5%;
+  width: 20%;
+}
 .wx-login-style{
   position: absolute;
   top: 340rpx;
-  left: 40%;
+  left: 42%;
   margin: 0 auto;
   color: #999;
 }

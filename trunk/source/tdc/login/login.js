@@ -42,7 +42,7 @@ Page({
       captcha: num
     });
     new Mcaptcha({
-      el: 'login_canvas',
+      el: 'canvas',
       width: 80, //对图形的宽高进行控制
       height: 30,
       code: num
