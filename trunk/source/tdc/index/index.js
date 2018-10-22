@@ -13,6 +13,11 @@ Page({
     hiEvalSchool:"高评机构",
     begin:0
   },
+  onLoad:function(){
+    wx.navigateTo({
+      url: '../login/login',
+    })
+  },
   onShow: function(){
 
     var that = this;

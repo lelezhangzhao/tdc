@@ -1,32 +1,44 @@
 <!--tdc/login/login.wxml-->
 <view class="page">
   <form bindsubmit="loginSubmit">
-    <view class="page-username">
-      <text>用户名</text>
-      <input type="text" name="username" placeholder="请输入用户名" />
+    <view class="top-view">
+      <image src="{{login_bk}}"  class="top"></image>
+      <view>
+        <label bindtap="register" class="register font-size-normal">注册</label>
+      </view>
+      <view>
+        <label  class="login font-size-normal">登录</label>
+      </view>
     </view>
 
-    <view class="page-password">
-      <text>密码</text>
-      <input type="password" name="password" placeholder="请输入密码" />
-    </view>
+    <view class="middle-view">
+      <view class="login-username">
+        <input type="text" name="username" class="font-size-normal" placeholder="请输入用户名" />
+        <image src="{{login_input}}" class="login-input-line login-username-input-line"></image>
+      </view>
 
-    <view class="page-captcha">
-      <text>验证码</text>
-      <input type="text" name="captcha" placeholder="请输入验证码" />
-    </view>
+      <view class="login-password">
+        <input type="password" name="password" class="font-size-normal" placeholder="请输入密码" />
+        <image src="{{login_input}}" class="login-input-line login-password-input-line"></image>
+      </view>
 
-    <view>
-      <canvas class='canvas' style="width:{{cvs.width}};height:{{cvs.height}};" canvas-id="canvas" bindtap='onReady'></canvas>
-    </view>
+      <view class="login-captcha">
+        <input class="login-captcha-input" type="text" name="captcha" class="font-size-normal" placeholder="请输入验证码" />
+        <canvas class='login-canvas' canvas-id="login_canvas" bindtap='onReady'></canvas>
+        <image src="{{login_input}}" class="login-input-line login-captcha-input-line"></image>
+      </view>
+      <view>
+        <a bindtap="forgetPassword" class="login-forgetpassword">忘记密码</a>
+      </view>
 
-    <view>
-      <button formType="submit">登录</button>
     </view>
-
-    <view>
-      <button bindtap="register">注册</button>
-      <button bindtap="forgetPassword">忘记密码</button>
+    <view class="bottom-view">
+      <view class="login-login">
+        <button formType="submit" class="login-button">登录</button>
+        <label class="font-size-normal third-part-account-style" >第三方账号快速登录</label>
+        <image class="wx-logo" src="{{wx_logo}}"></image>
+        <label class="font-size-small wx-login-style">微信登录</label>
+      </view>
     </view>
   </form>
 </view>

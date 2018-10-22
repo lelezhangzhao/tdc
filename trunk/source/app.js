@@ -1,6 +1,9 @@
 //app.js
+var utilRequest = require("tdc/util/request.js");
+var utilMd5 = require("tdc/util/md5.js");
 App({
   onLaunch: function () {
+    var that = this;
     // 展示本地存储能力
     var logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())
@@ -31,11 +34,45 @@ App({
           })
         }
       }
+    });
+
+    //临时登录
+    utilRequest.NetRequest({
+      url: "login/login",
+      data:{
+        username: "woshilaoshi",
+        password: utilMd5.hexMD5("woshilaoshi"),
+      },
+      success:function(res){
+        var jsoncontent = JSON.parse(res.jsoncontent);
+        that.globalData.userid = jsoncontent.userid;
+        that.globalData.role = jsoncontent.role;
+      },
+      fail:function(res){
+
+      }
+    });
+
+    //获取屏幕信息
+    wx.getSystemInfo({
+      success:function(res){
+        console.log(res);
+        that.globalData.windowHeight = res.windowHeight;
+        that.globalData.windowWieth = res.windowWidth;
+      },
+      fail:function(res){
+
+      }
     })
+
+
   },
   globalData: {
     userInfo: null,
     userid:null,
     role:null,
+    server: "https://localtdc.com/",
+    windowHeight: null,
+    windowWeight: null,
   }
 })

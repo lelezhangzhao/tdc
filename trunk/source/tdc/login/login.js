@@ -2,6 +2,7 @@ let Mcaptcha = require('../util/mcaptcha.js');
 let utilMd5 = require('../util/md5.js');
 var utilRequest = require("../util/request.js");
 
+
 var app = getApp();
 
 // tdc/login/login.js
@@ -11,14 +12,23 @@ Page({
    * 页面的初始数据
    */
   data: {
+    login_bk: null,
+    login_input: null,
+    wx_logo: null,
     captcha: 0,
+
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-
+    var that = this;
+    that.setData({
+      login_bk: "../image/login/login_bk.png",
+      login_input: "../image/login/login_input.png",
+      wx_logo: "../image/login/wx_logo.png",
+    })
   },
 
   /**
@@ -32,7 +42,7 @@ Page({
       captcha: num
     });
     new Mcaptcha({
-      el: 'canvas',
+      el: 'login_canvas',
       width: 80, //对图形的宽高进行控制
       height: 30,
       code: num
