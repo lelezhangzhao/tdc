@@ -4,7 +4,7 @@
     <view class="top-view">
       <image src="{{login_bk}}"  class="top"></image>
       <view>
-        <label bindtap="register" class="register font-size-normal">注册</label>
+        <label bindtap="toRegister" class="register font-size-normal">注册</label>
       </view>
       <view>
         <label  class="login font-size-normal">登录</label>

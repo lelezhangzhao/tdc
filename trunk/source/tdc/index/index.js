@@ -3,20 +3,32 @@ var utilRequest = require("../util/request.js");
 
 Page({
   data:{
-    imgUrls: ["../image/1.jpg", "../image/2.jpg", "../image/3.jpg"],
+    imgUrls: ["../image/main/banner_1.png", "../image/main/banner_2.png", "../image/main/banner_3.png", "../image/main/banner_4.png", "../image/main/banner_5.png"],
     indicatorDots:true,
     autoplay:true,
     circular:true,
-    displayMultiipleItems:3,
+    displayMultiipleItems:5,
     hiEvalList:[],
     hiEvalTeacher:"高评教师",
     hiEvalSchool:"高评机构",
-    begin:0
+    begin:0,
+
+    address:null,
+    address_logo: null,
+    school_logo: null,
+    teacher_logo: null,
   },
   onLoad:function(){
-    wx.navigateTo({
-      url: '../login/login',
+    var that = this;
+    that.setData({
+      address: "天河区",
+      address_logo: "../image/main/address.png",
+      school_logo: "../image/main/school.png",
+      teacher_logo: "../image/main/teacher.png",
     })
+    // wx.navigateTo({
+    //   url: '../login/login',
+    // })
   },
   onShow: function(){
 

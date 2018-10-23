@@ -1,6 +1,8 @@
 let utilRequest = require("../util/request.js");
 let utilMD5 = require("../util/md5.js");
 
+let refreshTimeStamp = 2;
+
 // tdc/forgetPassword/fotgetPassword.js
 Page({
 
@@ -10,13 +12,26 @@ Page({
   data: {
     tel:null,
     loading:false,
+
+    refreshTime:null,
+    refreshID: null,
+    getTelIdentify: null,
+
+    forget_password_bk:null,
+    forget_password_input:null,
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    var that = this;
+    that.setData({
+      getTelIdentify: "获取验证码",
+      refreshTime: refreshTimeStamp,
+      forget_password_bk: "../image/forgetpassword/forget_password_bk.png",
+      forget_password_input: "../image/forgetpassword/forget_password_input.png",
+    })
   },
 
   /**
@@ -73,19 +88,35 @@ Page({
     let password = e.detail.value.password;
     let confirmPassword = e.detail.value.confirmPassword;
 
-    if(password !== confirmPassword){
+    let warn = null;
+    //password
+    if (password === null || password.trim().length === 0) {
+      warn = "密码不能为空";
+    } else if (password.trim().length < 5) {
+      warn = "密码至少5个字符";
+    } else if (password.trim().legnth > 30) {
+      warn = "密码最多30个字符";
+    }
+
+    //password == confirmPassword
+    if(warn == null){
+      if(password !== confirmPassword){
+        warn = '两次密码不同';
+      }
+    }
+    if (warn !== null) {
       wx.showModal({
-        title: '错误',
-        content: '两次密码不同',
-      });
+        title: "提示",
+        content: warn,
+      })
       return;
     }
 
     utilRequest.NetRequest({
-      url: "forgetPassword/ForgetPasswordConfirm",
+      url: "forget_password/forgetpasswordconfirm",
       data: {
         tel: tel,
-        password: password,
+        password: utilMD5.hexMD5(password),
       },
       success: function (res) {
         var code = res.code;
@@ -93,7 +124,9 @@ Page({
 
         var title = null;
         if (code === "ERROR_STATUS_SUCCESS") {
-          title = "密码重置成功";
+          wx.navigateTo({
+            url: '../login/login',
+          })
         } else if (code === "ERROR_STATUS_TELISNOTEQUAL") {
           title = "再次手机号不同";
         } else if (code === "ERROR_STATUS_TELISNOTEXIST") {
@@ -135,7 +168,7 @@ Page({
 
 
     utilRequest.NetRequest({
-      url: "forgetPassword/getTelIdentify",
+      url: "forget_password/gettelidentify",
       data: {
         tel: tel,
       },
@@ -163,10 +196,46 @@ Page({
         wx.showToast({ title: "服务器繁忙，请稍后重试" });
       },
     });
+
+    var refreshID = setInterval(that.refreshRemainTime, 1000);
+    that.setData({ 
+      loading: true,
+      refreshID: refreshID,
+      tel: tel,
+    })
+
   },
   telInput:function(e){
     let that = this;
     that.setData({tel:e.detail.value});
+  },
+  refreshRemainTime: function () {
+    var that = this;
+
+    var refreshTime = that.data.refreshTime;
+    --refreshTime;
+    if (refreshTime <= 0) {
+      that.stopRefreshRemainTime();
+    } else {
+      that.setData({
+        getTelIdentify: "验证码已发送(" + refreshTime + "s)",
+        refreshTime: refreshTime,
+      });
+    }
+
+  },
+
+  stopRefreshRemainTime: function () {
+    var that = this;
+
+    clearInterval(that.data.refreshID);
+    that.setData({
+      refreshTime: refreshTimeStamp,
+      getTelIdentify: "获取验证码",
+      loading: false,
+    })
+
   }
+
 
 })

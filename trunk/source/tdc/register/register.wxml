@@ -1,33 +1,49 @@
 <!--tdc/register/register.wxml-->
 <view class="page">
   <form bindsubmit="registerSubmit">
-    <view class="page-username">
-      <text >用户名</text>
-      <input type="text" name="username" placeholder="请输入用户名"/>
+    <view class="top-view">
+      <image src="{{register_bk}}"  class="top"></image>
+      <view>
+        <label class="register font-size-normal">注册</label>
+      </view>
+      <view>
+        <label bindtap="toLogin" class="login font-size-normal">登录</label>
+      </view>
     </view>
 
-    <view class="page-password">
-      <text>密码</text>
-      <input type="text" name="password" password placeholder="请输入密码" />
+    <view class="middle-view">
+      <view class="register-username">
+        <input type="text" name="username" class="font-size-normal" placeholder="请输入用户名" />
+        <image src="{{register_input}}" class="register-input-line register-username-input-line"></image>
+      </view>
+
+      <view class="register-password">
+        <input type="password" name="password" password class="font-size-normal" placeholder="请输入密码" />
+        <image src="{{register_input}}" class="register-input-line register-password-input-line"></image>
+      </view>
+
+      <view class="register-password-confirm">
+        <input type="password" name="confirmPassword" password class="font-size-normal" placeholder="确认密码" />
+        <image src="{{register_input}}" class="register-input-line register-password-confirm-input-line"></image>
+      </view>
+
+      <view class="register-tel">
+        <input type="text" name="tel" bindinput="telInput" class="font-size-normal register-tel-input" placeholder="请输入手机号" />
+        <button type="default" loading="{{loading}}" bindtap="getTelIdentify" class="font-size-small register-get-tel-identify-button">{{getTelIdentify}}</button>
+        <image src="{{register_input}}" class="register-input-line register-tel-input-line"></image>
+      </view>
+      
+      <view class="register-tel-identify">
+        <input type="text" name="telIdentify" placeholder="请输入验证码" class="font-size-normal"/>
+        <image src="{{register_input}}" class="register-input-line register-tel-identify-input-line"></image>
+      </view>
+
     </view>
 
-    <view class="page-confirm-password">
-      <text>确认密码</text>
-      <input type="text" name="confirmPassword" password placeholder="确认密码" />
-    </view>
-
-    <view class="page-tel">
-      <text>手机号</text>
-      <input type="number" name="tel" bindinput="telInput" placeholder="请输入手机号" />
-      <button type="default" loading="{{loading}}" bindtap="getTelIdentify">{{getTelIdentify}}</button>
-    </view>
-
-    <view class="tel-identify">
-      <text>验证码</text>
-      <input type="text" name="telIdentify" placeholder="请输入验证码" />
-    </view>
-    <view>
-      <button formType="submit">注册</button>
+    <view class="bottom-view">
+      <view class="register-register">
+        <button formType="submit" class="register-button">注册</button>
+      </view>
     </view>
   </form>
 </view>

@@ -48,6 +48,7 @@ Page({
       code: num
     });
   },
+
   getRanNum: function() {
     var chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';
     var pwd = '';
@@ -131,6 +132,7 @@ Page({
     if(captcha === null || captcha.trim().length === 0){
       warn = "验证码不能为空";
     } else if (captcha.toLowerCase() !== that.data.captcha.toLowerCase()){
+      that.onReady();
       warn = "验证码有误";
     }
     if(warn !== null){
@@ -168,7 +170,7 @@ Page({
       }
     });
   },
-  register:function(e){
+  toRegister:function(e){
     wx.navigateTo({
       url: '../register/register',
       success: function(res) {},

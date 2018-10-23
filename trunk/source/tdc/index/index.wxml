@@ -1,30 +1,34 @@
+
+
 <view class="page">
-  <view class="page-hd">
+
+  <view class="top-view">
+    <swiper indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" circular="{{circular}}" class="swiper">
+      <block wx:for="{{imgUrls}}" wx:key="*this" class="swiper-block">
+        <swiper-item class="swiper-item">
+          <image src="{{item}}" class="swiper-image"/>
+        </swiper-item>
+      </block>
+    </swiper>
   </view>
 
-  <view class="page__bd page__bd_spacing">
-    <view class="page-swiper">
-      <view class="page-section page-section-spacing swiper">
-        <swiper indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" circular="{{circular}}" >
-          <block wx:for="{{imgUrls}}" wx:key="*this">
-            <swiper-item>
-              <image src="{{item}}" class="slider-image" />
-            </swiper-item>
-          </block>
-        </swiper>
-      </view>
-    </view>
-    <view class="page-search border-radius-circle-30" bindtap="searchTap">
-        <icon class="weui-icon-search" type="search" size="14"></icon>
-        <span class="search-place-holder">搜索</span>
-    </view>
-    <view class="weui-flex page-find-t-s">
-      <button class="weiui-btn weui-flex__item" type="primary" plain="true" bindtap="findTeacher">找老师</button>
-      <button class="weiui-btn weui-flex__item" type="primary" plain="true" bindtap="findSchool">找中心</button>
-    </view>
+  <view class="middle-view">
+    <label class="weui-search-bar__label" bindtap="searchTap">
+      <icon class="weui-icon-search" type="search" size="14"></icon>
+      <view class="weui-search-bar__text">搜索</view>
+    </label>
+    <label class="main_address">{{address}}</label>
+    <image src="{{address_logo}}" class="main-address-img"></image>
+
   </view>
 
-  <view class="page-hi-eva-ls">
+  
+  <view class="main-find-school-teacher">
+    <image src="{{school_logo}}" bindtap="findSchool" class="main-school-img"></image>
+    <image src="{{teacher_logo}}" bindtap="findTeacher" class="main-teacher-img"></image>
+  </view>
+
+  <view class="bottom-view">
     <view class="weui-panel weui-panel_access">
       <view class="weui-panel__bd">
         <view wx:for="{{hiEvalList}}" wx:key="id">
@@ -56,5 +60,5 @@
     </view>
   </view>
 
-  <component-footer />
+  <!-- <component-footer /> -->
 </view>

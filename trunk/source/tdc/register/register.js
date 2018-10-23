@@ -19,13 +19,20 @@ Page({
     refreshTime: 2,
     refreshID:0,
 
+    register_bk: null,
+    register_input: null,
+
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    var that = this;
+    that.setData({
+      register_bk: "../image/register/register_bk.png",
+      register_input: "../image/register/register_input.png",
+    })
   },
 
   /**
@@ -84,11 +91,11 @@ Page({
   },
   getTelIdentify: function(e){
 
-    wx.removeStorageSync("PHPSESSID");
 
     var that = this;
 
-    
+    wx.removeStorageSync("PHPSESSID");
+
     if (that.data.loading === true){
       return;
     }
@@ -147,7 +154,7 @@ Page({
     that.setData({ refreshID: refreshID})
     that.setData({tel:tel});
     
-    this.data.tel = tel;
+    // this.data.tel = tel;
   },
 
   registerSubmit: function(e){
@@ -277,6 +284,12 @@ Page({
     that.data.refreshTime = 2;
     that.setData({ getTelIdentify: "获取验证码" });
     that.setData({ loading: false });
+  },
+  toLogin: function(e){
+    var that = this;
+    wx.navigateTo({
+      url: '../login/login',
+    })
   }
 
 })
