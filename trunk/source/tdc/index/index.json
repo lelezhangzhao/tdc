@@ -2,6 +2,7 @@
   "navigationBarTitleText": "主页",
   "usingComponents":{
     "component-footer":"../component/footer/footer",
-    "component-tag":"../component/tag/tag"
+    "component-tag":"../component/tag/tag",
+    "component-brief-introduction": "../component/briefIntroduction/briefIntroduction"
   }
 }

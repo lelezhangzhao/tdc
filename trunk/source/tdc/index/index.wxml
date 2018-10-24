@@ -61,4 +61,5 @@
   </view>
 
   <!-- <component-footer /> -->
+  <component-brief-introduction />
 </view>

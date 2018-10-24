@@ -1,0 +1,20 @@
+<!--tdc/component/briefIntroduction/briefIntroduction.wxml-->
+<view class="page">
+  <view class="left-view">
+    <image src="{{logo}}" class="brief-image"></image>
+  </view>
+
+  <view class="right-view">
+    <view wx:if="{{isTeacher}}">
+      <label>{{name}}</label>
+      <view wx:for="{{tags}}" wx:key="">
+        <tag-component tagCaption="{{item}}" />
+      </view>
+    </view>
+
+    <view wx:if="{{!isTeacher}}">
+    </view>
+  </view>
+
+
+</view>
