@@ -1,1 +1,10 @@
 /* tdc/component/briefIntroduction/briefIntroduction.wxss */
+.left-view{
+  position: absolute;
+  left: 30rpx;
+  
+}
+.brief-image{
+  height: 120rpx;
+  width: 120rpx;
+}

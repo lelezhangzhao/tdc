@@ -29,37 +29,33 @@
   </view>
 
   <view class="bottom-view">
-    <view class="weui-panel weui-panel_access">
-      <view class="weui-panel__bd">
-        <view wx:for="{{hiEvalList}}" wx:key="id">
-          <view id="{{item.id}}" bindtap="publishInfo" class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active">
-            <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
-              <image class="weui-media-box__thumb" src="{{item.logo}}" />
+    <view wx:for="{{hiEvalList}}" wx:key="">
+      <component-brief-introduction logo="{{item.logo}}" tags="{{item.tag}}" briefIntroduction="{{item.introduction}}" isTeacher="{{item.publishobject == 1}}"/>
+      <!-- <view id="{{item.id}}" bindtap="publishInfo" class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active">
+        <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+          <image class="weui-media-box__thumb" src="{{item.logo}}" />
+        </view>
+
+        <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+          <view class="weui-media-box__title">
+            <span>{{item.name}}</span>
+
+            <view wx:if="{{item.publishobject == 0}}">
+              {{hiEvalTeacher}}
+            </view>
+            <view wx:elif="{{item.publishobject == 1}}">
+              {{hiEvalSchool}}
             </view>
 
-            <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
-              <view class="weui-media-box__title">
-                <span>{{item.name}}</span>
-
-                <view wx:if="{{item.publishobject == 0}}">
-                  {{hiEvalTeacher}}
-                </view>
-                <view wx:elif="{{item.publishobject == 1}}">
-                  {{hiEvalSchool}}
-                </view>
-
-                <view wx:for="{{item.tag}}" wx:key="*this" wx:for-item="tagItem">
-                  <component-tag tagStatus="tagSelected" tagCaption="{{tagItem}}"></component-tag>
-                </view>
-                <view class="weui-media-box__desc">{{item.introduction}}</view>
-              </view>
+            <view wx:for="{{item.tag}}" wx:key="*this" wx:for-item="tagItem">
+              <component-tag tagStatus="tagSelected" tagCaption="{{tagItem}}"></component-tag>
             </view>
+            <view class="weui-media-box__desc">{{item.introduction}}</view>
           </view>
         </view>
-      </view>
+      </view> -->
     </view>
   </view>
 
   <!-- <component-footer /> -->
-  <component-brief-introduction />
 </view>
