@@ -6,16 +6,29 @@
 
   <view class="right-view">
     <view wx:if="{{isTeacher}}">
-      <label>{{name}}</label>
-      <view wx:for="{{tags}}" wx:key="">
-        <tag-component tagCaption="{{item}}" />
+      <view class="name-view">
+        <label>{{name}}</label>
       </view>
-      <view>
+      <view class="tag-view">
+        <tag-component tagCaption="{{item}}" wx:for="{{parsedTags}}" wx:key="" />
+      </view>
+      <view class="intro-view">
+        <label>个人简介:</label>
         <label>{{briefIntroduction}}</label>
       </view>
     </view>
 
     <view wx:if="{{!isTeacher}}">
+      <view class="name-view">
+        <label>{{name}}</label>
+      </view>
+      <view class="tag-view">
+        <tag-component tagCaption="{{item}}" wx:for="{{parsedTags}}" wx:key=""/>
+      </view>
+      <view class="intro-view">
+        <label>机构简介:</label>
+        <label>{{briefIntroduction}}</label>
+      </view>
     </view>
   </view>
 

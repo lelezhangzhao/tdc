@@ -7,10 +7,10 @@ Component({
     tagCaption:{
       type:String
     },
-    tagStatus:{
-      type:String,
-      value:"tagUnselected"
-    }
+    tagSelectBk:{
+      type: String,
+      value: "../../image/global/tag_sel.png"
+    },
   },
 
   /**

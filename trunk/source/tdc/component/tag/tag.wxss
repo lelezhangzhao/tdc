@@ -6,3 +6,21 @@
 .tagUnselected{
   background-image: url("../../image/tagUnselected.png");
 } */
+
+.page{
+  width: 100rpx;
+  height: 40rpx;
+  background: url(https://localtdc.com/static/image/global/tag_sel.png) no-repeat;
+  background-size: cover;
+  text-align: center;
+  font-size: 22rpx;
+}
+.select-bk{
+  height: 60rpx;
+  width: 120rpx;
+  
+}
+
+.tag-caption{
+  margin: 0;
+}

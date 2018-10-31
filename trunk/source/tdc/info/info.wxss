@@ -1,1 +1,124 @@
 /* tdc/info/info.wxss */
+.page{
+  margin: 0% 5%;
+  width: 90%;
+}
+.top-view{
+  height: 32rpx;
+  padding-left: 80%;
+}
+.collection-image{
+  width: 32rpx;
+  height: 31rpx;
+  margin-right: 40rpx;
+}
+.share-image{
+  width: 30rpx;
+  height: 30rpx;
+  top: 4rpx;
+}
+
+
+.middle-view{
+  width: 100%;
+  
+}
+
+.left-view{
+  float:left;
+  
+  left: 20rpx;
+  height: 150rpx;
+  width: 150rpx;
+
+}
+.logo{
+  width: 150rpx;
+  height: 150rpx;
+}
+.right-view{
+  margin-left: 170rpx;
+  top: 70rpx;
+  font-size: 24rpx;
+  line-height: 50rpx;
+  
+}
+
+.permission-btn{
+  display: inline-block;
+  height: 40rpx;
+  width: 100rpx;
+  padding: 0;
+  margin: 0 0 -10rpx 10rpx;
+  font-size: 22rpx;
+  line-height: 40rpx;
+}
+.info-seperator{
+  top: 240rpx;
+  height: 2rpx;
+  width: 100%;
+}
+
+.info-seperator-image{
+  height: 2rpx;
+  width: 100%;
+  vertical-align:top;
+  
+}
+
+.workaddress-view{
+  top: 250rpx;
+  height: 120rpx;
+
+}
+
+.work-address-label{
+  font-weight: bold;
+  font-size: 34rpx;
+}
+
+.address-label{
+  margin-left: 20rpx;
+  font-size: 28rpx;
+}
+.bottom-view{
+  top: 400rpx;
+  width: 100%;
+  
+}
+
+.evaluate-score-image{
+  width: 28rpx;
+  height: 25rpx;
+  margin-bottom: -2rpx;
+}
+
+.persional-info-title-label{
+  font-weight: bold;
+  font-size: 34rpx;
+}
+.persional-info-content-label{
+  margin-left: 20rpx;
+  font-size: 28rpx;
+}
+
+.evaluate-title-label{
+  font-weight: bold;
+  font-size: 34rpx;
+}
+.evaluate-content-view{
+  margin-left: 20rpx;
+  font-size: 28rpx;
+}
+.evaluate-item-user{
+  line-height: 80rpx;
+}
+.evaluate-score-view{
+  display: inline;
+  margin-left: 10rpx;
+}
+.chat-online-view{
+  position: absolute;
+  bottom: 1rpx;
+  width: 90%;
+}

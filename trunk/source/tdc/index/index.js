@@ -41,10 +41,7 @@ Page({
       },
       success:function(res){
         var jsoncontent = JSON.parse(res.jsoncontent);
-        for (var i = 0; i < jsoncontent.length; ++i){
-          var item = jsoncontent[i];
-          item.tag = item.tag.split(";");
-        }
+
         that.setData({ hiEvalList: jsoncontent});
       },
       fail:function(res){
@@ -52,9 +49,10 @@ Page({
       }
     });
   },
+
   publishInfo:function(e){
     var that = this;
-    var publishId = e.currentTarget.id;
+    var publishId = e.currentTarget.dataset.id;
     var publishObject = null;
     
     for(var i = 0; i < that.data.hiEvalList.length; ++i){

@@ -5,6 +5,24 @@
   
 }
 .brief-image{
-  height: 120rpx;
-  width: 120rpx;
+  height: 200rpx;
+  width: 200rpx;
+}
+
+.right-view{
+  position: absolute;
+  left: 300rpx;
+}
+.name-view{
+  font-size: 26rpx;
+}
+.tag-view{
+  width: 400rpx;
+  display: flex;
+  flex-direction:row;
+  flex-wrap: wrap;
+}
+
+.intro-view{
+  font-size: 24rpx;
 }

@@ -1,5 +1,6 @@
 // tdc/info/info.js
 var utilRequest = require("../util/request.js");
+var globalData = require("../util/globaldata.js");
 
 Page({
 
@@ -17,6 +18,15 @@ Page({
     address:null,
     workaddress:null,
     introduction:null,
+    evaluateList:[],
+    introduction_title:null,
+    logo: null,
+    hasPermission: false,
+
+    collection_image:null,
+    share_image:null,
+    seperator_image: null,
+    evaluate_image: null,
   },
 
   /**
@@ -25,11 +35,27 @@ Page({
   onLoad: function (options) {
     console.log(options);
     var that = this;
-    
+
+    that.setData({
+      collection_image: "../image/info/collection.png",
+      share_image: "../image/info/share.png",
+      seperator_image: "../image/info/seperator.png",
+      evaluate_sel_image: "../image/info/evaluate_sel.png",
+      evaluate_unsel_image: "../image/info/evaluate_unsel.png",
+    })
+
     that.setData({teacher:options.teacher == "true"});
     that.setData({school:options.school == "true"});
     that.setData({publishId:options.publishId});
 
+    if(that.data.teacher){
+      that.setData({introduction_title:"个人简介"});
+    }else if(that.data.school){
+      that.setData({introduction_title:"机构简介"});
+    }
+
+
+    //获取老师或机构信息
     if(that.data.teacher){
       utilRequest.NetRequest({
         url: "publish_info/getpublishteacherinfo",
@@ -40,13 +66,18 @@ Page({
           if(res.code == "ERROR_STATUS_SUCCESS"){
             console.log(res);
             var jsoncontent = JSON.parse(res.jsoncontent)[0];
-            that.setData({ publishUserId: jsoncontent.publishUserId });
-            that.setData({ name: jsoncontent.name });
-            that.setData({ nickName: jsoncontent.nickname });
-            that.setData({ tel: jsoncontent.tel });
-            that.setData({ publishId: jsoncontent.id });
-            that.setData({ workaddress: jsoncontent.workaddress });
-            that.setData({ introduction: jsoncontent.introduction });
+            that.setData({ 
+              publishUserId: jsoncontent.publishuserid,
+              name: jsoncontent.name,
+              nickName: jsoncontent.nickname,
+              tel: jsoncontent.tel,
+              hasPermission: jsoncontent.tel.indexOf("*") == -1,
+              publishId: jsoncontent.id,
+              workaddress: jsoncontent.workaddress,
+              introduction: jsoncontent.introduction,
+              evaluateList: jsoncontent.evaluatelist,
+              logo: globalData.GetServerHttps() + "static/image/logo/" + jsoncontent.logo,
+            });
           } else if (res.code == "ERROR_STATUS_PUBLISHALREADYDELETE"){
             
           }
@@ -58,6 +89,10 @@ Page({
     }else if(that.data.school){
 
     }
+
+    //获取老师或机构电话
+
+
 
   },
 
@@ -137,5 +172,9 @@ Page({
   },
   tel:function(e){
 
+  },
+  applyForPermission:function(e){
+    var that = this;
+    
   }
 })

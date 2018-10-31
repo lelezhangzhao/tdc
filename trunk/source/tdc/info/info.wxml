@@ -1,74 +1,127 @@
 <!--tdc/info/info.wxml-->
 <view class="page">
-  <view class="top">
-    <button bindtap="collection">收藏</button>
-    <button open-type="share">分享</button>
-  </view>
-
-  <view wx:if="{{teacher}}">
-    <view>
-      {{name}}
-      {{tel}}
-      {{address}}
-    </view>
-
-    <view>
-      {{workaddress}}
-    </view>
-
-    <view>
-      {{introduction}}
-    </view>
-
-
-    <view wx:for="{{evaluateList}}" wx:key="*this">
-      {{item.evaluateScore}}
-      {{item.evaluateInfo}}
-    </view>
+  <view class="top-view">
+    <image src="{{collection_image}}" bindtap="collection" class="collection-image"></image>
+    <image src="{{share_image}}" open-type="share" class="share-image">分享</image>
 
   </view>
 
-  <view wx:elif="{{school}}">
-    <view>
-      {{nickName}}
-      <view wx:if="{{wagesbymonth}}">
-        {{wagesbymonthmin}}~{{wagesbymonthmax}}
+  <view class="middle-view">
+    <view wx:if="{{teacher}}">
+      <view class="left-view">
+        <image class="logo" src="{{logo}}">
+        </image>
+      </view>
+      <view class="right-view">
+        <view class="name-view">
+          <label>姓名 : </label>
+          <label>{{name}}</label>
+        </view>
+
+        <view class="address-view">
+          <label>所在地 : </label>
+          <label>{{address}}</label>
+        </view>
+
+        <view class="tel-view">
+          <label>电话 : </label>
+          <label>{{tel}}</label>
+          <button wx:if="{{!hasPermission}}" bindtap="applyForPermission" class="permission-btn">申请访问</button>
+        </view>
+      </view>
+    
+      <view class="info-seperator">
+        <image class="info-seperator-image" src="{{seperator_image}}" />
       </view>
 
-      <view wx:if="{{wagesbyclass}}">
-        {{wagesbyclassmin}}~{{wagesbyclassmax}}
+      <view class="workaddress-view">
+        <view class="work-address-label-view">
+          <label class="work-address-label">工作地址</label>
+        </view>
+        
+        <view class="address">
+          <label class="address-label">{{workaddress}}</label>
+        </view>
       </view>
 
-      <view wx:if="{{wagesfacetoface}}">
-        工资面议
-      </view>
+    </view>
+
+    <view wx:elif="{{school}}">
       <view>
-        招聘{{worktype}}{{dancetype}}老师{{count}}位
-        要求：{{teachertype}}
-        福利：
-        <view wx:for="{{welfareList}}" wx:key="">
-          {{item}}
+        {{nickName}}
+        <view wx:if="{{wagesbymonth}}">
+          {{wagesbymonthmin}}~{{wagesbymonthmax}}
+        </view>
+
+        <view wx:if="{{wagesbyclass}}">
+          {{wagesbyclassmin}}~{{wagesbyclassmax}}
+        </view>
+
+        <view wx:if="{{wagesfacetoface}}">
+          工资面议
+        </view>
+        <view>
+          招聘{{worktype}}{{dancetype}}老师{{count}}位
+          要求：{{teachertype}}
+          福利：
+          <view wx:for="{{welfareList}}" wx:key="">
+            {{item}}
+          </view>
+        </view>
+      </view>
+
+      <view>
+        {{workaddress}}
+      </view>
+
+    </view>
+  </view>
+
+  <view class="bottom-view">
+    <view class="persional-info-view">
+      <view class="persional-info-title-view">
+        <label class="persional-info-title-label">{{introduction_title}}</label>
+      </view>
+      <view class="persional-info-content-view">
+        <label class="persional-info-content-label">{{introduction}}</label>
+      </view>
+    </view>
+
+
+    <view class="evaluate-view">
+      <view class="evaluate-title-view">
+        <label class="evaluate-title-label">点评
+        </label>
+      </view>
+      
+      <view class="evaluate-content-view">
+        <view wx:for="{{evaluateList}}" wx:key="">
+          <view class="evaluate-item-user">
+            <label>{{item.nickname}}</label>
+            <label>:</label>
+            <view class="evaluate-score-view">
+              <image wx:if="{{item.score >= 1}}" src="{{evaluate_sel_image}}" class="evaluate-score-image"/>
+              <image wx:elif="{{item.score < 1}}" src="{{evaluate_unsel_image}}" class="evaluate-score-image"/>
+              <image wx:if="{{item.score >= 2}}" src="{{evaluate_sel_image}}" class="evaluate-score-image"/>
+              <image wx:elif="{{item.score < 2}}" src="{{evaluate_unsel_image}}" class="evaluate-score-image"/>
+              <image wx:if="{{item.score >= 3}}" src="{{evaluate_sel_image}}" class="evaluate-score-image"/>
+              <image wx:elif="{{item.score < 3}}" src="{{evaluate_unsel_image}}" class="evaluate-score-image"/>
+              <image wx:if="{{item.score >= 4}}" src="{{evaluate_sel_image}}" class="evaluate-score-image"/>
+              <image wx:elif="{{item.score < 4}}" src="{{evaluate_unsel_image}}" class="evaluate-score-image"/>
+              <image wx:if="{{item.score >= 5}}" src="{{evaluate_sel_image}}" class="evaluate-score-image"/>
+              <image wx:elif="{{item.score < 5}}" src="{{evaluate_unsel_image}}" class="evaluate-score-image"/>
+            </view>
+          </view>
+          <view class="evaluate-item-content-view">
+            <label class="evaluate-item-content-label">{{item.content}}</label>
+          </view>
         </view>
       </view>
     </view>
 
-    <view>
-      {{workaddress}}
-    </view>
-
-    <view>
-      {{introduction}}
-    </view>
-
-
-    <view wx:for="{{evaluateList}}" wx:key="">
-      {{item.evaluateScore}}
-      {{item.evaluateInfo}}
-    </view>
   </view>
-
-  <view>
+  <view class="chat-online-view">
     <button bindtap="chat">在线聊天</button>
-    <button bindtap="tel">电话</button>
   </view>
+
 </view>

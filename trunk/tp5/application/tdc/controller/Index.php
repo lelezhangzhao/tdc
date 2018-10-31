@@ -22,7 +22,7 @@ class Index extends Controller{
         //返回evaluateavg为10的项，每次返回20个
         $begin = $request->param("begin");
 
-        $sql = 'select a.id,a.publishobject,a.evaluateavg,a.tag,a.introduction,b.logo from tdc_publish as a join tdc_user as b on a.userid = b.id where a.evaluateavg = 10 limit 20 offset '.$begin;
+        $sql = 'select a.id,a.publishobject,a.evaluateavg,a.tag,a.introduction,b.logo,b.name from tdc_publish as a join tdc_user as b on a.userid = b.id where a.evaluateavg = 10 limit 20 offset '.$begin;
 
         $result = Db::query($sql);
 

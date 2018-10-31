@@ -43,4 +43,7 @@ insert tdc_history(userid, publishid)
 values
 (3, "1");
 
+insert tdc_evaluate(userid, publishid, score, content, evaluatetime, status)
+values
+(1, 7, 4, "这个老师是真NB", "2018-10-30 08:55:00", 0);
 

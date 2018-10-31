@@ -65,5 +65,11 @@
 }
 .bottom-view{
   position: absolute;
+  display: flex;
+  flex-direction: column;
   top: 600rpx;
+}
+
+.high-eval-item{
+  position: relative;
 }

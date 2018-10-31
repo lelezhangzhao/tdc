@@ -29,33 +29,8 @@
   </view>
 
   <view class="bottom-view">
-    <view wx:for="{{hiEvalList}}" wx:key="">
-      <component-brief-introduction logo="{{item.logo}}" tags="{{item.tag}}" briefIntroduction="{{item.introduction}}" isTeacher="{{item.publishobject == 1}}"/>
-      <!-- <view id="{{item.id}}" bindtap="publishInfo" class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active">
-        <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
-          <image class="weui-media-box__thumb" src="{{item.logo}}" />
-        </view>
-
-        <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
-          <view class="weui-media-box__title">
-            <span>{{item.name}}</span>
-
-            <view wx:if="{{item.publishobject == 0}}">
-              {{hiEvalTeacher}}
-            </view>
-            <view wx:elif="{{item.publishobject == 1}}">
-              {{hiEvalSchool}}
-            </view>
-
-            <view wx:for="{{item.tag}}" wx:key="*this" wx:for-item="tagItem">
-              <component-tag tagStatus="tagSelected" tagCaption="{{tagItem}}"></component-tag>
-            </view>
-            <view class="weui-media-box__desc">{{item.introduction}}</view>
-          </view>
-        </view>
-      </view> -->
+    <view wx:for="{{hiEvalList}}" wx:key="" style="position:absolute;top:{{250 * index}}rpx;" class="high-eval-item" bindtap="publishInfo" data-id="{{item.id}}" >
+      <component-brief-introduction name="{{item.name}}" logo="{{item.logo}}" tags="{{item.tag}}" briefIntroduction="{{item.introduction}}" isTeacher="{{item.publishobject == 0}}"/>
     </view>
   </view>
-
-  <!-- <component-footer /> -->
 </view>

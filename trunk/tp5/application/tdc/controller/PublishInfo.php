@@ -20,11 +20,27 @@ class PublishInfo extends Controller{
         $publishId = $request->param("publishId");
 
 
-        $sql = "select * from (select b.id as publishUserId, b.name,b.nickname,b.tel,a.id,a.status,a.workaddress,a.introduction from tdc_publish as a left join tdc_user as b on a.userid = b.id) as d where status = 0 and id = $publishId";
+        $sql = "select * from (select b.id as publishuserid,b.logo,b.tel,b.name,b.nickname,a.id,a.status,a.workaddress,a.introduction from tdc_publish as a left join tdc_user as b on a.userid = b.id) as d where status = 0 and id = $publishId";
 
         $result = Db::query($sql);
         if(empty($result)){
             return Status::ReturnErrorStatus("ERROR_STATUS_PUBLISHALREADYDELETE");
+        }
+
+        $sql_evaluate = "select a.score,a.content,a.evaluatetime,a.disabledtime,a.status,b.nickname from tdc_evaluate as a join tdc_user as b on a.userid = b.id where a.publishid = $publishId";
+        $result_evaluate = Db::query($sql_evaluate);
+
+
+
+        $result[0]["evaluatelist"] = $result_evaluate;
+
+        //是否有电话权限
+        $fromUserId = Session::get("userid");
+        $toUserId = $result[0]["publishuserid"];
+        $sql_tel = "select * from tdc_telpermission where fromuserid = $fromUserId and touserid = $toUserId and status = 0";
+        $result_tel = Db::query($sql_tel);
+        if(empty($result_tel)){
+            $result[0]["tel"] = "1**********";
         }
 
         return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "获取成功", json_encode($result));
