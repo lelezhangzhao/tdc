@@ -1,36 +1,83 @@
 <!--tdc/teacherPreview/teacherPreview.wxml-->
 <view class="page">
-  <view class="top">
-    <button bindtap="editInfo">个人信息</button>
-    <button bindtap="logout">退出</button>
+  <view class="top-view">
+    <image src="{{fix_image}}" bindtap="editInfo" class="fix-image"></image>
+    <image src="{{exit_image}}" bindtap="logout" class="exit-image"></image>
+  </view>
+  <view class="personinfo-view">
+    <view class="left-view">
+      <image class="logo" src="{{logo}}"></image>
+    </view>
+
+    <view class="middle-view">
+      <view wx:if="{{role == 0}}">
+        <view class="name-view">
+          <label>姓名 : </label>
+          <label>{{name}}</label>
+        </view>
+
+        <view class="nickname-view">
+          <label>昵称 : </label>
+          <label>{{nickName}}</label>
+        </view>
+
+        <view class="tel-view">
+          <label>电话 : </label>
+          <label>{{tel}}</label>
+        </view>
+
+      </view> 
+
+      <view wx:elif="{{role == 1}}">
+        <view class="name-view">
+          <label>机构名称 : </label>
+          <label>{{name}}</label>
+        </view>
+
+        <view class="tel-view">
+          <label>电话 : </label>
+          <label>{{tel}}</label>
+        </view>
+
+        <view class="address-view">
+          <label>地址 : </label>
+          <label>{{address}}</label>
+        </view>
+      </view>
+    </view>
+
+
+    <view class="right-view">
+      <image src="{{publish_image}}" bindtap="publish" class="publish-image" ></image>
+      <label class="publish-label">发布</label>
+    </view>
+
+    <view class="tag-view">
+      <tag-component class="tagcomponent" tagCaption="{{item}}" wx:for="{{parsedTags}}" wx:key="" />
+      <button class="edittag-button" bindtap="editTag">编辑标签</button>
+    </view>
   </view>
 
-  <view class="info">
-    {{logo}}
-    {{name}}
-    {{nickName}}
-    {{tel}}
-    <button bindtap="publish">发布</button>
+
+  <view wx:if="{{role == 1}}" class="hire-view">
+    <view>
+      <label></label>
+    
+    </view>
+
+    <view class="wagestructure-view">
+
+    </view>
 
   </view>
 
-  <view wx:for="{{tagDanceType}}" wx:key="" class="tag">
-    {{item}}
-  </view>
-    <view wx:for="{{tagWorkType}}" wx:key="" class="tag">
-    {{item}}
-  </view>  <view wx:for="{{tagTeacherType}}" wx:key="" class="tag">
-    {{item}}
-  </view>  <view wx:for="{{tagWelfare}}" wx:key="" class="tag">
-    {{item}}
-  </view>
-  <button bindtap="editTag">编辑标签</button>
-
-  <view class="work_address">
-    {{workAddress}}
+  <view class="workaddress-view">
+    <label>工作地点</label>
+    <label>{{workAddress}}</label>
   </view>
 
-  <view class="personalInfo">
-    {{introduction}}
+  <view class="introduction-view">
+    <label>{{introduction}}</label>
   </view>
+
 </view>

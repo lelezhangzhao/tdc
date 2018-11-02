@@ -1,9 +1,10 @@
 <!--tdc/info/info.wxml-->
 <view class="page">
   <view class="top-view">
-    <image src="{{collection_image}}" bindtap="collection" class="collection-image"></image>
-    <image src="{{share_image}}" open-type="share" class="share-image">分享</image>
-
+    <image wx:if="{{!hasCollectioned}}" src="{{collection_image}}" bindtap="collection" class="collection-image"></image>
+    <image wx:if="{{hasCollectioned}}" src="{{collectioned_image}}" class="collection-image"></image>
+    <!-- <image src="{{share_image}}" bindtap="onShareAppMessage" class="share-image"></image> -->
+    <button open-type='share' class="share-button" ><image src="{{share_image}}" class="share-image"></image></button>
   </view>
 
   <view class="middle-view">
@@ -47,33 +48,54 @@
     </view>
 
     <view wx:elif="{{school}}">
-      <view>
-        {{nickName}}
-        <view wx:if="{{wagesbymonth}}">
-          {{wagesbymonthmin}}~{{wagesbymonthmax}}
+      <view class="left-view">
+        <image class="logo" src="{{logo}}">
+        </image>
+      </view>
+      <view class="right-view">
+        <view class="name-view">
+          <label>{{name}}</label>
         </view>
 
-        <view wx:if="{{wagesbyclass}}">
-          {{wagesbyclassmin}}~{{wagesbyclassmax}}
-        </view>
+        <view class="wages-view">
+          <view wx:if="{{wagesbymonth}}">
+            <label>{{wagesbymonthmin}}~{{wagesbymonthmax}}</label>
+            <label>/月</label>
+          </view>
 
-        <view wx:if="{{wagesfacetoface}}">
-          工资面议
-        </view>
-        <view>
-          招聘{{worktype}}{{dancetype}}老师{{count}}位
-          要求：{{teachertype}}
-          福利：
-          <view wx:for="{{welfareList}}" wx:key="">
-            {{item}}
+          <view wx:if="{{wagesbyclass}}">
+            <label>{{wagesbyclassmin}}~{{wagesbyclassmax}}</label>
+            <label>/节</label>
+          </view>
+
+          <view wx:if="{{wagesfacetoface}}">
+            工资面议
           </view>
         </view>
       </view>
 
-      <view>
-        {{workaddress}}
-      </view>
+      <view class="school-info-view">
+        <view class="hire-view">
+          <label>招聘 : </label>
+          <label>{{hireinfo}}</label>
+        </view>
 
+        <view class="require-view">
+          <label>要求 : </label>
+          <label>{{teacherinfo}}</label>
+        </view>
+
+        <view class="welfare-view">
+          <label>福利 : </label>
+          <label>{{welfareinfo}}</label>
+        </view>
+
+        <view class="workaddress-school-view">
+          <label>工作地址 : </label>
+          <label>{{workaddress}}</label>
+
+        </view>
+      </view>
     </view>
   </view>
 

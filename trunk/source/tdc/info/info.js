@@ -23,8 +23,28 @@ Page({
     logo: null,
     hasPermission: false,
 
+    //是否已收藏 
+    hasCollectioned: false,
+
+    //school
+    hireinfo:null,
+    teacherinfo: null,
+    welfareinfo: null,
+
+    wagesbymonth: false,
+    wagesbyclass: false,
+    wagesfacetoface: false,
+    wagesbymonthmin: 0,
+    wagesbymonthmax: 0,
+    wagesbyclassmin: 0,
+    wagesbyclassmax: 0,
+    hirecount: 0,
+
+
     collection_image:null,
+    collectioned_image:null,
     share_image:null,
+    share_button:null,
     seperator_image: null,
     evaluate_image: null,
   },
@@ -38,7 +58,9 @@ Page({
 
     that.setData({
       collection_image: "../image/info/collection.png",
+      collectioned_image: "../image/info/collection_sel.png",
       share_image: "../image/info/share.png",
+      share_button: globalData.GetServerHttps() + "static/image/info/share.png",
       seperator_image: "../image/info/seperator.png",
       evaluate_sel_image: "../image/info/evaluate_sel.png",
       evaluate_unsel_image: "../image/info/evaluate_unsel.png",
@@ -64,7 +86,6 @@ Page({
         },
         success: function (res) {
           if(res.code == "ERROR_STATUS_SUCCESS"){
-            console.log(res);
             var jsoncontent = JSON.parse(res.jsoncontent)[0];
             that.setData({ 
               publishUserId: jsoncontent.publishuserid,
@@ -72,12 +93,14 @@ Page({
               nickName: jsoncontent.nickname,
               tel: jsoncontent.tel,
               hasPermission: jsoncontent.tel.indexOf("*") == -1,
-              publishId: jsoncontent.id,
               workaddress: jsoncontent.workaddress,
               introduction: jsoncontent.introduction,
               evaluateList: jsoncontent.evaluatelist,
               logo: globalData.GetServerHttps() + "static/image/logo/" + jsoncontent.logo,
+              hasCollectioned: jsoncontent.hascollectioned,
             });
+
+            
           } else if (res.code == "ERROR_STATUS_PUBLISHALREADYDELETE"){
             
           }
@@ -87,13 +110,49 @@ Page({
         }
       });
     }else if(that.data.school){
+      utilRequest.NetRequest({
+        url: "publish_info/getpublishschoolinfo",
+        data:{
+          publishId: that.data.publishId
+        },
+        success: function(res){
+          if(res.code == "ERROR_STATUS_SUCCESS"){
+            var jsoncontent = JSON.parse(res.jsoncontent)[0];
+            that.setData({
+              publishUserId: jsoncontent.publishuserid,
+              name: jsoncontent.name,
+              nickName: jsoncontent.nickname,
+              tel: jsoncontent.tel,
+              hasPermission: jsoncontent.tel.indexOf("*") == -1,
+              workaddress: jsoncontent.workaddress,
+              introduction: jsoncontent.introduction,
+              evaluateList: jsoncontent.evaluatelist,
+              logo: globalData.GetServerHttps() + "static/image/logo/" + jsoncontent.logo,
+              wagesbymonth: jsoncontent.wagesbymonth,
+              wagesbymonthmin: jsoncontent.wagesbymonthmin,
+              wagesbymonthmax: jsoncontent.wagesbymonthmax,
+              wagesbyclass: jsoncontent.wagesbyclass,
+              wagesbyclassmin: jsoncontent.wagesbyclassmin,
+              wagesbyclassmax: jsoncontent.wagesbyclassmax,
+              wagesfacetoface: jsoncontent.wagesfacetoface,
+              hireinfo: jsoncontent.hireinfo,
+              hasCollectioned: jsoncontent.hascollectioned,
+              
+            });
 
+            var teacherArr = jsoncontent.requireinfo.split(";");
+            var welfareArr = jsoncontent.tag.split(";")[3].split(",");
+            that.setData({
+              teacherinfo: teacherArr.join("/"),
+              welfareinfo: welfareArr.join("/"),
+            })
+          }
+        },
+        fail:function(res){
+
+        }
+      })
     }
-
-    //获取老师或机构电话
-
-
-
   },
 
   /**
@@ -151,13 +210,18 @@ Page({
   collection:function(e){
     var that = this;
 
+    console.log(that.data.publishId);
     utilRequest.NetRequest({
       url:"publish_info/collection",
       data:{
         publishId:that.data.publishId
       },
       success:function(res){
-        
+        if(res.code == "ERROR_STATUS_SUCCESS"){
+          that.setData({
+            hasCollectioned: true,
+          })
+        }
       },
       fail:function(res){
 
@@ -175,6 +239,24 @@ Page({
   },
   applyForPermission:function(e){
     var that = this;
-    
+    utilRequest.NetRequest({
+      url: "publish_info/applyforpermission",
+      data:{
+        touserid: that.data.publishUserId,
+      },
+      success:function(res){
+        if(res.code = "ERROR_STATUS_SUCCESS"){
+          wx.showModal({
+            title: "申请成功",
+            content: '申请成功，等待对方授权',
+          })
+
+
+        }
+      },
+      fail:function(res){
+
+      }
+    })
   }
 })

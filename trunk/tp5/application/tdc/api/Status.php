@@ -32,7 +32,7 @@ class Status{
         "ERROR_STATUS_PUBLISHALREADYDELETE" => "发布已删除",
         "ERROR_STATUS_LISTISNULL" => "列表为空",
         "ERROR_STATUS_PUBLISHLISTISFULL" => "发布列表已满",
-        "ERROR_STATUS_COLLECTIONLISTISFULL" => "收藏列表已满",
+        "ERROR_STATUS_PUBLISHHASCOLLECTIONED" => "该发布已收藏",
     );
 
     static public function ReturnJson($code, $msg){

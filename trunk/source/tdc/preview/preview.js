@@ -2,6 +2,7 @@
 
 var app = getApp();
 var utilRequest = require("../util/request.js");
+var globalData = require("../util/globaldata.js");
 
 Page({
 
@@ -13,13 +14,19 @@ Page({
     name:null,
     nickName:null,
     tel:null,
+    address:null,
     tagDanceType:[],
     tagWorkType:[],
     tagTeacherType:[],
     tagWelfare:[],
+    parsedTags:[],
     workAddress:null,
     introduction:null,
     role:null,
+
+    fix_image: null,
+    exit_image: null,
+    publish_image: null,
     
   },
 
@@ -46,6 +53,14 @@ Page({
    */
   onShow: function () {
     var that = this;
+
+    //加载本地图片 
+    that.setData({
+      fix_image: "../image/preview/fix.png",
+      exit_image: "../image/preview/exit.png",
+      publish_image: "../image/preview/publish.png",
+    })
+
     if(app.globalData.userid == null){
       wx.navigateTo({
         url: '../login/login',
@@ -66,9 +81,15 @@ Page({
             var tagWorkType = tags[1].split(",");
             var tagTeacherType = tags[2].split(",");
             var tagWelfare = tags[3].split(",");
+            var parsedTags = tagDanceType.concat(tagWorkType).concat(tagTeacherType).concat(tagWelfare);
+            for(var i = 0; i < parsedTags.length; ++i){
+              if(parsedTags[i] == ""){
+                parsedTags.splice(i, 1);
+              }
+            }
 
             that.setData({
-              logo: jsoncontent.logo,
+              logo: globalData.GetServerHttps() + "static/image/preview/" + jsoncontent.logo,
               name: jsoncontent.name,
               nickName: jsoncontent.nickname,
               tel: jsoncontent.tel,
@@ -78,6 +99,7 @@ Page({
               tagWelfare: tagWelfare,
               workAddress: jsoncontent.workaddress,
               introduction: jsoncontent.introduction,
+              parsedTags: parsedTags,
             });
           }
         },
