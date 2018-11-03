@@ -20,14 +20,33 @@ Page({
     tagTeacherType:[],
     tagWelfare:[],
     parsedTags:[],
-    workAddress:null,
+    introduction_title: null,
     introduction:null,
     role:null,
+    region:[],
+
+    danceTypes: ["拉丁", "摩登"],
+    workTypes: ["全职", "兼职"],
+    teacherTypes: ["毕业", "现役", "在校"],
+    counts: [1,2,3,4,5,6,7,8,9,10],    
+    danceType: "",
+    workType: "",
+    teacherType: "",
+    count: 0,
+    wagesbymonthmin: 0,
+    wagesbymonthmax: 0,
+    wagesbymonth: false,
+    wagesbyclassmin: 0,
+    wagesbyclassmax: 0,
+    wagesbyclass: false,
+    wagesfacetoface: 0,
+
 
     fix_image: null,
     exit_image: null,
     publish_image: null,
-    
+    workaddress_angle_image: null,
+    hire_info_image: null,
   },
 
   /**
@@ -59,6 +78,7 @@ Page({
       fix_image: "../image/preview/fix.png",
       exit_image: "../image/preview/exit.png",
       publish_image: "../image/preview/publish.png",
+      hire_info_image: "../image/preview/hireinfoview.png",
     })
 
     if(app.globalData.userid == null){
@@ -87,9 +107,9 @@ Page({
                 parsedTags.splice(i, 1);
               }
             }
-
+            var region = jsoncontent.workaddress.split("-");
             that.setData({
-              logo: globalData.GetServerHttps() + "static/image/preview/" + jsoncontent.logo,
+              logo: globalData.GetServerHttps() + jsoncontent.logo,
               name: jsoncontent.name,
               nickName: jsoncontent.nickname,
               tel: jsoncontent.tel,
@@ -97,9 +117,10 @@ Page({
               tagWorkType: tagWorkType,
               tagTeacherType: tagTeacherType,
               tagWelfare: tagWelfare,
-              workAddress: jsoncontent.workaddress,
+              region: region,
               introduction: jsoncontent.introduction,
               parsedTags: parsedTags,
+              introduction_title: "个人简介",
             });
           }
         },
@@ -109,9 +130,39 @@ Page({
       });
     } else if (role == 1) {
       utilRequest.NetRequest({
-        url: "mine_teacher/getpreviewinfo",
+        url: "mine_school/getpreviewinfo",
         success: function (res) {
-
+          if(res.code == "ERROR_STATUS_SUCCESS"){
+            var jsoncontent = JSON.parse(res.jsoncontent)[0];
+            var tags = jsoncontent.tag.split(";");
+            var tagWelfare = tags[3].split(",");
+            var parsedTags = tagWelfare;
+            if(parsedTags[0] == ""){
+              parsedTags.splice(0, 1);
+            }
+            var region = jsoncontent.workaddress.split("-");
+            that.setData({
+              logo: globalData.GetServerHttps() + jsoncontent.logo,
+              name: jsoncontent.name,
+              tel: jsoncontent.tel,
+              tagWelfare: tagWelfare,
+              region: region,
+              introduction: jsoncontent.introduction,
+              parsedTags: parsedTags,
+              introduction_title: "机构简介",
+              danceType: jsoncontent.dancetype,
+              workType: jsoncontent.worktype,
+              teacherType: jsoncontent.requireinfo,
+              count: jsoncontent.hirecount,
+              wagesbymonthmin: jsoncontent.wagesbymonthmin,
+              wagesbymonthmax: jsoncontent.wagesbymonthmax,
+              wagesbymonth: jsoncontent.wagesbymonth,
+              wagesbyclassmin: jsoncontent.wagesbyclassmin,
+              wagesbyclassmax: jsoncontent.wagesbyclassmax,
+              wagesbyclass: jsoncontent.wagesbyclass,
+              wagesfacetoface: jsoncontent.wagesfacetoface,
+            });
+          }
         },
         fail: function (res) {
 
@@ -175,16 +226,30 @@ Page({
     var tagTeacherType = that.data.tagTeacherType.join(","); 
     var tagWelfare = that.data.tagWelfare.join(","); 
     var tag = tagDanceType + ";" + tagWorkType + ";" + tagTeacherType + ";" + tagWelfare;
+    var workAddress = that.data.region[0] + "-" + that.data.region[1] + "-" + that.data.region[2];
     if(role == 0){
       utilRequest.NetRequest({
         url: "mine_teacher/publishteacherinfo",
         data:{
           tag: tag,
-          workaddress: that.data.workaddress,
+          workAddress: workAddress,
           introduction: that.data.introduction,
         },
         success:function(res){
-          console.log(res);
+          var title = "";
+          if(res.code == "ERROR_STATUS_SUCCESS"){
+            title = '发布成功';
+          } else if (res.code == "ERROR_STATUS_PUBLISHLISTISFULL"){
+            title = "发布列表已满";
+          }
+
+          if(title != ""){
+            wx.showToast({
+              title: title,
+              icon: "none",
+            })
+
+          }
         },
         fail:function(res){
 
@@ -194,10 +259,30 @@ Page({
       utilRequest.NetRequest({
         url: "mine_school/publishschoolinfo",
         data:{
+          wagesbymonth: that.data.wagesbymonth ? 1 : 0,
+          wagesbymonthmin: that.data.wagesbymonthmin,
+          wagesbymonthmax: that.data.wagesbymonthmax,
+          wagesbyclass: that.data.wagesbyclass ? 1 : 0,
+          wagesbyclassmin: that.data.wagesbyclassmin,
+          wagesbyclassmax: that.data.wagesbyclassmax,
+          wagesfacetoface: that.data.wagesfacetoface ? 1 : 0,
+          introduction: that.data.introduction,
 
+          tag: tag,
+          danceType: that.data.danceType,
+          workType: that.data.workType,
+          teacherType: that.data.teacherType,
+          count: that.data.count,
+
+          workAddress: workAddress,
         },
         success:function(res){
-
+          if(res.code == "ERROR_STATUS_SUCCESS"){
+            wx.showToast({
+              title: '发布成功',
+              icon: "none",
+            })
+          }
         },
         fail:function(res){
 
@@ -217,5 +302,151 @@ Page({
     wx.navigateTo({
       url: '../tag/tag?tag=' + tag,
     })
+  },
+  changeWorkAddress:function(e){
+    var that = this;
+    that.setData({
+      region: e.detail.value
+    });
+
+    // var workAddress = that.data.region[0] + "-" + that.data.region[1] + "-" + that.data.region[2];
+    // var url = "";
+    // if(that.data.role == 0){
+    //   url = "mine_teacher/fixteacherworkaddress";
+    // }else if(that.data.role == 1){
+    //   url = "mine_school/fixschoolworkaddress";
+    // }
+    // url += "?workAddress=" + workAddress;
+    // utilRequest.NetRequest({
+    //   url: url,
+    //   success: function (res) {
+    //   },
+    //   fail: function (res) {
+    //   }
+    // })
+  },
+  danceTypeChange: function(e){
+    var that = this;
+    that.setData({
+      danceType: that.data.danceTypes[e.detail.value]
+    });
+    // utilRequest.NetRequest({
+    //   url: "mine_school/fixdancetype",
+    //   data:{
+    //     danceType: that.data.danceType,
+    //   },
+    //   success: function (res) {
+    //   },
+    //   fail: function (res) {
+
+    //   }
+    // })
+  },
+  workTypeChange: function(e){
+    var that = this;
+    that.setData({
+      workType: that.data.workTypes[e.detail.value]
+    });
+    // utilRequest.NetRequest({
+    //   url: "mine_school/fixworktype",
+    //   data: {
+    //     workType: that.data.workType,
+    //   },
+    //   success: function (res) {
+    //   },
+    //   fail: function (res) {
+
+    //   }
+    // })
+  },
+  teacherTypeChange: function(e){
+    var that = this;
+    that.setData({
+      teacherType: that.data.teacherTypes[e.detail.value]
+    });
+    // utilRequest.NetRequest({
+    //   url: "mine_school/fixteachertype",
+    //   data: {
+    //     teacherType: that.data.teacherType,
+    //   },
+    //   success: function (res) {
+    //   },
+    //   fail: function (res) {
+
+    //   }
+    // })
+  },
+  countChange: function(e){
+    var that = this;
+    that.setData({
+      count: that.data.counts[e.detail.value]
+    });
+    // utilRequest.NetRequest({
+    //   url: "mine_school/fixhirecount",
+    //   data: {
+    //     count: that.data.count,
+    //   },
+    //   success: function (res) {
+    //   },
+    //   fail: function (res) {
+
+    //   }
+    // })
+  },
+  wagesbymonth: function(e){
+    var that = this;
+    var wagesbymonth = e.detail.value.length == 1;
+    that.setData({
+      wagesbymonth: wagesbymonth,
+    })
+  },
+  wagesbyclass: function(e){
+    var that = this;
+    var wagesbyclass = e.detail.value.length == 1;
+    
+    that.setData({
+      wagesbyclass: wagesbyclass,
+    })
+  },
+  wagesfacetoface: function(e){
+    var that = this;
+    var wagesfacetoface = e.detail.value.length == 1;
+
+
+    that.setData({
+      wagesfacetoface: wagesfacetoface,
+    })
+  },
+  wagesbymonthminchange: function(e){
+    var that = this;
+
+    that.setData({
+      wagesbymonthmin: e.detail.value
+    })
+
+  },
+  wagesbymonthmaxchange: function(e){
+    var that = this;
+
+    that.setData({
+      wagesbymonthmax: e.detail.value
+    })
+
+  },
+  wagesbyclassminchange: function(e){
+    var that = this;
+
+    that.setData({
+      wagesbyclassmin: e.detail.value
+    })
+
+  },
+  wagesbyclassmaxchange: function(e){
+    var that = this;
+
+    that.setData({
+      wagesbyclassmax: e.detail.value
+    })
+
   }
 })

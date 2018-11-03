@@ -40,8 +40,8 @@ App({
     utilRequest.NetRequest({
       url: "login/login",
       data:{
-        username: "woshilaoshi",
-        password: utilMd5.hexMD5("woshilaoshi"),
+        username: "woshijigou",
+        password: utilMd5.hexMD5("woshijigou"),
       },
       success:function(res){
         var jsoncontent = JSON.parse(res.jsoncontent);
@@ -52,6 +52,7 @@ App({
 
       }
     });
+
 
     //获取屏幕信息
     wx.getSystemInfo({

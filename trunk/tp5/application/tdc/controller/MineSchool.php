@@ -8,9 +8,15 @@
 
 namespace app\tdc\controller;
 
+use app\tdc\api\Status;
+use app\tdc\api\Times;
+use app\tdc\api\GlobalData as GlobalDataApi;
+use app\tdc\model\Publish;
+use app\tdc\model\User as UserModel;
 use think\Controller;
 use think\Request;
 use think\Session;
+use think\Db;
 
 
 class MineSchool extends Controller{
@@ -23,6 +29,15 @@ class MineSchool extends Controller{
 
 
     }
+
+    public function GetPreviewInfo(){
+        $userid = Session::get("userid");
+        $sql = "select name, logo, tel, introduction, address, workaddress, photos, tag, photos, wagesbymonthmin, wagesbymonthmax, wagesbyclassmin, wagesbyclassmax, wagesfacetoface, wagesbymonth, wagesbyclass, hirecount, requireinfo, dancetype, worktype from tdc_user where id = $userid";
+        $result = Db::query($sql);
+
+        return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "", json_encode($result));
+    }
+
 
     public function FixPublishStatus(Request $request){
         $delete = $request->param("delete");
@@ -51,6 +66,92 @@ class MineSchool extends Controller{
 
     public function PublishSchoolInfo(Request $request){
 
+        $systemTime = Times::GetSystemTime();
+
+        $wagesbymonth = $request->param("wagesbymonth");
+        $wagesbymonthmin = $request->param("wagesbymonthmin");
+        $wagesbymonthmax = $request->param("wagesbmonthmax");
+        $wagesbyclass = $request->param("wagesbyclass");
+        $wagesbyclassmin = $request->param("wagesbyclassmin");
+        $wagesbyclassmax = $request->param("wagesbyclassmax");
+        $wagesfacetoface = $request->param("wagesfacetoface");
+        $introduction = $request->param("introduction");
+
+        $tag = $request->param("tag");
+        $danceType = $request->param("danceType");
+        $workType = $request->param("workType");
+        $requireinfo = $request->param("teacherType");
+        $count = $request->param("count");
+
+        $hireinfo = "招聘" . $danceType . $workType . "老师" . $count . "位";
+
+
+        $userid = Session::get("userid");
+        $user = UserModel::where("id", $userid)->find();
+
+        $user["wagesbymonth"] = $wagesbymonth == 1;
+        $user["wagesbymonthmin"] = $wagesbymonthmin;
+        $user["wagesbymonthmax"] = $wagesbymonthmax;
+        $user["wagesbyclass"] = $wagesbyclass == 1;
+        $user["wagesbyclassmin"] = $wagesbyclassmin;
+        $user["wagesbyclassmax"] = $wagesbyclassmax;
+        $user["wagesfacetoface"] = $wagesfacetoface == 1;
+        $user["introduction"] = $introduction;
+        $user["tag"] = $tag;
+        $user["dancetype"] = $danceType;
+        $user["worktype"] = $workType;
+        $user["requireinfo"] = $requireinfo;
+        $user['hireinfo'] = $hireinfo;
+        $user["hirecount"] = $count;
+        $user->save();
+
+        //查询user发布数量
+        $publishid = $user["publishid"];
+        $publishidArr = explode(";", $publishid);
+        $publishLen = count($publishidArr);
+        if($publishLen >= GlobalDataApi::$maxPublishCount){
+            return Status::ReturnErrorStatus("ERROR_STATUS_PUBLISHLISTISFULL");
+        }
+
+        $publish = new Publish();
+        $publish->publishobject = 1;
+        $publish->userid = $userid;
+        $publish->workaddress = $user->workaddress;
+        $publish->publishtime = $systemTime;
+        $publish->status = 0;
+        $publish->evaluateavg = 0;
+        $publish->evaluatecount = 0;
+        $publish->tag = $user->tag;
+        $publish->introduction = $user->introduction;
+        $publish->photos = $user->photos;
+        $publish->wagesbymonth = $user->wagesbymonth;
+        $publish->wagesbymonthmin = $user->wagesbymonthmin;
+        $publish->wagesbymonthmax = $user->wagesbymonthmax;
+        $publish->wagesbyclass = $user->wagesbyclass;
+        $publish->wagesbyclassmin = $user->wagesbyclassmin;
+        $publish->wagesbyclassmax = $user->wagesbyclassmax;
+        $publish->wagesfacetoface = $user->wagesfacetoface;
+        $publish->hirecount = $user->hirecount;
+        $publish->hireinfo = $user->hireinfo;
+        $publish->requireinfo = $user->requireinfo;
+
+        $publish->dancetype = $user->dancetype;
+        $publish->worktype = $user->worktype;
+
+        $publish->save();
+
+        $newPublishId = $publish->id;
+
+        if($publishLen == 0){
+            $publishid = $newPublishId;
+        }else{
+            $publishid = $publishid . ";" . $newPublishId;
+        }
+        $user->publishid = $publishid;
+
+        $user->save();
+
+        return Status::ReturnJson("ERROR_STATUS_SUCCESS", "发布成功");
     }
 
     public function EditSchoolTag(Request $request){
@@ -80,4 +181,52 @@ class MineSchool extends Controller{
     public function Logout(){
 
     }
+//    public function FixDanceType(Request $request){
+//        $danceType = $request->param("danceType");
+//
+//        $userid = Session::get("userid");
+//
+//        $sql = "update tdc_user set dancetype = '" . $danceType . "' where id = $userid";
+//        Db::execute($sql);
+//
+//        return Status::ReturnJson("ERROR_STATUS_SUCCESS", "修改成功");
+//    }
+//
+//    public function FixWorkType(Request $request){
+//        $workType = $request->param("workType");
+//        $userid = Session::get("userid");
+//        $sql = "update tdc_user set worktype = '" . $workType . "' where id = $userid";
+//        Db::execute($sql);
+//
+//        return Status::ReturnJson("ERROR_STATUS_SUCCESS", "修改成功");
+//    }
+//
+//    public function FixTeacherType(Request $request){
+//        $teacherType = $request->param("teacherType");
+//        $userid = Session::get("userid");
+//        $sql = "update tdc_user set requireinfo = '" . $teacherType . "' where id = $userid";
+//        Db::execute($sql);
+//
+//        return Status::ReturnJson("ERROR_STATUS_SUCCESS", "修改成功");
+//    }
+//
+//    public function FixHireCount(Request $request){
+//        $count = $request->param("count");
+//        $userid = Session::get("userid");
+//        $sql = "update tdc_user set hirecount = $count where id = $userid";
+//        Db::execute($sql);
+//        return Status::ReturnJson("ERROR_STATUS_SUCCESS", "修改成功");
+//
+//    }
+//
+//    public function FixSchoolWorkAddress(Request $request){
+//        $workAddress = $request->param("workAddress");
+//
+//        $userid = Session::get("userid");
+//
+//        $sql = "update tdc_user set workaddress = '" . $workAddress . "' where id = $userid";
+//        Db::execute($sql);
+//
+//        return Status::ReturnJson("ERROR_STATUS_SUCCESS", "更新成功");
+//    }
 }

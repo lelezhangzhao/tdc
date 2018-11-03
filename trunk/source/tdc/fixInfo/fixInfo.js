@@ -262,7 +262,6 @@ Page({
     utilRequest.NetRequest({
       url: "mine_teacher/fixteacheraddress?address=" + address,
       success:function(res){
-        console.log(res);
       },
       fail:function(res){
 

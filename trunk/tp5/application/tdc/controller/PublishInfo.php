@@ -10,6 +10,7 @@ namespace app\tdc\controller;
 
 use app\tdc\api\Status;
 use app\tdc\api\Times;
+use app\tdc\api\GlobalData as GlobalDataApi;
 use think\Controller;
 use think\Request;
 use think\Session;
@@ -123,8 +124,8 @@ class PublishInfo extends Controller{
         }
         $collection_arr = explode(";", $collectionid);
         $collection_len = count($collection_arr);
-        if($collection_len == 10){
-            $this->RebuildArray($collection_arr, 10);
+        if($collection_len == GlobalDataApi::$maxCollectionCount){
+            $this->RebuildArray($collection_arr, GlobalDataApi::$maxCollectionCount);
             $collection_len -= 1;
         }
         $collection_arr[$collection_len] = $publishId;

@@ -134,11 +134,17 @@ Page({
         }
 
         if (title !== null) {
-          wx.showToast({ title: title, icon: "none" });
+          wx.showToast({ 
+            title: title, 
+            icon: "none" 
+          });
         }
       },
       fail: function (res) {
-        wx.showToast({ title: "服务器繁忙，请稍后重试" });
+        wx.showToast({ 
+          title: "服务器繁忙，请稍后重试",
+          icon: "none", 
+          });
       },
     })
   },
@@ -193,7 +199,10 @@ Page({
         }
       },
       fail: function (res) {
-        wx.showToast({ title: "服务器繁忙，请稍后重试" });
+        wx.showToast({ 
+          title: "服务器繁忙，请稍后重试", 
+          icon: "none",
+        });
       },
     });
 

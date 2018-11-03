@@ -8,7 +8,7 @@
 
 namespace app\tdc\controller;
 
-use app\tdc\api\GlobalData;
+use app\tdc\api\GlobalData as GlobalDataApi;
 use app\tdc\api\Status;
 use app\tdc\api\Times;
 use app\tdc\model\Publish;
@@ -167,47 +167,53 @@ class MineTeacher extends Controller{
         $userPublishId = Db::name("user")->where("id", $userid)->field("publishid")->find();
 
 
+        if($userPublishId["publishid"] != ""){
 
-        if($userPublishId["publishid"] != null){
-
-            $publishIdArr = explode(";", $userPublishId);
+            $publishIdArr = explode(";", $userPublishId["publishid"]);
 
             $publish_len = count($publishIdArr);
-
-            if($publish_len >= GlobalData::$maxPublishCount){
+            if($publish_len >= GlobalDataApi::$maxPublishCount){
                 return Status::ReturnErrorStatus("ERROR_STATUS_PUBLISHLISTISFULL");
             }
         }
 
 
         $tag = $request->param("tag");
-        $workaddress = $request->param("workaddress");
+        $workaddress = $request->param("workAddress");
         $introduction = $request->param("introduction");
 
+
+        //先更新user
+        $sql = "update tdc_user set tag = '" . $tag . "' introduction = '" . $introduction . "' workaddress = '" . $workaddress . "' where id = $userid";
+        Db::execute($sql);
+
+        $user = Db::name("user")->where("id", $userid)->find();
 
         //插入publish
         $newPublish = new Publish();
         $newPublish->publishobject = 0;
         $newPublish->userid = $userid;
-        $newPublish->workaddress = $workaddress;
+        $newPublish->workaddress = $user["workaddress"];
         $newPublish->publishtime = $systemTime;
         $newPublish->status = 0;
         $newPublish->evaluateavg = 0;
         $newPublish->evaluatecount = 0;
-        $newPublish->tag = $tag;
+        $newPublish->tag = $user["tag"];
         $newPublish->introduction = $introduction;
         $newPublish->save();
 
         $newPublishId = $newPublish->id;
 
 
-        if($userPublishId["publishid"] != null){
+        if($userPublishId["publishid"] != ""){
             $userPublishId = $userPublishId["publishid"] . ";" . $newPublishId;
         }else{
             $userPublishId = $newPublishId;
         }
-        $sql = "update tdc_user set publishid = $userPublishId where id = $userid";
+
+        $sql = "update tdc_user set publishid = '" . $userPublishId . "'where id = $userid";
         Db::execute($sql);
+
 
         return Status::ReturnJson("ERROR_STATUS_SUCCESS", "发布成功");
     }
@@ -324,6 +330,17 @@ class MineTeacher extends Controller{
     }
 
 
+//    public function FixTeacherWorkAddress(Request $request){
+//
+//        $workAddress = $request->param("address");
+//
+//        $userid = Session::get("userid");
+//
+//        $sql = "update tdc_user set workaddress = '" . $workAddress . "' where id = $userid";
+//        Db::execute($sql);
+//
+//        return Status::ReturnJson("ERROR_STATUS_SUCCESS", "更新成功");
+//    }
 
 }
 

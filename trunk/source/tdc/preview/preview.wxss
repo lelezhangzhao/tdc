@@ -79,3 +79,59 @@
   font-size: 24rpx;
   top: 12rpx;
 }
+
+.workaddress-content-angle-image{
+  margin: 0;
+  width: 17rpx;
+  height: 26rpx;
+}
+.introduction-content-label{
+  display: block;
+  font-size: 28rpx;
+}
+.hire-job-view{
+  font-size: 28rpx;
+  height: 50rpx;
+}
+.hire-info-image{
+  width: 14rpx;
+  height: 12rpx;
+}
+.dance-type-picker{
+  display: inline-block;
+  margin-left: 40rpx;
+}
+.work-type-picker{
+  display: inline-block;
+  margin-left: 40rpx;
+}
+.teacher-type-picker{
+  display: inline-block;
+  margin-left: 40rpx;
+}
+.count-picker{
+  display: inline-block;
+  margin-left: 40rpx;
+}
+.hire-end-label{
+  margin-left: 40rpx;
+}
+.wages-by-month{
+  display: flex;
+  flex-direction: row;
+}
+.wages-by-month-checkbox-group{
+  margin-right: 200rpx;
+}
+.wages-by-class{
+  display: flex;
+  flex-direction: row;
+}
+.wages-by-class-checkbox-group{
+  margin-right: 200rpx;
+}
+.wages-input{
+  width: 100rpx;
+  height: 40rpx;
+  border: #C9C9C9 solid 1rpx;
+}

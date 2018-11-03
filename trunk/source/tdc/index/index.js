@@ -20,6 +20,11 @@ Page({
   },
   onLoad:function(){
     var that = this;
+    // wx.navigateTo({
+    //   url: '../register/register',
+    // })
+
+
     that.setData({
       address: "天河区",
       address_logo: "../image/main/address.png",
