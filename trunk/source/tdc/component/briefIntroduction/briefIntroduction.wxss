@@ -26,3 +26,8 @@
 .intro-view{
   font-size: 24rpx;
 }
+
+.tag-component{
+  margin: 0 10rpx 0 0;
+  color: #FFF;
+}

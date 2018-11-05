@@ -7,10 +7,6 @@ Component({
     tagCaption:{
       type:String
     },
-    tagSelectBk:{
-      type: String,
-      value: "../../image/global/tag_sel.png"
-    },
   },
 
   /**

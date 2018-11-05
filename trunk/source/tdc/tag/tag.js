@@ -13,6 +13,9 @@ Page({
     // tagWelfare:[][2],
     tag:{},
     role:null,
+
+    tag_sel_image: null,
+    tag_unsel_image: null,
   },
 
   /**
@@ -22,7 +25,11 @@ Page({
     var that = this;
     var role = app.globalData.role;
     var tag = {};
-    that.setData({ role: role });
+    that.setData({ 
+      role: role,
+      tag_sel_image: "../image/tag/tag_sel.png",
+      tag_unsel_image: "../image/tag/tag_unsel.png",
+    });
     utilRequest.NetRequest({
       url: "global_data/gettag",
       success: function (res) {
@@ -212,69 +219,77 @@ Page({
   },
   danceTypeChange:function(e){
     var that = this;
-    var value = e.detail.value;
+    var danceItem = e.currentTarget.dataset.item;
     var danceType = that.data.tag.danceType;
 
     for (var i = 0; i < danceType.length; ++i){
-      danceType[i].hasItem = false;
-      for(var j = 0; j < value.length; ++j){
-        if(danceType[i].item == value[j]){
-          danceType[i].hasItem = true;
-        }
+      if(danceType[i].item == danceItem){
+        danceType[i].hasItem = !danceType[i].hasItem;
       }
-    }
-
+    }    
     that.data.tag.danceType = danceType;
-
-    that.setData({tag: that.data.tag});
+    that.setData({
+      tag: that.data.tag,
+    })
   },
   workTypeChange: function(e){
     var that = this;
-    var value = e.detail.value;
+    var workItem = e.currentTarget.dataset.item;
     var workType = that.data.tag.workType;
 
     for(var i = 0; i < workType.length; ++i){
-      workType[i].hasItem = false;
-      for(var j = 0; j < value.length; ++j){
-        if(workType[i].item == value[j]){
-          workType[i].hasItem = true;
-        }
+      if (workType[i].item == workItem){
+        workType[i].hasItem = !workType[i].hasItem;
       }
     }
     that.data.tag.workType = workType;
-    that.setData({tag: that.data.tag});
+    that.setData({
+      tag: that.data.tag
+    });
   },
   teacherTypeChange: function(e){
     var that = this;
-    var value = e.detail.value;
+    var teacherItem = e.currentTarget.dataset.item;
     var teacherType = that.data.tag.teacherType;
 
     for(var i = 0; i < teacherType.length; ++i){
-      teacherType[i].hasItem = false;
-      for(var j = 0; j < value.length; ++j){
-        if(teacherType[i].item == value[j]){
-          teacherType[i].hasItem = true;
-        }
+      if (teacherType[i].item == teacherItem){
+        teacherType[i].hasItem = !teacherType[i].hasItem;
       }
     }
     that.data.tag.teacherType = teacherType;
-    that.setData({tag: that.data.tag});
+    that.setData({
+      tag: that.data.tag
+    });
   },
   welfareChange: function(e){
-    var that = thsi;
-    var value = e.detail.value;
+    var that = this;
+    var welfareItem = e.currentTarget.dataset.item;
     var welfare = that.data.tag.welfare;
 
     for(var i = 0; i < welfare.length; ++i){
-      welfare[i].hasItem = false;
-      for(var j = 0; j < value.length; ++j){
-        if(welfare[i].item == value[j]){
-          welfare[i].hasItem = true;
-        }
+      if(welfare[i].item == welfareItem){
+        welfare[i].hasItem = !welfare[i].hasItem;
+        that.data.tag.welfare = welfare;
+        that.setData({
+          tag: that.data.tag
+        });
+        break;
       }
     }
 
-    that.data.tag.welfae = welfare;
-    that.setData({tag: that.data.tag});
+
+    var selWelfare = [];
+    for(var i = 0; i < welfare.length; ++i){
+      if(welfare[i].hasItem == true){
+        selWelfare[selWelfare.length] = welfare[i].item;
+      }
+    }
+    var pages = getCurrentPages();
+    var prevPage = pages[pages.length - 2];
+    prevPage.setData({
+      tagWelfare: selWelfare,
+    })
+    prevPage.buildTagParsed();
   }
 })

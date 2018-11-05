@@ -1,42 +1,34 @@
 <!--tdc/mineteacher/mineteacher.wxml-->
-<view cass="page">
-  <view>
-    {{nickName}}
-    <view bindtap="preview">
-      <image src="https://localtdc.com/static/image/my.png" />
-      {{logo}}
+<view class="page">
+  <view class="top-view">
+    <view class="name-view">
+      <label class="name-label">{{name}}</label>
+    </view>
+    <view class="logo-view" bindtap="preview">
+      <image class="logo-image" src="{{logo}}"></image>
     </view>
   </view>
 
-  <view>
-    <button bindtap="publishRecord">发布</button>
-    <button bindtap="collectionRecord">收藏</button>
-    <button bindtap="footerRecord">足迹</button>
+  <view class="middle-view">
+    <view class="weui-flex option-view">
+      <view class="weui-flex__item publish-view" bindtap="publishRecord">
+        <image class="option-image" src="{{option_image}}"></image>
+        <label class="publish-label option-label">发布</label>        
+      </view>
+      <view class="weui-flex__item collection-view" bindtap="collectionRecord">
+        <image class="option-image" src="{{option_image}}"></image>
+        <label class="collection-label option-label">收藏</label>
+      </view>
+      <view class="weui-flex__item history-view" bindtap="historyRecord">
+        <image class="option-image" src="{{option_image}}"></image>
+        <label class="history-label option-label">足迹</label>
+      </view>
+    </view>
   </view>
 
-  <view>
-    <view wx:if="{{isPublishList}}">
-      <view wx:for="{{publishList}}" wx:key="">
-        <view bindtap="publishInfo" data-id="{{item.id}}">
-          {{item.id}}
-        </view>
-      </view>
-    </view>
-
-    <view wx:if="{{isCollectionList}}">
-      <view wx:for="{{collectionList}}" wx:key="">
-        <view bindtap="collectionInfo" data-id="{{item.id}}" data-object="{{item.publishobject}}">
-          {{item.id}}
-        </view>
-      </view>
-    </view>
-
-    <view wx:if="{{isFooterList}}">
-      <view wx:for="{{footerList}}" wx:key="">
-        <view bindtap="footerInfo" data-id="{{item.id}}" data-object="{{item.publishobject}}">
-          {{item.id}}
-        </view>
-      </view>
+  <view class="bottom-view">
+    <view wx:for="{{publishList}}" wx:key="" class="publish-item-view" bindtap="publishInfo" data-id="{{item.id}}" >
+      <component-brief-introduction name="{{item.name}}" logo="{{item.logo}}" tags="{{item.tag}}" briefIntroduction="{{item.introduction}}" isTeacher="{{item.publishobject == 0}}" showtype="{{type}}"/>
     </view>
   </view>
 

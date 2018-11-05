@@ -117,7 +117,7 @@ class MineTeacher extends Controller{
     }
 
 
-    public function GetFooterList(){
+    public function GetHistoryList(){
         $userid = Session::get("userid");
         $sql = "select * from tdc_history where userid = $userid";
         $result = Db::query($sql);
@@ -329,6 +329,10 @@ class MineTeacher extends Controller{
         return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "", json_encode($result));
     }
 
+
+    public function UploadPhoto(Request $request){
+        return $request;
+    }
 
 //    public function FixTeacherWorkAddress(Request $request){
 //

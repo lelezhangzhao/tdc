@@ -24,6 +24,7 @@ Page({
     introduction:null,
     role:null,
     region:[],
+    photos:[],
 
     danceTypes: ["拉丁", "摩登"],
     workTypes: ["全职", "兼职"],
@@ -53,26 +54,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    // if (app.globalData.userid == null) {
-    //   wx.navigateTo({
-    //     url: '../login/login',
-    //   })
-    // }
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
     var that = this;
-
     //加载本地图片 
     that.setData({
       fix_image: "../image/preview/fix.png",
@@ -81,7 +63,7 @@ Page({
       hire_info_image: "../image/preview/hireinfoview.png",
     })
 
-    if(app.globalData.userid == null){
+    if (app.globalData.userid == null) {
       wx.navigateTo({
         url: '../login/login',
       })
@@ -102,8 +84,8 @@ Page({
             var tagTeacherType = tags[2].split(",");
             var tagWelfare = tags[3].split(",");
             var parsedTags = tagDanceType.concat(tagWorkType).concat(tagTeacherType).concat(tagWelfare);
-            for(var i = 0; i < parsedTags.length; ++i){
-              if(parsedTags[i] == ""){
+            for (var i = 0; i < parsedTags.length; ++i) {
+              if (parsedTags[i] == "") {
                 parsedTags.splice(i, 1);
               }
             }
@@ -132,12 +114,12 @@ Page({
       utilRequest.NetRequest({
         url: "mine_school/getpreviewinfo",
         success: function (res) {
-          if(res.code == "ERROR_STATUS_SUCCESS"){
+          if (res.code == "ERROR_STATUS_SUCCESS") {
             var jsoncontent = JSON.parse(res.jsoncontent)[0];
             var tags = jsoncontent.tag.split(";");
             var tagWelfare = tags[3].split(",");
             var parsedTags = tagWelfare;
-            if(parsedTags[0] == ""){
+            if (parsedTags[0] == "") {
               parsedTags.splice(0, 1);
             }
             var region = jsoncontent.workaddress.split("-");
@@ -169,6 +151,26 @@ Page({
         }
       });
     }
+
+    // if (app.globalData.userid == null) {
+    //   wx.navigateTo({
+    //     url: '../login/login',
+    //   })
+    // }
+  },
+
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
+    var that = this;
   },
 
   /**
@@ -303,95 +305,47 @@ Page({
       url: '../tag/tag?tag=' + tag,
     })
   },
+  buildTagParsed: function(){
+    var that = this;
+    var tagDanceType = that.data.tagDanceType;
+    var tagWorkType = that.data.tagWorkType;
+    var tagTeacherType = that.data.tagTeacherType;
+    var tagWelfare = that.data.tagWelfare;
+    var parsedTags = tagDanceType.concat(tagWorkType).concat(tagTeacherType).concat(tagWelfare);
+
+    that.setData({
+      parsedTags: parsedTags,
+    })
+  },
   changeWorkAddress:function(e){
     var that = this;
     that.setData({
       region: e.detail.value
     });
-
-    // var workAddress = that.data.region[0] + "-" + that.data.region[1] + "-" + that.data.region[2];
-    // var url = "";
-    // if(that.data.role == 0){
-    //   url = "mine_teacher/fixteacherworkaddress";
-    // }else if(that.data.role == 1){
-    //   url = "mine_school/fixschoolworkaddress";
-    // }
-    // url += "?workAddress=" + workAddress;
-    // utilRequest.NetRequest({
-    //   url: url,
-    //   success: function (res) {
-    //   },
-    //   fail: function (res) {
-    //   }
-    // })
   },
   danceTypeChange: function(e){
     var that = this;
     that.setData({
       danceType: that.data.danceTypes[e.detail.value]
     });
-    // utilRequest.NetRequest({
-    //   url: "mine_school/fixdancetype",
-    //   data:{
-    //     danceType: that.data.danceType,
-    //   },
-    //   success: function (res) {
-    //   },
-    //   fail: function (res) {
-
-    //   }
-    // })
   },
   workTypeChange: function(e){
     var that = this;
     that.setData({
       workType: that.data.workTypes[e.detail.value]
     });
-    // utilRequest.NetRequest({
-    //   url: "mine_school/fixworktype",
-    //   data: {
-    //     workType: that.data.workType,
-    //   },
-    //   success: function (res) {
-    //   },
-    //   fail: function (res) {
-
-    //   }
-    // })
   },
   teacherTypeChange: function(e){
     var that = this;
     that.setData({
       teacherType: that.data.teacherTypes[e.detail.value]
     });
-    // utilRequest.NetRequest({
-    //   url: "mine_school/fixteachertype",
-    //   data: {
-    //     teacherType: that.data.teacherType,
-    //   },
-    //   success: function (res) {
-    //   },
-    //   fail: function (res) {
-
-    //   }
-    // })
   },
   countChange: function(e){
     var that = this;
     that.setData({
       count: that.data.counts[e.detail.value]
     });
-    // utilRequest.NetRequest({
-    //   url: "mine_school/fixhirecount",
-    //   data: {
-    //     count: that.data.count,
-    //   },
-    //   success: function (res) {
-    //   },
-    //   fail: function (res) {
-
-    //   }
-    // })
   },
   wagesbymonth: function(e){
     var that = this;
@@ -448,5 +402,47 @@ Page({
       wagesbyclassmax: e.detail.value
     })
 
+  },
+  chooseImage: function(e){
+    var that = this;
+    wx.chooseImage({
+      count: 1,
+      sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+      sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+      success: function (res) {
+        // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
+        var newPhotoItem = res.tempFilePaths[0];
+        that.setData({
+          photos: that.data.photos.concat(newPhotoItem),
+        });
+
+        var session_id = wx.getStorageSync('PHPSESSID');//本地取存储的sessionID
+        var header = { 'content-type': 'application/x-www-form-urlencoded', 'Cookie': session_id };
+
+        var url = "";
+        if(that.data.role == 0){
+          url = globalData.GetServerHttps() + "index.php/tdc/mine_teacher/uploadphoto";
+        }else if(that.data.role == 1){
+          url = globalData.GetServerHttps() + "index.php/tdc/mine_school/uploadphoto";
+        }
+        wx.uploadFile({
+          url: url,
+          filePath: newPhotoItem,
+          name: newPhotoItem.substr(60,10),
+          header: header,
+          success(res) {
+          },
+          fail(res){
+          }
+        })
+      }
+    })
+  },
+  previewImage: function (e) {
+    wx.previewImage({
+      current: e.currentTarget.id, // 当前显示图片的http链接
+      urls: this.data.photos // 需要预览的图片http链接列表
+    })
   }
+
 })

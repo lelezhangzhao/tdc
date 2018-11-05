@@ -10,7 +10,7 @@
         <label>{{name}}</label>
       </view>
       <view class="tag-view">
-        <tag-component tagCaption="{{item}}" wx:for="{{parsedTags}}" wx:key="" />
+        <tag-component class="tag-component" tagCaption="{{item}}" wx:for="{{parsedTags}}" wx:key="" />
       </view>
       <view class="intro-view">
         <label>个人简介:</label>
@@ -23,7 +23,7 @@
         <label>{{name}}</label>
       </view>
       <view class="tag-view">
-        <tag-component tagCaption="{{item}}" wx:for="{{parsedTags}}" wx:key=""/>
+        <tag-component class="tag-component" tagCaption="{{item}}" wx:for="{{parsedTags}}" wx:key=""/>
       </view>
       <view class="intro-view">
         <label>机构简介:</label>

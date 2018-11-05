@@ -1,1 +1,44 @@
 /* tdc/tag/tag.wxss */
+.page{
+  margin: 0 5%;
+  width: 90%;
+}
+.type-view{
+  height: 300rpx;
+  width: 100%;
+}
+
+.title-view{
+  height: 100rpx;
+  width: 100;
+  font-size: 30rpx;
+}
+.content-view{
+  height: 62rpx;
+  width: 100%;
+}
+.content-item-view{
+  display: inline-block;
+}
+.tag-image{
+  width: 142rpx;
+  height: 62rpx;
+}
+.tag-label{
+  display: inline-block;
+  height: 62rpx;
+  font-size: 28rpx;
+  border-radius: 31rpx;
+  margin: 0 10rpx;
+  padding: 0rpx 30rpx;
+  text-align: center;
+  line-height: 62rpx;
+}
+.tag-unsel-label{
+  color: #999;
+  background-color: #ECECEC;
+}
+.tag-sel-label{
+  color: #FFF;
+  background-color: #8AC0FF;
+}

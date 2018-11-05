@@ -66,3 +66,7 @@ button{
   color:#da2121;
   font-size: 32rpx;
 }
+.logo-view{
+  width: 150rpx;
+  height: 150rpx;
+}

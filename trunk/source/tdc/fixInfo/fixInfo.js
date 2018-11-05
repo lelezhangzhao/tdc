@@ -1,14 +1,15 @@
 // tdc/fixTeacherInfo/fixTeacherInfo.js
 var utilRequest = require("../util/request.js");
+var globalData = require("../util/globaldata.js");
 var app = getApp();
 
-var Server = "https://localtdc.com/"
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
+    role: 0,
     logo:null,
     name:null,
     nickName:null,
@@ -27,11 +28,10 @@ Page({
     1 teachername
     2 teachernickname
     3 teachertel
-    4 schoolname
-    5 schoolnickname
-    6 schooltel
+    11 schoolname
+    12 schooltel
     */
-    fixItemType:0,
+    // fixItemType:0,
   },
 
   /**
@@ -39,13 +39,17 @@ Page({
    */
   onLoad: function (options) {
     var that = this;
+    that.setData({
+      role: app.globalData.role,
+    })
+    
     if(app.globalData.role == 0){
       utilRequest.NetRequest({
         url: "mine_teacher/getmineteacherinfo",
         success: function (res) {
           if(res.code == "ERROR_STATUS_SUCCESS"){
             var jsoncontent = JSON.parse(res.jsoncontent)[0];
-            var ServerLogo = Server + jsoncontent.logo;
+            var ServerLogo = globalData.GetServerHttps() + jsoncontent.logo;
             that.setData({ logo: ServerLogo });
             that.setData({ name: jsoncontent.name });
             that.setData({ nickName: jsoncontent.nickname });
@@ -65,7 +69,15 @@ Page({
       utilRequest.NetRequest({
         url:"mine_school/getschoolinfo",
         success:function(res){
-          var jsoncontent = JSON.parse(res.jsoncontent);
+          var jsoncontent = JSON.parse(res.jsoncontent)[0];
+          var serverLogo = globalData.GetServerHttps() + jsoncontent.logo;
+          var addressArr = jsoncontent.address.split("-");
+          that.setData({
+            logo: serverLogo,
+            name: jsoncontent.name,
+            tel: jsoncontent.tel,
+            region: addressArr,
+          })
           
         },
         fail:function(res){
@@ -177,39 +189,36 @@ Page({
   },
   fixName:function(e){
     var that = this;
-    var fixItemType = 0;
-    if(app.globalData.role == 0){
-      fixItemType = 1;
-    }else if(app.globalData.role == 1){
-      fixItemType = 4;
+
+    var urlSuffix = "";
+    if(that.data.role == 0){
+      urlSuffix = "?caption=修改姓名&value=" + that.data.name + "&type=1";
+    }else if(that.data.role == 1){
+      urlSuffix = "?caption=修改机构名称&value=" + that.data.name + "&type=11";
     }
-
-    that.setData({ fixItemType: fixItemType});
-    that.fixItem();
-
+    wx.navigateTo({
+      url: '../fixItem/fixItem' + urlSuffix,
+    })
   },
   fixNickName:function(e){
     var that = this;
-    var fixItemType = 0;
-    if (app.globalData.role == 0) {
-      fixItemType = 2;
-    } else if (app.globalData.role == 1) {
-      fixItemType = 5;
-    }
+    var urlSuffix = "?caption=修改昵称&value=" + that.data.nickName + "&type=2";
+    wx.navigateTo({
+      url: '../fixItem/fixItem' + urlSuffix,
+    })
 
-    that.setData({ fixItemType: fixItemType });
-    that.fixItem();
   },
   fixTel:function(e){
     var that = this;
-    var fixItemType = 0;
-    if (app.globalData.role == 0) {
-      fixItemType = 3;
-    } else if (app.globalData.role == 1) {
-      fixItemType = 6;
+    var urlSuffix = "";
+    if(that.data.role == 0){
+      urlSuffix = "?caption=修改手机&value=" + that.data.tel + "&type=3";
+    }else if(that.data.role == 1){
+      urlSuffix = "?caption=修改电话&value=" + that.data.tel + "&type=12";
     }
-    that.setData({ fixItemType: fixItemType });
-    that.fixItem();
+    wx.navigateTo({
+      url: '../fixItem/fixItem' + urlSuffix,
+    })
   },
   fixSex:function(e){
     var that = this;
@@ -259,8 +268,19 @@ Page({
     });
 
     var address = that.data.region[0] + "-" + that.data.region[1] + "-" + that.data.region[2];
+
+    var url = "";
+    if(that.data.role == 0){
+      url = "mine_teacher/fixteacheraddress";
+    }else if(that.data.role == 1){
+      url = "mine_school/fixschooladdress";
+    }
+
     utilRequest.NetRequest({
-      url: "mine_teacher/fixteacheraddress?address=" + address,
+      url: url,
+      data:{
+        address: address,
+      },
       success:function(res){
       },
       fail:function(res){
@@ -270,91 +290,166 @@ Page({
     })
 
   },
-  fixItem:function(param){
-    var that = this;
+  // fixItem:function(param){
+  //   var that = this;
 
-    switch(that.data.fixItemType){
-      case 1:
-      case 4:      
-        that.setData({
-          caption: "修改姓名",
-          value: that.data.name
-          });
-      break;
-      case 2:
-      case 5:
-        that.setData({ 
-          caption: "修改昵称",
-          value: that.data.nickName 
-          });
-      break;
-      case 3:
-      case 6:
-        that.setData({ 
-          caption: "修改电话",
-          value: that.data.tel 
-          });
-      break;
+  //   switch(that.data.fixItemType){
+  //     case 1:
+  //     case 4:      
+  //       that.setData({
+  //         caption: "修改姓名",
+  //         value: that.data.name
+  //         });
+  //     break;
+  //     case 2:
+  //     case 5:
+  //       that.setData({ 
+  //         caption: "修改昵称",
+  //         value: that.data.nickName 
+  //         });
+  //     break;
+  //     case 3:
+  //     case 6:
+  //       that.setData({ 
+  //         caption: "修改电话",
+  //         value: that.data.tel 
+  //         });
+  //     break;
 
-    }
+  //   }
     
-    that.setData({ fixItem: true});
+  //   that.setData({ fixItem: true});
 
-  },
-  fixValue: function (e) {
+  // },
+  // fixValue: function (e) {
+  //   var that = this;
+  //   switch(that.data.fixItemType){
+  //     case 1:
+  //     case 4:
+  //     that.setData({name: e.detail.value});
+  //     break;
+  //     case 2:
+  //     case 5:
+  //     that.setData({nickName: e.detail.value});
+  //     break;
+  //     case 3:
+  //     case 6:
+  //     that.setData({tel: e.detail.value});
+  //     break;
+  //   }
+  // },
+  // save: function (e) {
+  //   var that = this;
+  //   var url = null;
+  //   switch(that.data.fixItemType){
+  //     case 1:
+  //       url = "mine_teacher/fixteachername?name=" + that.data.name;
+  //     break;
+  //     case 2:
+  //       url = "mine_teacher/fixteachernickname?nickname=" + that.data.nickName;
+  //     break;
+  //     case 3:
+  //       url = "mine_teacher/fixteachertel?tel=" + that.data.tel;
+  //     break;
+  //     case 4:
+  //       url = "mine_school/fixschoolname?name=" + that.data.name;
+  //     break;
+  //     case 5:
+  //       url = "mine_school/fixschoolnickname?nickname=" + that.data.nickName;
+  //     break;
+  //     case 6:
+  //       url = "mine_school/fixschooltel?tel=" + that.data.tel;
+  //     break;
+  //   }
+  //   utilRequest.NetRequest({
+  //     url:url,
+  //     success:function(res){
+  //       console.log(res);
+  //     },
+  //     fail:function(res){
+
+  //     }
+  //   });
+
+  //   that.setData({
+  //     fixItem: false,
+  //     fixItemType: 0,
+  //     });
+  // },
+  changeTeacherName: function(name){
     var that = this;
-    switch(that.data.fixItemType){
-      case 1:
-      case 4:
-      that.setData({name: e.detail.value});
-      break;
-      case 2:
-      case 5:
-      that.setData({nickName: e.detail.value});
-      break;
-      case 3:
-      case 6:
-      that.setData({tel: e.detail.value});
-      break;
-    }
-  },
-  save: function (e) {
-    var that = this;
-    var url = null;
-    switch(that.data.fixItemType){
-      case 1:
-        url = "mine_teacher/fixteachername?name=" + that.data.name;
-      break;
-      case 2:
-        url = "mine_teacher/fixteachernickname?nickname=" + that.data.nickName;
-      break;
-      case 3:
-        url = "mine_teacher/fixteachertel?tel=" + that.data.tel;
-      break;
-      case 4:
-        url = "mine_school/fixschoolname?name=" + that.data.name;
-      break;
-      case 5:
-        url = "mine_school/fixschoolnickname?nickname=" + that.data.nickName;
-      break;
-      case 6:
-        url = "mine_school/fixschooltel?tel=" + that.data.tel;
-      break;
-    }
+    that.setData({
+      name: name,
+    })
     utilRequest.NetRequest({
-      url:url,
-      success:function(res){
-        console.log(res);
+      url: "mine_teacher/fixteachername",
+      data:{
+        name: name,
       },
-      fail:function(res){
+      success: function(res){
+        
+      }
+    })
+  },
+  changeTeacherNickName: function(nickName){
+    var that = this;
+    that.setData({
+      nickName: nickName,
+    })
+    utilRequest.NetRequest({
+      url: "mine_teacher/fixteachernickname",
+      data: {
+        nickname: nickName,
+      },
+      success: function (res) {
 
       }
-    });
-
+    })
+  },
+  changeTeacherTel: function(tel){
+    var that = this;
     that.setData({
-      fixItem: false,
-      fixItemType: 0,
-      });
+      tel: tel,
+    })
+    utilRequest.NetRequest({
+      url: "mine_teacher/fixteachertel",
+      data: {
+        tel: tel,
+      },
+      success: function (res) {
+
+      }
+    })
+  },
+  changeSchoolName: function(name){
+    var that = this;
+    that.setData({
+      name: name,
+    })
+    utilRequest.NetRequest({
+      url: "mine_school/fixschoolname",
+      data: {
+        name: name,
+      },
+      success: function (res) {
+
+      }
+    })
+  },
+  changeSchoolTel: function(tel){
+    var that = this;
+    that.setData({
+      tel: tel,
+    })
+    utilRequest.NetRequest({
+      url: "mine_school/fixschooltel",
+      data: {
+        tel: tel,
+      },
+      success: function (res) {
+
+      }
+    })
   }
 
 })

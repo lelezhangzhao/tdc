@@ -64,20 +64,20 @@
 }
 .tagcomponent{
   display: inline-block;
-  line-height: 40rpx;
-  height: 40rpx;
+  line-height: 50rpx;
+  height: 50rpx;
   font-size: 24rpx;
   color: #FFF;
   margin-right: 20rpx;
 }
 .edittag-button{
   display: inline-block;
-  height: 40rpx;
+  height: 50rpx;
   width: 120rpx;
   padding: 0;
-  line-height: 40rpx;
+  line-height: 50rpx;
   font-size: 24rpx;
-  top: 12rpx;
+  top: 17rpx;
 }
 
 .workaddress-content-angle-image{
@@ -85,7 +85,8 @@
   width: 17rpx;
   height: 26rpx;
 }
-.introduction-content-label{
+.introduction-content-textarea{
+  width: 100%;
   display: block;
   font-size: 28rpx;
 }
@@ -134,4 +135,19 @@
   width: 100rpx;
   height: 40rpx;
   border: #C9C9C9 solid 1rpx;
+}
+.weui-uploader__img{
+  display:block;
+  width:150rpx;
+  height:150rpx;
+}
+.weui-uploader__file-content{
+  position:absolute;
+  top:50%;
+  left:50%;
+}
+.weui-uploader__input{
+  display:block;
+  width:150rpx;
+  height:150rpx;
 }

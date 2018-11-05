@@ -1,6 +1,7 @@
 // tdc/mineteacher/mineteacher.js
 var app = getApp();
 var utilRequest = require("../util/request.js");
+var globalData = require("../util/globaldata.js");
 
 Page({
 
@@ -8,25 +9,60 @@ Page({
    * 页面的初始数据
    */
   data: {
-    publishList:null,
-    collectionList:null,
-    footerList:null,
 
-    isPublishList:false,
-    isCollectionList:false,
-    isFooterList:false,
+    role: 0,
 
+    name: "",
+    logo: "",
+    publishList: [],
+
+    option_image: "",
+
+    /**
+     * 1 publish
+     * 2 collection
+     * 3 history
+     */
+    type: 1,
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    // if (app.globalData.userid == null){
-    //   wx.navigateTo({
-    //     url: '../login/login',
-    //   })
-    // }
+    var that = this;
+    that.setData({
+      role: app.globalData.role,
+      option_image: "../image/mine/option.png",
+    })
+    var url = "";
+    if(that.data.role == 0){
+      url = "mine_teacher/getinitializeinfo";
+    }else if(that.data.role == 1){
+      url = "mine_school/getinitializeinfo";
+    }
+
+    utilRequest.NetRequest({
+      url: url,
+      success:function(res){
+        console.log(res);
+        if(res.code == "ERROR_STATUS_SUCCESS"){
+          var jsoncontent = JSON.parse(res.jsoncontent)[0];
+          that.setData({
+            type: 1,
+            name: jsoncontent.name,
+            logo: globalData.GetServerHttps() + jsoncontent.logo,
+            publishList: jsoncontent.publishlist,
+          })
+          console.log(that.data.publishList);
+        }
+      },
+      fail:function(res){
+
+      }
+    })
+
+
   },
 
   /**
@@ -90,86 +126,90 @@ Page({
   },
   publishRecord:function(e){
     var that = this;
+    var url = "";
+    if (that.data.role == 0) {
+      url = "mine_teacher/getpublishlist";
+    } else if (that.data.role == 1) {
+      url = "mine_school/getpublishlist";
+    }
     utilRequest.NetRequest({
-      url:"mine_teacher/getpublishlist",
-      success:function(res){
-        that.resizeData();
-        
-        if(res.code == "ERROR_STATUS_SUCCESS"){
+      url: url,
+      success: function (res) {
+        if (res.code == "ERROR_STATUS_SUCCESS") {
           var jsoncontent = JSON.parse(res.jsoncontent);
           that.setData({
-            isPublishList: true,
+            type: 1,
             publishList: jsoncontent,
-          });
+          })
         }else if(res.code == "ERROR_STATUS_LISTISNULL"){
           that.setData({
-            isPublishList: true,
-            publishList: null,
+            type: 1,
+            publishList: [],
           })
         }
       },
-      fail:function(res){
+      fail: function(res){
 
       }
-    });
+    })
   },
   collectionRecord:function(e){
     var that = this;
+    var url = "";
+    if (that.data.role == 0) {
+      url = "mine_teacher/getcollectionlist";
+    } else if (that.data.role == 1) {
+      url = "mine_school/getcollectionlist";
+    }
     utilRequest.NetRequest({
-      url: "mine_teacher/getcollectionlist",
+      url: url,
       success: function (res) {
-        that.resizeData();
+        if (res.code == "ERROR_STATUS_SUCCESS") {
+          var jsoncontent = res.jsoncontent;
+          that.setData({
+            type: 2,
+            publishList: jsoncontent,
+          })
+        } else if (res.code == "ERROR_STATUS_LISTISNULL") {
+          that.setData({
+            type: 2,
+            publishList: [],
+          })
+        }
+      },
+      fail: function(res){
 
+      }
+    })
+  },
+  historyRecord:function(e){
+    var that = this;
+    var url = "";
+    if (that.data.role == 0) {
+      url = "mine_teacher/gethistorylist";
+    } else if (that.data.role == 1) {
+      url = "mine_school/gethistorylist";
+    }
+    utilRequest.NetRequest({
+      url: url,
+      success: function (res) {
         if (res.code == "ERROR_STATUS_SUCCESS") {
           var jsoncontent = JSON.parse(res.jsoncontent);
           that.setData({
-            collectionList: jsoncontent,
-            isCollectionList: true,
-          });
-        }else if(res.code == "ERROR_STATUS_LISTISNULL"){
+            type: 3,
+            publishList: jsoncontent,
+          })
+        } else if (res.code == "ERROR_STATUS_LISTISNULL") {
           that.setData({
-            collectionList: null,
-            isCollectionList: true,
+            type: 3,
+            publishList: [],
           })
         }
       },
       fail: function (res) {
 
       }
-    });
-  },
-  footerRecord:function(e){
-    var that = this;
-    utilRequest.NetRequest({
-      url: "mine_teacher/getfooterlist",
-      success: function (res) {
-        that.resizeData();
-        
-        if (res.code == "ERROR_STATUS_SUCCESS") {
-          var jsoncontent = JSON.parse(res.jsoncontent);
-          that.setData({
-            footerList: jsoncontent,
-            isFooterList: true,
-          });
-        }else if(res.code == "ERROR_STATUS_LISTISNULL"){
-          that.setData({
-            footerList: null,
-            isFooterList: true,
-          })
-        }
-      },
-      fail: function (res) {
-
-      }
-    });
-  },
-  resizeData:function(){
-    var that = this;
-    that.setData({
-      isPublishList:false,
-      isCollectionList:false,
-      isFooterList:false,
-    });
+    })
   },
   publishInfo:function(e){
     var publishId = e.currentTarget.dataset.id;

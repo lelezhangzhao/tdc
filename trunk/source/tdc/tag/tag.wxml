@@ -1,32 +1,50 @@
 <!--tdc/tag/tag.wxml-->
 <view class="page">
-  <view>
-    <checkbox-group bindchange="danceTypeChange">
-      <view wx:for="{{tag.danceType}}" wx:key="" >
-        <checkbox value="{{item.item}}" checked="{{item.hasItem}}">{{item.item}}</checkbox>
+  <view class="type-view" wx:if="{{role == 0}}">
+    <view class="title-view">
+      <label>舞钟</label>
+    </view>
+    <view class="content-view" >
+      <view class="content-item-view"  wx:for="{{tag.danceType}}" wx:key="">
+        <label wx:if="{{item.hasItem}}" class="tag-label tag-sel-label" data-item="{{item.item}}" bindtap="danceTypeChange">{{item.item}}</label>
+        <label wx:if="{{!item.hasItem}}" class="tag-label tag-unsel-label" data-item="{{item.item}}" bindtap="danceTypeChange">{{item.item}}</label>
       </view>
-    </checkbox-group>
-    <checkbox-group bindchange="workTypeChange">
-      <view  wx:for="{{tag.workType}}" wx:key="">
-        <checkbox value="{{item.item}}" checked="{{item.hasItem}}">{{item.item}}</checkbox>
-      </view>
-    </checkbox-group>
-    <checkbox-group bindchange="teacherTypeChange">
-      <view  wx:for="{{tag.teacherType}}" wx:key="">
-        <checkbox value="{{item.item}}" checked="{{item.hasItem}}">{{item.item}}</checkbox>
-      </view>
-    </checkbox-group>
+    </view>
   </view>
 
-  <view wx:if="{{role == 1}}">
-    <checkbox-group bindchange="welfareChange">
-      <view wx:for="{{tag.welfare}}" wx:key="">
-        <checkbox value="{{item.item}}" checked="{{item.hasItem}}">{{item.item}}</checkbox>
+  <view class="type-view"  wx:if="{{role == 0}}">
+    <view class="title-view">
+      <label>工作时间</label>
+    </view>
+    <view class="content-view">
+      <view class="content-item-view" wx:for="{{tag.workType}}" wx:key="">
+        <label wx:if="{{item.hasItem}}" class="tag-label tag-sel-label" data-item="{{item.item}}" bindtap="workTypeChange">{{item.item}}</label>
+        <label wx:if="{{!item.hasItem}}" class="tag-label tag-unsel-label" data-item="{{item.item}}" bindtap="workTypeChange">{{item.item}}</label>
       </view>
-    </checkbox-group>
+    </view>
   </view>
 
-  <view>
-    <button bindtap="confirm">确定</button>
+  <view class="type-view" wx:if="{{role == 0}}">
+    <view class="title-view">
+      <label>老师资质</label>
+    </view>
+    <view class="content-view">
+      <view class="content-item-view" wx:for="{{tag.teacherType}}" wx:key="">
+        <label wx:if="{{item.hasItem}}" class="tag-label tag-sel-label" data-item="{{item.item}}" bindtap="teacherTypeChange">{{item.item}}</label>
+        <label wx:if="{{!item.hasItem}}" class="tag-label tag-unsel-label" data-item="{{item.item}}" bindtap="teacherTypeChange">{{item.item}}</label>
+      </view>
+    </view>
+  </view>
+
+  <view class="type-view" wx:if="{{role == 1}}">
+    <view class="title-view">
+      <label>福利</label>
+    </view>
+    <view class="content-view">
+      <view class="content-item-view" wx:for="{{tag.welfare}}" wx:key="">
+        <label wx:if="{{item.hasItem}}" class="tag-label tag-sel-label" data-item="{{item.item}}" bindtap="welfareChange">{{item.item}}</label>
+        <label wx:if="{{!item.hasItem}}" class="tag-label tag-unsel-label" data-item="{{item.item}}" bindtap="welfareChange">{{item.item}}</label>
+      </view>
+    </view>
   </view>
 </view>

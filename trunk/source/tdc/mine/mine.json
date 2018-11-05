@@ -1,1 +1,6 @@
-{}
+{
+  "usingComponents": {
+    "component-tag": "../component/tag/tag",
+    "component-brief-introduction": "../component/briefIntroduction/briefIntroduction"
+  }
+}

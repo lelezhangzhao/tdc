@@ -20,8 +20,32 @@ use think\Db;
 
 
 class MineSchool extends Controller{
-    public function GetPublishList(){
+    public function GetInitializeInfo(){
+        //获取第一次加载信息
+        $userid = Session::get("userid");
+        $sql = "select name, logo from tdc_user where id = $userid";
+        $result = Db::query($sql);
 
+        $sql_publish = "select a.id, a.tag, a.introduction, a.publishobject, b.name, b.logo from tdc_publish as a join tdc_user as b on a.userid = b.id where b.id = $userid";
+        $result_publish = Db::query($sql_publish);
+
+        $result[0]["publishlist"] = $result_publish;
+
+        return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "获取成功", json_encode($result));
+    }
+
+    public function GetPublishList(){
+        $userid = Session::get("userid");
+        $sql = "select a.id, a.tag, a.introduction, a.publishobject, b.name, b.logo from tdc_publish as a join tdc_user as b on a.userid = b.id where b.id = $userid";
+        $result = Db::query($sql);
+
+
+        if(empty($result)){
+            return Status::ReturnErrorStatus("ERROR_STATUS_LISTISNULL");
+        }
+
+
+        return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "获取成功", json_encode($result));
     }
 
     public function GetPublishInfo(Request $request){
@@ -48,7 +72,29 @@ class MineSchool extends Controller{
 
 
     public function GetCollectionList(){
+        $userid = Session::get("userid");
+        $sql = "select publishid from tdc_collection where id = $userid";
+        $result = Db::query($sql);
 
+        if(empty($result)){
+            return Status::ReturnErrorStatus("ERROR_STATUS_LISTISNULL");
+        }
+
+        //拆分publishid
+        $publishArr = explode(";", $result[0]["publishid"]);
+        $publishes = array();
+        foreach($publishArr as $item){
+            $sql = "select a.id, a.publishobject, a.tag, a.introduction, b.name, b.logo from tdc_publish as a join tdc_user as b on a.userid = b.id where a.id = $item";
+            $result = Db::query($sql);
+
+            $publish = json_encode($result);
+
+            $publish = substr($publish, 1, strlen($publish) - 2);
+
+            array_push($publishes, json_decode($publish));
+        }
+
+        return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "获取成功", json_encode($publishes));
     }
 
     public function DeleteCollection(Request $request){
@@ -56,8 +102,30 @@ class MineSchool extends Controller{
     }
 
 
-    public function GetFooterList(){
+    public function GetHistoryList(){
+        $userid = Session::get("userid");
+        $sql = "select publishid from tdc_history where id = $userid";
+        $result = Db::query($sql);
 
+        if(empty($result)){
+            return Status::ReturnErrorStatus("ERROR_STATUS_LISTISNULL");
+        }
+
+        //拆分publishid
+        $publishArr = explode(";", $result[0]["publishid"]);
+        $publishes = array();
+        foreach($publishArr as $item){
+            $sql = "select a.id, a.publishobject, a.tag, a.introduction, b.name, b.logo from tdc_publish as a join tdc_user as b on a.userid = b.id where a.id = $item";
+            $result = Db::query($sql);
+
+            $publish = json_encode($result);
+
+            $publish = substr($publish, 1, strlen($publish) - 2);
+
+            array_push($publishes, json_decode($publish));
+        }
+
+        return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "获取成功", json_encode($publishes));
     }
 
     public function DeleteFooter(Request $request){
@@ -162,16 +230,32 @@ class MineSchool extends Controller{
 
     }
 
-    public function FixSchoolCaption(Request $request){
+    public function FixSchoolName(Request $request){
+        $name = $request->param("name");
+        $userid = Session::get("userid");
 
+        $sql = "update tdc_user set name = '" . $name . "' where id = $userid";
+        Db::execute($sql);
+
+        return Status::ReturnJson("ERROR_STATUS_SUCCESS", "修改成功");
     }
 
     public function FixSchoolTel(Request $request){
-
+        $tel = $request->param("tel");
+        $userid = Session::get("userid");
+        $sql = "update tdc_user set tel = '" . $tel . "' where id = $userid";
+        Db::execute($sql);
+        return Status::ReturnErrorStatus("ERROR_STATUS_SUCCESS");
     }
 
     public function FixSchoolAddress(Request $request){
+        $address = $request->param("address");
+        $userid = Session::get("userid");
+        $sql = "update tdc_user set address = '" . $address . "' where id = $userid";
 
+        Db::execute($sql);
+
+        return Status::ReturnErrorStatus("ERROR_STATUS_SUCCESS");
     }
 
     public function Arbitration(Request $request){
@@ -179,6 +263,27 @@ class MineSchool extends Controller{
     }
 
     public function Logout(){
+
+    }
+
+    public function UploadPhoto(Request $request){
+        return 123;
+    }
+
+    public function GetSchoolInfo(){
+        $userid = Session::get("userid");
+
+
+        $sql = "select logo, name, tel, address from tdc_user where id = $userid";
+
+        $result = Db::query($sql);
+
+        if(empty($result)){
+            return Status::ReturnErrorStatus("ERROR_STATUS_USERISNOTEXIST");
+        }
+
+
+        return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "", json_encode($result));
 
     }
 //    public function FixDanceType(Request $request){

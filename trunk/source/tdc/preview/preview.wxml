@@ -125,7 +125,32 @@
 
   <view class="introduction-view">
     <label class="introduction-title-label">{{introduction_title}}</label>
-    <label class="introduction-content-label">{{introduction}}</label>
+    <textarea class="introduction-content-textarea" value="{{introduction}}" placeholder="{{introduction_title}}" maxlength="1000"></textarea>
   </view>
 
+    <view class="weui-uploader">
+      <view class="weui-uploader__hd">
+          <view class="weui-uploader__title">图片上传</view>
+          <view class="weui-uploader__info">{{photos.length}}/4</view>
+      </view>
+      <view class="weui-uploader__bd">
+          <view class="weui-uploader__files" id="uploaderFiles">
+              <view class="weui-uploader__file" wx:if="{{photos.length >= 1}}" bindtap="previewImage" id="{{photos[0]}}">
+                <image class="weui-uploader__img" src="{{photos[0]}}" mode="aspectFill" />
+              </view>
+              <view class="weui-uploader__file" wx:if="{{photos.length >= 2}}" bindtap="previewImage" id="{{photos[1]}}">
+                <image class="weui-uploader__img" src="{{photos[1]}}" mode="aspectFill" />
+              </view>
+              <view class="weui-uploader__file" wx:if="{{photos.length >= 3}}" bindtap="previewImage" id="{{photos[2]}}">
+                <image class="weui-uploader__img" src="{{photos[2]}}" mode="aspectFill" />
+              </view>
+              <view class="weui-uploader__file" wx:if="{{photos.length >= 4}}" bindtap="previewImage" id="{{photos[3]}}">
+                <image class="weui-uploader__img" src="{{photos[3]}}" mode="aspectFill" />
+              </view>
+              <view class="weui-uploader__input-box" wx:if="{{photos.length < 4}}">
+                <view class="weui-uploader__input" bindtap="chooseImage"></view>
+              </view>
+          </view>
+      </view>
+  </view>
 </view>

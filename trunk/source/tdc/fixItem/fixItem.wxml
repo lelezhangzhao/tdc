@@ -1,0 +1,11 @@
+<!--tdc/fixItem/fixItem.wxml-->
+  <view class="page">
+    <view>
+      <label>{{caption}}</label>
+      <input bindinput="fixValue" value="{{value}}" placeholder="请输入{{caption}}"/>
+    </view>
+
+    <view>
+      <button bindtap="save">保存</button>
+    </view>
+  </view>

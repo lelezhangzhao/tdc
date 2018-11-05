@@ -1,98 +1,66 @@
 <!--tdc/fixTeacherInfo/fixTeacherInfo.wxml-->
 <view class="page window">
-
-  <view wx:if="{{!fixItem}}">
-    <view class="top">
-      <view class="weui-cells weui-cells_after-title">
-        <navigator bindtap="fixLogo" class="weui-cell weui-cell_access" hover-class="weui-cell_active" style="height:40">
-          <view class="weui-cell__bd">头像</view>
-          <image class="weui-cell__ft weui-cell__ft_in-access" src="{{logo}}"></image>
-        </navigator>
-        <navigator bindtap="fixName" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
-          <view class="weui-cell__bd">姓名</view>
-          <view class="weui-cell__ft weui-cell__ft_in-access">{{name}}</view>
-        </navigator>
-        <navigator bindtap="fixNickName" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
-          <view class="weui-cell__bd">昵称</view>
-          <view class="weui-cell__ft weui-cell__ft_in-access">{{nickName}}</view>
-        </navigator>
-        <navigator bindtap="fixTel" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
-          <view class="weui-cell__bd">手机</view>
-          <view class="weui-cell__ft weui-cell__ft_in-access">{{tel}}</view>
-        </navigator>
-        <navigator bindtap="fixSex" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
-          <view class="weui-cell__bd">性别</view>
-          <view class="weui-cell__ft weui-cell__ft_in-access">{{sex}}</view>
-        </navigator>
-        <navigator bindtap="fixBirthday" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
-          <view class="weui-cell__bd">生日</view>
-          <view class="weui-cell__ft weui-cell__ft_in-access">
-            <picker class="weui-btn" mode="date" start="1990-01-01" end="2099-12-12" value="{{birthday}}" bindchange="fixBirthday">
-              <label>{{birthday}}</label>
-            </picker>
-          </view>
-        </navigator>
-        <navigator bindtap="fixAddress" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
-          <view class="weui-cell__bd">所在地</view>
-          <view class="weui-cell__ft weui-cell__ft_in-access">
-          <picker mode="region" bindchange="fixAddress" value="{{region}}" >
-            <label>{{region[0]}}-{{region[1]}}-{{region[2]}}</label>
+  <view wx:if="{{role == 0}}">
+    <view class="weui-cells weui-cells_after-title">
+      <view bindtap="fixLogo" class="weui-cell weui-cell_access" hover-class="weui-cell_active" style="height:40">
+        <view class="weui-cell__bd">头像</view>
+        <image class="weui-cell__ft weui-cell__ft_in-access" src="{{logo}}"></image>
+      </view>
+      <view bindtap="fixName" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+        <view class="weui-cell__bd">姓名</view>
+        <view class="weui-cell__ft weui-cell__ft_in-access">{{name}}</view>
+      </view>
+      <view bindtap="fixNickName" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+        <view class="weui-cell__bd">昵称</view>
+        <view class="weui-cell__ft weui-cell__ft_in-access">{{nickName}}</view>
+      </view>
+      <view bindtap="fixTel" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+        <view class="weui-cell__bd">手机</view>
+        <view class="weui-cell__ft weui-cell__ft_in-access">{{tel}}</view>
+      </view>
+      <view bindtap="fixSex" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+        <view class="weui-cell__bd">性别</view>
+        <view class="weui-cell__ft weui-cell__ft_in-access">{{sex}}</view>
+      </view>
+      <view bindtap="fixBirthday" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+        <view class="weui-cell__bd">生日</view>
+        <view class="weui-cell__ft weui-cell__ft_in-access">
+          <picker class="weui-btn" mode="date" start="1990-01-01" end="2099-12-12" value="{{birthday}}" bindchange="fixBirthday">
+            <label>{{birthday}}</label>
           </picker>
-          </view>
-        </navigator>
+        </view>
       </view>
-
-      <!-- <view bindtap="fixLogo">
-        <label>头像</label>
-        <label>{{logo}}</label>
-      </view>
-
-      <view bindtap="fixName">
-        <label>姓名</label>
-        <label>{{name}}</label>
-      </view>
-
-      <view bindtap="fixNickName">
-        <label>昵称</label>
-        <label>{{nickName}}</label>
-      </view>
-
-      <view bindtap="fixTel">
-        <label>手机</label>
-        <label>{{tel}}</label>
-      </view>
-    </view>
-
-    <view class="bottom">
-      <view bindtap="fixSex">
-        <label>性别</label>
-        <label>{{sex}}</label>
-      </view>
-
-      <view>
-        <label>生日</label>
-        <picker class="weui-btn" mode="date" start="1990-01-01" end="2099-12-12" value="{{birthday}}" bindchange="fixBirthday">
-          <label>{{birthday}}</label>
-        </picker>
-      </view>
-
-      <view>
-        <label>所在地</label>
+      <view class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+        <view class="weui-cell__bd">所在地</view>
+        <view class="weui-cell__ft weui-cell__ft_in-access">
         <picker mode="region" bindchange="fixAddress" value="{{region}}" >
           <label>{{region[0]}}-{{region[1]}}-{{region[2]}}</label>
         </picker>
-      </view> -->
+        </view>
+      </view>
     </view>
   </view>
 
-  <view wx:if="{{fixItem}}">
-    <view>
-      <label>{{caption}}</label>
-      <input bindinput="fixValue" value="{{value}}"/>
+  <view wx:elif="{{role == 1}}">
+    <view bindtap="fixLogo" class="weui-cell weui-cell_access" hover-class="weui-cell_active" style="height:40">
+      <view class="weui-cell__bd">头像</view>
+      <image class="weui-cell__ft weui-cell__ft_in-access logo-view" src="{{logo}}"></image>
     </view>
-
-    <view>
-      <button bindtap="save">保存</button>
+    <view bindtap="fixName" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+      <view class="weui-cell__bd">中心名称</view>
+      <view class="weui-cell__ft weui-cell__ft_in-access">{{name}}</view>
+    </view>
+    <view bindtap="fixTel" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+      <view class="weui-cell__bd">联系电话</view>
+      <view class="weui-cell__ft weui-cell__ft_in-access">{{tel}}</view>
+    </view>
+    <view class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+      <view class="weui-cell__bd">所在地</view>
+      <view class="weui-cell__ft weui-cell__ft_in-access">
+      <picker mode="region" bindchange="fixAddress" value="{{region}}" >
+        <label>{{region[0]}}-{{region[1]}}-{{region[2]}}</label>
+      </picker>
+      </view>
     </view>
   </view>
 </view>
