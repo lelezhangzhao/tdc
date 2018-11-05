@@ -1,1 +1,5 @@
-{}
+{
+    "usingComponents": {
+      "component-tag": "../component/tag/tag"
+    }
+}

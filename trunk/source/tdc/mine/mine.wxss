@@ -52,3 +52,6 @@
   line-height: 70rpx;
   height: 70rpx;
 }
+.publish-item-view{
+  height: 250rpx;
+}

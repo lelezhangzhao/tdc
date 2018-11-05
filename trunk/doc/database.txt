@@ -47,3 +47,13 @@ insert tdc_evaluate(userid, publishid, score, content, evaluatetime, status)
 values
 (1, 7, 4, "这个老师是真NB", "2018-10-30 08:55:00", 0);
 
+insert into tdc_search(userid, searchhistory)
+values
+(16, "拉丁;摩登;老师;张召");
+
+insert into tdc_hot(keywords, count)
+values
+("拉丁", 100),
+("摩登", 200),
+("五险一金", 200);
+

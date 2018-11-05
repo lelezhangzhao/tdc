@@ -1,1 +1,5 @@
-{}
+{
+    "usingComponents": {
+      "component-brief-introduction": "../component/briefIntroduction/briefIntroduction"
+    }
+}

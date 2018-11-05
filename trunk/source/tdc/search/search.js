@@ -10,7 +10,13 @@ Page({
     searchHistory:[],
     searchHot:[],
     searchResult:[],
-    searchText:null,
+    searchText:"",
+
+    roleTypeRange: [],
+    roleType: 0,
+
+
+    angle_image: "",
 
     hasSearch:false,
   },
@@ -19,8 +25,37 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    
     var that = this;
-    that.setData({hasSearch: false});
+    that.setData({
+      hasSearch: false,
+      roleTypeRange: ["全部", "机构", "老师"],
+      roleType: 0,
+      angle_image: "../image/search/angle.png",
+    });
+
+    //获取搜索历史、热点
+    utilRequest.NetRequest({
+      url: "search/getinitializesearch",
+      success: function(res){
+        if(res.code == "ERROR_STATUS_SUCCESS"){
+          var jsoncontent = JSON.parse(res.jsoncontent);
+
+          var historyList = jsoncontent.history[0];
+          var hotList = jsoncontent.hot;
+
+          console.log(historyList);
+          
+          that.setData({
+            searchHistory: historyList.searchhistory.split(";"),
+            searchHot: hotList,
+          })
+        }
+      },
+      fail: function(res){
+
+      }
+    })
 
   },
 

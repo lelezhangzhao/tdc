@@ -1,1 +1,42 @@
 /* tdc/searchTeacher/searchTeacher.wxss */
+.page{
+  margin: 0 5%;
+  width: 90%;
+}
+
+.top-view{
+  display: flex;
+  flex-direction: row;
+}
+.picker-class{
+  display: flex;
+  flex-direction: row;
+  font-size: 30rpx;
+  width: 140rpx;
+}
+.angle-image{
+  position: absolute;
+  margin-left: 5rpx;
+  top: 25rpx;
+  width: 12rpx;
+  height: 8rpx;
+}
+
+.seperator-line{
+  width: 2rpx;
+  height: 39rpx;
+  background-color: #E5E5E5; 
+  margin: 0 20rpx;
+
+}
+.bottom-view{
+  margin-top: 30rpx;
+}
+.top-line{
+  margin-top: 20rpx;
+  height: 2rpx;
+  background-color: #E5E5E5; 
+}
+.publish-item{
+  height: 250rpx;
+}

@@ -27,7 +27,7 @@
   </view>
 
   <view class="bottom-view">
-    <view wx:for="{{publishList}}" wx:key="" class="publish-item-view" bindtap="publishInfo" data-id="{{item.id}}" >
+    <view wx:for="{{publishList}}" wx:key="" bindtap="publishInfo" data-id="{{item.id}}" class="publish-item-view">
       <component-brief-introduction name="{{item.name}}" logo="{{item.logo}}" tags="{{item.tag}}" briefIntroduction="{{item.introduction}}" isTeacher="{{item.publishobject == 0}}" showtype="{{type}}"/>
     </view>
   </view>

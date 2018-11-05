@@ -126,7 +126,7 @@ Page({
               workaddress: jsoncontent.workaddress,
               introduction: jsoncontent.introduction,
               evaluateList: jsoncontent.evaluatelist,
-              logo: globalData.GetServerHttps() + "static/image/logo/" + jsoncontent.logo,
+              logo: globalData.GetServerHttps() + jsoncontent.logo,
               wagesbymonth: jsoncontent.wagesbymonth,
               wagesbymonthmin: jsoncontent.wagesbymonthmin,
               wagesbymonthmax: jsoncontent.wagesbymonthmax,
@@ -152,6 +152,7 @@ Page({
         }
       })
     }
+    
   },
 
   /**
@@ -209,7 +210,6 @@ Page({
   collection:function(e){
     var that = this;
 
-    console.log(that.data.publishId);
     utilRequest.NetRequest({
       url:"publish_info/collection",
       data:{

@@ -13,7 +13,7 @@
   </view>
 
   <view class="middle-view">
-    <label class="weui-search-bar__label" bindtap="searchTap">
+    <label class="search-bar__label" bindtap="searchTap">
       <icon class="weui-icon-search" type="search" size="14"></icon>
       <view class="weui-search-bar__text">搜索</view>
     </label>
@@ -29,7 +29,7 @@
   </view>
 
   <view class="bottom-view">
-    <view wx:for="{{hiEvalList}}" wx:key="" style="position:absolute;top:{{250 * index}}rpx;" class="high-eval-item" bindtap="publishInfo" data-id="{{item.id}}" >
+    <view wx:for="{{hiEvalList}}" wx:key="" class="high-eval-item" bindtap="publishInfo" data-id="{{item.id}}" >
       <component-brief-introduction name="{{item.name}}" logo="{{item.logo}}" tags="{{item.tag}}" briefIntroduction="{{item.introduction}}" isTeacher="{{item.publishobject == 0}}"/>
     </view>
   </view>

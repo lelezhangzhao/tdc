@@ -10,11 +10,15 @@ Page({
     search:null,
     region:[],
     danceTypeRange:[],
-    danceType:null,
+    danceType:0,
     welfareRange:[],
-    welfare:null,
+    welfare:0,
     otherRange:[],
-    other:null,
+    other:0,
+    teacherTypeRange:[],
+    teacherType: 0,
+
+    angle_image: "",
 
 
     itemList:null,
@@ -26,14 +30,18 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    
     var that = this;
     var searchType = options.searchtype;
+    var data = that.data;
     that.setData({
       search:"",
-      danceType:"舞种",
-      welfare:"福利",
-      other:"其他",
+      danceType: 0,
+      welfare: 0,
+      other: 0,
+      teacherType: 0,
       searchType: searchType,
+      angle_image: "../image/search/angle.png",
     });
 
     //区域
@@ -66,6 +74,7 @@ Page({
             danceTypeRange: danceTypeArray,
             welfareRange: welfareTypeArray,
             otherRange: workTypeArray,
+            teacherTypeRange: teacherTypeArray,
           });
         }
       },
@@ -74,29 +83,31 @@ Page({
       }
     });
 
-    var url = null;
-    if (searchType == 0){
-      //默认老师
-      url = "search_teacher/getdefaultteacherlist";
+    that.keyWordChange();
 
-    }else if(searchType == 1){
-      //默认学校
-      url = "search_school/getdefaultschoollist";
-    }
-    utilRequest.NetRequest({
-      url: url,
-      success: function (res) {
-        if (res.code == "ERROR_STATUS_SUCCESS") {
-          var jsoncontent = JSON.parse(res.jsoncontent);
-          that.setData({
-            itemList: jsoncontent,
-          });
-        }
-      },
-      fail: function (res) {
+    // var url = "";
+    // if (searchType == 0){
+    //   //默认老师
+    //   url = "search_teacher/getdefaultteacherlist";
 
-      }
-    })
+    // }else if(searchType == 1){
+    //   //默认学校
+    //   url = "search_school/getdefaultschoollist";
+    // }
+    // utilRequest.NetRequest({
+    //   url: url,
+    //   success: function (res) {
+    //     if (res.code == "ERROR_STATUS_SUCCESS") {
+    //       var jsoncontent = JSON.parse(res.jsoncontent);
+    //       that.setData({
+    //         itemList: jsoncontent,
+    //       });
+    //     }
+    //   },
+    //   fail: function (res) {
+
+    //   }
+    // })
   },
 
   /**
@@ -151,23 +162,81 @@ Page({
     var that = this;
     var region = e.detail.value;
     that.setData({region: region});
-
+    that.keyWordChange();
   },
   danceTypeChange: function(e){
     var that = this;
     var danceTypeArray = that.data.danceTypeRange;
-    that.setData({danceType: danceTypeArray[e.detail.value]});
+    that.setData({
+      danceType: e.detail.value
+    });
+    that.keyWordChange();
+    
   },
   welfareChange: function(e){
     var that = this;
     var welfareArray = that.data.welfareRange;
-    that.setData({ welfare: welfareArray[e.detail.value] });
+    that.setData({ 
+      welfare: e.detail.value
+    });
+    that.keyWordChange();
+    
     
   },
   otherChange: function(e){
     var that = this;
     var workTypeArray = that.data.otherRange;
-    that.setData({ other: workTypeArray[e.detail.value] });
+    that.setData({ 
+      other: e.detail.value 
+    });
+    that.keyWordChange();
+    
+  },
+  teacherTypeChange: function(e){
+    var that = this;
+    var teacherTypeArray = that.data.teacherTypeRange;
+    that.setData({
+      teacherType: e.detail.value,
+    })
+    
+    that.keyWordChange();
+  },
+  keyWordChange: function(e){
+    var that = this;
+    var url = "";
+    if (that.data.searchType == 0){
+      url = "search_teacher/getteacherlistbycondition";
+    }else if(that.data.searchType == 1){
+      url = "search_school/getschoollistbycondition";
+    }
+    utilRequest.NetRequest({
+      url: url,
+      data: {
+        region: that.data.region,
+        danceType: that.data.danceTypeRange[that.data.danceType],
+        welfare: that.data.welfareRange[that.data.welfare],
+        other: that.data.otherRange[that.data.other],
+        teacherType: that.data.teacherTypeRange[that.data.teacherType],
+      },
+      success: function (res) {
+        var jsoncontent = [];
+        if(res.code == "ERROR_STATUS_SUCCESS"){
+          jsoncontent = JSON.parse(res.jsoncontent);
+        }else if(res.code == "ERROR_STATUS_LISTISNULL"){
+          jsoncontent = [];
+        }
+
+        that.setData({
+          itemList: jsoncontent,
+        })
+
+      },
+      fail: function (res) {
+
+      }
+    })
+
+
   },
   publishInfo:function(e){
     var that = this;

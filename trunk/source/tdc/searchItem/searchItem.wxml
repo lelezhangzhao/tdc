@@ -1,36 +1,43 @@
 <!--tdc/searchTeacher/searchTeacher.wxml-->
 <view class="page">
-  <view>
-    <input type="text" placeholder="搜索">{{search}}</input>
-    
+  <view class="top-view">
+    <picker class="picker-class" mode="region" bindchange="reginonChange" value="{{region}}">
+      <label class="picker-label">{{region[2]}}</label>
+      <image class="angle-image" src="{{angle_image}}"></image>
+    </picker>
+
+    <view class="seperator-line"></view>
+
+    <picker class="picker-class" mode="selector" range="{{danceTypeRange}}" bindchange="danceTypeChange" value="{{danceType}}">
+      <label >{{danceTypeRange[danceType]}}</label>
+      <image class="angle-image" src="{{angle_image}}"></image>
+    </picker>
+    <view class="seperator-line"></view>
+
+    <picker wx:if="{{searchType == 0}}" class="picker-class" mode="selector" range="{{teacherTypeRange}}" bindchange="teacherTypeChange" value="{{teacherType}}">
+      <label>{{teacherTypeRange[teacherType]}}</label>
+      <image class="angle-image" src="{{angle_image}}"></image>
+    </picker>
+
+
+    <picker wx:if="{{searchType == 1}}" class="picker-class" mode="selector" range="{{welfareRange}}" bindchange="welfareChange" value="{{welfare}}">
+      <label>{{welfareRange[welfare]}}</label>
+      <image class="angle-image" src="{{angle_image}}"></image>
+    </picker>
+
+    <view class="seperator-line"></view>
+
+    <picker class="picker-class" mode="selector" range="{{otherRange}}" bindchange="otherChange" value="{{other}}">
+      <label>{{otherRange[other]}}</label>
+      <image class="angle-image" src="{{angle_image}}"></image>
+    </picker>
+
   </view>
+  <view class="top-line"></view>
 
-  <view>
-    <picker mode="region" bindchange="reginonChange" value="{{region}}">
-      <label >{{region[2]}}</label>
-    </picker>
-
-    <picker mode="selector" range="{{danceTypeRange}}" bindchange="danceTypeChange" value="{{danceType}}">
-      <label >{{danceType}}</label>
-    </picker>
-
-    <picker mode="selector" range="{{welfareRange}}" bindchange="welfareChange" value="{{welfare}}">
-      <label>{{welfare}}</label>
-    </picker>
-
-    <picker mode="selector" range="{{otherRange}}" bindchange="otherChange" value="{{other}}">
-      <label>{{other}}</label>
-    </picker>
-
-  </view>
-
-  <view>
-    <view wx:for="{{itemList}}" wx:key="">
-      <view data-id="{{item.id}}" bindtap="publishInfo">
-        {{item.id}}
-      </view>
-
-
+  <view class="bottom-view">
+    <view wx:for="{{itemList}}" wx:key="" class="publish-item" bindtap="publishInfo" data-id="{{item.id}}" >
+      <component-brief-introduction name="{{item.name}}" logo="{{item.logo}}" tags="{{item.tag}}" briefIntroduction="{{item.introduction}}" isTeacher="{{item.publishobject == 0}}"/>
     </view>
   </view>
 </view>

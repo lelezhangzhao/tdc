@@ -1,7 +1,6 @@
 /* tdc/component/briefIntroduction/briefIntroduction.wxss */
 .left-view{
-  position: absolute;
-  left: 30rpx;
+  float: left;
   
 }
 .brief-image{
@@ -10,8 +9,7 @@
 }
 
 .right-view{
-  position: absolute;
-  left: 300rpx;
+  margin-left: 250rpx;
 }
 .name-view{
   font-size: 26rpx;

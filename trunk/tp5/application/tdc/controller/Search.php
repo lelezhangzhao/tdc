@@ -56,4 +56,16 @@ class Search extends Controller{
         return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "", json_encode($results));
     }
 
+    public function GetInitializeSearch(){
+        //获取搜索历史、热点
+        $userid = Session::get("userid");
+        $sql_search_history = "select * from tdc_search where userid = $userid";
+        $result_search_history = Db::query($sql_search_history);
+
+        $sql_search_hot = "select * from tdc_hot order by count desc limit 10";
+        $result_search_hot = Db::query($sql_search_hot);
+
+        $result = array("history" => $result_search_history, "hot" => $result_search_hot);
+        return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "", json_encode($result));
+    }
 }

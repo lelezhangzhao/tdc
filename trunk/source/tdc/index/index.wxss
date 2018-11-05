@@ -1,3 +1,7 @@
+.page{
+  margin: 0 5%;
+  width: 90%;
+}
 .top-view {
   margin: 0 auto;
   height: 300rpx;
@@ -6,28 +10,26 @@
 
 .swiper-image {
   height: 100%;
-  width: 90%;
-  margin-left: 5%;
+  width: 100%;
   
 }
 .middle-view{
-  position: absolute;
+  display: flex;
+  flex-direction: row;
   top: 310rpx;
-  height: 60rpx;
-  width: 100%;
-
+  height: 80rpx;
 }
 
-.weui-search-bar__label {
-  position: absolute;
+.search-bar__label {
+  display: inline-block;
   left: 5%;
   width: 60%;
+  height: 60rpx;
   border-radius: 28rpx;
   padding-left: 3%;
   text-align: left;
   color: #9b9b9b;
   background: #EEE;
-
 }
 
 .weui-search-bar__text {
@@ -36,40 +38,35 @@
   vertical-align: middle;
 }
 .main_address{
-  position: absolute;
-  right: 12%;
+  margin-left: 50rpx;
+  width: 150rpx;
 }
 .main-address-img{
-  position: absolute;
-  right: 5%;
   width: 40rpx;
   height: 50rpx;
 }
 .main-find-school-teacher{
-  position: absolute;
-  top: 400rpx;
+  display: flex;  
+  flex-direction: row;
   width: 100%;
-  height: 100rpx;
+  height: 180rpx;
 }
 .main-school-img{
-  position: absolute;
-  left: 20%;
+  margin-left: 90rpx;
   width: 150rpx;
   height: 150rpx;
 }
 .main-teacher-img{
-  position: absolute;
-  right: 20%;
+  margin-left: 200rpx;
   width: 150rpx;
   height: 150rpx;
 }
 .bottom-view{
-  position: absolute;
   display: flex;
   flex-direction: column;
   top: 600rpx;
 }
 
 .high-eval-item{
-  position: relative;
+  height: 250rpx;
 }

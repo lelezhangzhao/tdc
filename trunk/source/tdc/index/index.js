@@ -19,6 +19,7 @@ Page({
     teacher_logo: null,
   },
   onLoad:function(){
+    
     var that = this;
     // wx.navigateTo({
     //   url: '../register/register',
