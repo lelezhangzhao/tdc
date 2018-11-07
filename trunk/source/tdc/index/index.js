@@ -32,6 +32,36 @@ Page({
       school_logo: "../image/main/school.png",
       teacher_logo: "../image/main/teacher.png",
     })
+
+    //开启聊天服务 
+    utilRequest.NetRequest({
+      url: "index/startchatserver",
+      success: function(res){
+        if(res.code == "ERROR_STATUS_SUCCESS"){
+          console.log("聊天服务开启成功");
+        }
+      },
+      fail: function(){
+
+      }
+    })
+
+    //获取高评用户
+    utilRequest.NetRequest({
+      url: "index/gethighevallist",
+      data: {
+        begin: that.data.begin
+      },
+      success: function (res) {
+        var jsoncontent = JSON.parse(res.jsoncontent);
+
+        that.setData({ hiEvalList: jsoncontent });
+      },
+      fail: function (res) {
+
+      }
+    });
+
     // wx.navigateTo({
     //   url: '../login/login',
     // })
@@ -39,21 +69,6 @@ Page({
   onShow: function(){
 
     var that = this;
-    //获取高评用户
-    utilRequest.NetRequest({
-      url:"index/gethighevallist",
-      data:{
-        begin: that.data.begin
-      },
-      success:function(res){
-        var jsoncontent = JSON.parse(res.jsoncontent);
-
-        that.setData({ hiEvalList: jsoncontent});
-      },
-      fail:function(res){
-
-      }
-    });
   },
 
   publishInfo:function(e){

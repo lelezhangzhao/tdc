@@ -9,6 +9,7 @@
 namespace app\tdc\controller;
 
 use app\tdc\api\Status;
+use app\tdc\api\GlobalData;
 
 use think\Controller;
 use think\Request;
@@ -17,7 +18,19 @@ use think\Db;
 
 
 class Index extends Controller{
+    public function StartChatServer(){
+        if(!GlobalData::$chatServerHasStarted){
+            GlobalData::$chatServerHasStarted = true;
+
+            return ChatServer::InitChatServer();
+
+            return Status::ReturnJson("ERROR_STATUS_SUCCESS", "开启成功");
+
+
+        }
+    }
     public function GetHighEvalList(Request $request){
+
 
         //返回evaluateavg为10的项，每次返回20个
         $begin = $request->param("begin");

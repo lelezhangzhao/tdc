@@ -108,26 +108,20 @@ Page({
 
   },
   searchByHistory:function(e){
+    var that = this;
     var historyKeyWords = e.currentTarget.dataset.keywords;
-
-    utilRequest.NetRequest({
-      url: "../search/searchbykeywords",
-      data:{
-        keywords: historyKeyWords,
-      },
-      success:function(res){
-        if(res.code == "ERROR_STATUS_SUCCESS"){
-          var jsoncontent = res.jsoncontent;
-        }
-      },
-      fail:function(res){
-
-      }
+    that.setData({
+      searchText: historyKeyWords,
     })
-
+    that.search();
   },
   searchByHot:function(e){
-
+    var that = this;
+    var historyKeyWords = e.currentTarget.dataset.keywords;
+    that.setData({
+      searchText: historyKeyWords,
+    })
+    that.search();
   },
   search:function(e){
     var that = this;
@@ -137,13 +131,17 @@ Page({
         keywords: that.data.searchText,
       },
       success:function(res){
-        console.log(res);
         if(res.code == "ERROR_STATUS_SUCCESS"){
           var jsoncontent = JSON.parse(res.jsoncontent);
           that.setData({ 
             searchResult: jsoncontent,
             hasSearch: true,
           });
+        }else if(res.code == "ERROR_STATUS_LISTISNULL"){
+          that.setData({
+            searchResult: [],
+            hasSearch: true,
+          })
         }
       }, 
       fail:function(res){

@@ -57,3 +57,12 @@ values
 ("摩登", 200),
 ("五险一金", 200);
 
+truncate table tdc_news;
+
+insert into tdc_news(status, title, content, logophoto, titleone, contentone, titletwo, contenttwo, titlethree, contentthree, publishtime, photoone, phototwo, photothree)
+values
+(0, "hello php", "这是php教学这是php教学这是php教学这是php教学这是php教学", "static/image/global/user_logo.png", "echo", "echo php", "var", "var php", "let", "let php", "2018-10-12 13:00:00", "static/image/find/defa", "static/image/find/defa", "static/image/find/defa"),
+(0, "hello java", "这是java教学这是java教学这是java教学这是java教学", "static/image/global/user_logo.png", "echo", "echo java", "var", "var java", "let", "let java", "2018-10-12 13:10:00", "static/image/find/defa", "static/image/find/defa", "static/image/find/defa"),
+(0, "hello c++", "这是C++教学这是C++教学这是C++教学这是C++教学这是C++教学", "static/image/global/user_logo.png", "echo", "echo c++", "var", "var c++", "let", "let c++", "2018-10-12 13:20:00", "static/image/find/defa", "static/image/find/defa", "static/image/find/defa"),
+(0, "hello node", "这是node教学这是node教学这是node教学这是node教学", "static/image/global/user_logo.png", "echo", "echo node", "var", "var node", "let", "let node", "2018-10-12 13:30:00", "static/image/find/defa", "static/image/find/defa", "static/image/find/defa");
+

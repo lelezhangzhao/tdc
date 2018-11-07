@@ -20,6 +20,7 @@ Page({
       url:"find/getfindlist",
       success:function(res){
         if(res.code == "ERROR_STATUS_SUCCESS"){
+          console.log(res);
           var jsoncontent = JSON.parse(res.jsoncontent);
           that.setData({ newsList: jsoncontent });
         } else if (res.code == "ERROR_STATUS_LISTISNULL"){
@@ -81,10 +82,11 @@ Page({
 
   },
   newsinfo: function(e){
-    var id = e.currentTarget.id;
+    var that = this;
+    var id = e.currentTarget.dataset.id;
 
     wx.navigateTo({
-      url: '../news/news?newsId=' + id,
+      url: '../findinfo/findinfo?newsId=' + id,
     })
   }
 })

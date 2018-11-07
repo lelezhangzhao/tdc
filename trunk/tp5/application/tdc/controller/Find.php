@@ -14,9 +14,11 @@ use think\Request;
 use think\Db;
 
 class Find extends Controller{
-    public function GetFindList(){
+    public function GetFindList(Request $request){
 
-        $sql = "select id, title from tdc_news where status = 0";
+
+
+        $sql = "select id, title, content, logophoto from tdc_news where status = 0";
         $result = Db::query($sql);
 
         if(empty($result)){

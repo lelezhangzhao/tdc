@@ -1,0 +1,30 @@
+<!--tdc/findinfo/findinfo.wxml-->
+<view class="page">
+  <view class="title-view">
+    <label class="title-label">{{title}}</label>
+  </view>
+
+  <view class="title-one-view">
+    <label class="title-title-label">{{title_one_title}}</label>
+    <label class="title-content-label">{{title_one_content}}</label>
+    <view class="title_image_view">
+      <image class="title-image" src="{{title_one_image}}"></image>
+    </view>
+  </view>
+
+  <view class="title-two-view">
+    <label class="title-title-label">{{title_two_title}}</label>
+    <label class="title-content-label">{{title_two_content}}</label>
+    <view class="title_image_view">
+      <image class="title-image" src="{{title_two_image}}"></image>
+    </view>
+  </view>
+
+  <view class="title-three-view">
+    <label class="title-title-label">{{title_three_title}}</label>
+    <label class="title-content-label">{{title_three_content}}</label>
+    <view class="title_image_view">
+      <image class="title-image" src="{{title_three_image}}"></image>
+    </view>
+  </view>
+</view>

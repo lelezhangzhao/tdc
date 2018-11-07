@@ -93,3 +93,6 @@
   background-color: #ECECEC;
   border-radius: 30rpx;
 }
+.search-result-item{
+  height: 250rpx;
+}

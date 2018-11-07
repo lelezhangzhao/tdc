@@ -1,1 +1,8 @@
 /* tdc/find/find.wxss */
+.page{
+  margin: 0 5%;
+  width: 90%;
+}
+.find-item-view{
+  margin-top: 20rpx;
+}

@@ -34,12 +34,17 @@ class Search extends Controller{
 
     public function SearchByKeyWords(Request $request){
         $keyWords = $request->param("keywords");
+
+        if(strlen(trim($keyWords)) == 0){
+            return $this->GetDefaultSearch();
+        }
+
         $keyWordsArr = explode(" ", $keyWords);
         //以tag/地址/introduction/进行模糊搜索
 
         $results = [];
         foreach($keyWordsArr as $item){
-            $sql = 'select * from tdc_publish where tag like "%' . $item . '%" or workaddress like "%' . $item . '%" or introduction like "%' . $item . '%"';
+            $sql = 'select a.id,a.publishobject,a.evaluateavg,a.tag,a.introduction,b.logo,b.name from tdc_publish as a join tdc_user as b on a.userid = b.id where a.tag like "%' . $item . '%" or a.workaddress like "%' . $item . '%" or a.introduction like "%' . $item . '%"';
             $result = Db::query($sql);
 
             if(!empty($result)){
@@ -67,5 +72,21 @@ class Search extends Controller{
 
         $result = array("history" => $result_search_history, "hot" => $result_search_hot);
         return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "", json_encode($result));
+    }
+
+    private function GetDefaultSearch(){
+        //返回evaluateavg为10的项，每次返回20个
+
+        $sql = "select a.id,a.publishobject,a.evaluateavg,a.tag,a.introduction,b.logo,b.name from tdc_publish as a join tdc_user as b on a.userid = b.id where a.evaluateavg = 10 limit 20";
+
+        $result = Db::query($sql);
+
+
+        if(empty($result)){
+            return Status::ReturnJsonWithContent("ERROR_STATUS_LISTISNULL", "列表为空", "");
+        }
+
+        return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "获取成功", json_encode($result));
+
     }
 }

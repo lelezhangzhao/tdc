@@ -1,0 +1,29 @@
+/* tdc/findinfo/findinfo.wxss */
+
+.page{
+  margin: 0 5%;
+  width: 90%;
+}
+.title-view{
+  text-align: center;
+}
+.title-label{
+  font-size: 40rpx;
+  font-weight: bold;
+}
+.title-title-label{
+  font-size: 35rpx;
+  font-weight: bold;
+}
+  
+.title-content-label{
+  font-size: 28rpx;
+  display: block;
+}
+.title_image_view{
+  text-align: center;
+}
+.title-image{
+  width: 570rpx;
+  height: 250rpx;
+}

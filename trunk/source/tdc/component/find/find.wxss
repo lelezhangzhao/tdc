@@ -1,0 +1,25 @@
+/* tdc/component/find/find.wxss */
+.component{
+  display: flex;
+  flex-direction: row;
+}
+
+.title-label{
+  font-size: 32rpx;
+  font-weight: bold;
+}
+
+.content-label{
+  display: inline-block;
+  font-size: 28rpx;
+  line-height: 38rpx;
+}
+
+.right-view{
+  margin-top: 20rpx;
+  margin-left: 30rpx;
+}
+.logo-view{
+  height: 150rpx;
+  width: 150rpx;
+}

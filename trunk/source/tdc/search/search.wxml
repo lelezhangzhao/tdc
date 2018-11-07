@@ -34,17 +34,15 @@
       <view class="search-hot-view">
         <label class="search-hot-label">搜索热点</label>
         <view class="search-hot-item-view">
-          <view wx:for="{{searchHot}}" wx:key="" bindtap="searchByHot" data-keywords="{{item}}" class="search-hot-key-words-view">
+          <view wx:for="{{searchHot}}" wx:key="" bindtap="searchByHot" data-keywords="{{item.keywords}}" class="search-hot-key-words-view">
             {{item.keywords}}
           </view>
         </view>
       </view>
     </view>
     <view wx:elif="{{hasSearch}}">
-      <view wx:for="{{searchResult}}" wx:key="">
-        <view data-publishid="{{item.id}}" data-role="{{item.publishobject}}" bindtap="searchInfo">
-          {{item.id}}
-        </view>
+      <view wx:for="{{searchResult}}" wx:key="" class="search-result-item" bindtap="searchInfo" data-publishid="{{item.id}}" data-role="{{item.publishobject}}">
+        <component-brief-introduction name="{{item.name}}" logo="{{item.logo}}" tags="{{item.tag}}" briefIntroduction="{{item.introduction}}" isTeacher="{{item.publishobject == 0}}"/>
       </view>
     </view>
   </view>

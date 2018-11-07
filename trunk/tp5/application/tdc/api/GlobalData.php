@@ -13,5 +13,5 @@ namespace app\tdc\api;
 class GlobalData{
     static public $maxPublishCount = 10;
     static public $maxCollectionCount = 10;
-
+    static public $chatServerHasStarted = false;
 }

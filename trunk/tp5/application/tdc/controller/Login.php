@@ -45,6 +45,7 @@ class Login extends Controller{
         $user->lastlogintime = $currentTime;
         $user->save();
 
+
         Session::set("userid", $user->id);
 
         $return_arr = array("userid" => $user->id, "role" => $user->role);

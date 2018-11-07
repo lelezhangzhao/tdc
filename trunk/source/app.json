@@ -12,13 +12,13 @@
     "tdc/chat/chat",
     "tdc/info/info",
     "tdc/chatonline/chatonline",
-    "tdc/news/news",
     "tdc/test/test",
     "tdc/camera/camera",
     "tdc/searchItem/searchItem",
     "tdc/search/search",
     "tdc/tag/tag",
-    "tdc/fixItem/fixItem"
+    "tdc/fixItem/fixItem",
+    "tdc/findinfo/findinfo"
   ],
   "window": {
     "backgroundTextStyle": "light",

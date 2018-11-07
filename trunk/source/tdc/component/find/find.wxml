@@ -1,0 +1,15 @@
+<!--tdc/component/find/find.wxml-->
+<view class="component">
+  <view class="left-view">
+    <view class="title-view">
+      <label class="title-label">{{title}}</label>
+    </view>
+    <view class="content-view">
+      <label class="content-label">{{content}}</label>
+    </view>
+  </view>
+
+  <view class="right-view">
+    <image class="logo-view" src="{{serverHttps + logo_photo}}"></image>
+  </view>
+</view>
