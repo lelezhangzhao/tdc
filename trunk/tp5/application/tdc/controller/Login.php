@@ -17,7 +17,6 @@ use think\Session;
 
 class Login extends Controller{
     public function Login(Request $request){
-
         $currentTime = Times::GetSystemTime();
 
         $username = $request->param("username");

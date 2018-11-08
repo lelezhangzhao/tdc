@@ -61,8 +61,20 @@ truncate table tdc_news;
 
 insert into tdc_news(status, title, content, logophoto, titleone, contentone, titletwo, contenttwo, titlethree, contentthree, publishtime, photoone, phototwo, photothree)
 values
-(0, "hello php", "这是php教学这是php教学这是php教学这是php教学这是php教学", "static/image/global/user_logo.png", "echo", "echo php", "var", "var php", "let", "let php", "2018-10-12 13:00:00", "static/image/find/defa", "static/image/find/defa", "static/image/find/defa"),
-(0, "hello java", "这是java教学这是java教学这是java教学这是java教学", "static/image/global/user_logo.png", "echo", "echo java", "var", "var java", "let", "let java", "2018-10-12 13:10:00", "static/image/find/defa", "static/image/find/defa", "static/image/find/defa"),
-(0, "hello c++", "这是C++教学这是C++教学这是C++教学这是C++教学这是C++教学", "static/image/global/user_logo.png", "echo", "echo c++", "var", "var c++", "let", "let c++", "2018-10-12 13:20:00", "static/image/find/defa", "static/image/find/defa", "static/image/find/defa"),
-(0, "hello node", "这是node教学这是node教学这是node教学这是node教学", "static/image/global/user_logo.png", "echo", "echo node", "var", "var node", "let", "let node", "2018-10-12 13:30:00", "static/image/find/defa", "static/image/find/defa", "static/image/find/defa");
+(0, "hello php", "这是php教学这是php教学这是php教学这是php教学这是php教学", "static/image/global/user_logo.png", "echo", "echo php", "var", "var php", "let", "let php", "2018-10-12 13:00:00", "static/image/find/default.png", "static/image/find/default.png", "static/image/find/default.png"),
+(0, "hello java", "这是java教学这是java教学这是java教学这是java教学", "static/image/global/user_logo.png", "echo", "echo java", "var", "var java", "let", "let java", "2018-10-12 13:10:00", "static/image/find/default.png", "static/image/find/default.png", "static/image/find/default.png"),
+(0, "hello c++", "这是C++教学这是C++教学这是C++教学这是C++教学这是C++教学", "static/image/global/user_logo.png", "echo", "echo c++", "var", "var c++", "let", "let c++", "2018-10-12 13:20:00", "static/image/find/default.png", "static/image/find/default.png", "static/image/find/default.png"),
+(0, "hello node", "这是node教学这是node教学这是node教学这是node教学", "static/image/global/user_logo.png", "echo", "echo node", "var", "var node", "let", "let node", "2018-10-12 13:30:00", "static/image/find/default.png", "static/image/find/default.png", "static/image/find/default.png");
+
+insert into tdc_chat(content, fromuserid, touserid, sendtime, isread)
+values
+("聊天记录是个好东西", 5, 16, "2018-11-06 15:00:00", false),
+("其实我觉得聊天记录也是个好东西", 16, 15, "2018-11-06 15:00:10", false),
+("嗯嗯，确实，我们都觉得聊天记录是个好东西", 5, 16, "2018-11-06 15:00:20", false);
+
+insert into tdc_chatassist(fromuserid, touserid, hasunreadmsg)
+values
+(5, 16, true),
+(16, 5, true);
+
 

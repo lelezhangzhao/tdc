@@ -18,7 +18,8 @@
     "tdc/search/search",
     "tdc/tag/tag",
     "tdc/fixItem/fixItem",
-    "tdc/findinfo/findinfo"
+    "tdc/findinfo/findinfo",
+    "tdc/testChat/testChat"
   ],
   "window": {
     "backgroundTextStyle": "light",

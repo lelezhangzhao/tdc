@@ -1,163 +1,192 @@
 <?php
+
 namespace app\tdc\controller;
 
+use app\tdc\api\Times;
+use think\Controller;
+use think\Db;
+use think\Session;
 
+use app\tdc\model\Chat;
 
+class ChatServer extends Controller
+{
+    private $sockets;//所有socket连接池包括服务端socket
+    private $users;//所有连接用户
+    private $server;//服务端 socket
+    private $userid;
 
-class ChatServer{
-
-    static public $host = '127.0.0.1';
-    static public $port = '9505';
-    static public $null = NULL;
-    static public $socket = NULL;
-    static public $clients = NULL;
-
-    static public function InitChatServer(){
-        //创建tcp socket
-        ChatServer::$socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
-        socket_set_option(ChatServer::$socket, SOL_SOCKET, SO_REUSEADDR, 1);
-        socket_bind(ChatServer::$socket, 0, ChatServer::$port);
-
-        //监听端口
-        socket_listen(ChatServer::$socket);
-
-        //连接的client socket 列表
-        ChatServer::$clients = array(ChatServer::$socket);
-
-        //设置一个死循环,用来监听连接 ,状态
-        while (true) {
-
-            $changed = ChatServer::$clients;
-            socket_select($changed, $null, $null, 0, 10);
-
-            //如果有新的连接
-            if (in_array(ChatServer::$socket, $changed)) {
-                //接受并加入新的socket连接
-                $socket_new = socket_accept(ChatServer::$socket);
-                ChatServer::$clients[] = $socket_new;
-
-                //通过socket获取数据执行handshake
-                $header = socket_read($socket_new, 1024);
-                ChatServer::perform_handshaking($header, $socket_new, ChatServer::$host, ChatServer::$port);
-
-                //获取client ip 编码json数据,并发送通知
-                socket_getpeername($socket_new, $ip);
-                $response = ChatServer::mask(json_encode(array('type'=>'system', 'message'=>$ip.' connected')));
-                ChatServer::send_message($response);
-                $found_socket = array_search(ChatServer::$socket, $changed);
-                unset($changed[$found_socket]);
-            }
-
-            //轮询 每个client socket 连接
-            foreach ($changed as $changed_socket) {
-
-                //如果有client数据发送过来
-                while(socket_recv($changed_socket, $buf, 1024, 0) >= 1)
-                {
-                    //解码发送过来的数据
-                    $received_text = ChatServer::unmask($buf);
-                    $tst_msg = json_decode($received_text);
-                    $user_name = $tst_msg->name;
-                    $user_message = $tst_msg->message;
-
-                    //把消息发送回所有连接的 client 上去
-                    $response_text = ChatServer::mask(json_encode(array('type'=>'usermsg', 'name'=>$user_name, 'message'=>$user_message)));
-                    ChatServer::send_message($response_text);
-                    break 2;
-                }
-
-                //检查offline的client
-                $buf = @socket_read($changed_socket, 1024, PHP_NORMAL_READ);
-                if ($buf === false) {
-                    $found_socket = array_search($changed_socket, ChatServer::$clients);
-                    socket_getpeername($changed_socket, $ip);
-                    unset(ChatServer::$clients[$found_socket]);
-                    $response = ChatServer::mask(json_encode(array('type'=>'system', 'message'=>$ip.' disconnected')));
-                    ChatServer::send_message($response);
-                }
-            }
-        }
-    }
-
-    static public function CloseSocket(){
-        // 关闭监听的socket
-        socket_close(ChatServer::$socket);
-    }
-
-    //发送消息的方法
-    static public function send_message($msg)
+    public function __construct($ip, $port, $id)
     {
-        foreach(ChatServer::$clients as $changed_socket)
-        {
-            @socket_write($changed_socket,$msg,strlen($msg));
+        set_time_limit(0);
+
+        $this->userid = $id;
+        $this->server = socket_create(AF_INET, SOCK_STREAM, 0);
+        $this->sockets = array($this->server);
+        $this->users = array();
+        socket_bind($this->server, $ip, $port);
+        socket_listen($this->server, 3);
+    }
+
+    public function run()
+    {
+        $write = NULL;
+        $except = NULL;
+        while (true) {
+            $active_sockets = $this->sockets;
+            socket_select($active_sockets, $write, $except, NULL);
+//这个函数很重要
+//前三个参数时传入的是数组的引用,会依次从传入的数组中选择出可读的,可写的,异常的socket,我们只需要选择出可读的socket
+//最后一个参数tv_sec很重要
+//第一，若将NULL以形参传入，即不传入时间结构，就是将select置于阻塞状态，一定等到监视文件描述符集合(socket数组)中某个文件描
+//述符发生变化为止；
+//第二，若将时间值设为0秒0毫秒，就变成一个纯粹的非阻塞函数，不管文件描述符是否有变化，都立刻返回继续执行，文件无
+//变化返回0，有变化返回一个正值；
+//第三，timeout的值大于0，这就是等待的超时时间，即 select在timeout时间内阻塞，超时时间之内有事件到来就返回了，
+//否则在超时后不管怎样一定返回，返回值同上述。
+            foreach ($active_sockets as $socket) {
+                if ($socket == $this->server) {
+//服务端 socket可读说明有新用户连接
+                    $user = socket_accept($this->server);
+                    $key = $this->userid;
+                    $this->sockets[] = $user;
+                    $this->users[$key] = array(
+                        'socket' => $user,
+                        'handshake' => false, //是否完成websocket握手
+                    );
+
+                } else {
+//用户socket可读
+                    $buffer = '';
+                    $bytes = socket_recv($socket, $buffer, 1024, 0);
+                    $key = $this->find_user_by_socket($socket); //通过socket在users数组中找出user
+                    if ($bytes == 0) {
+//没有数据 关闭连接
+                        $this->disconnect($socket);
+                    } else {
+//没有握手就先握手
+                        if (!$this->users[$key]['handshake']) {
+                            $this->handshake($key, $buffer);
+                        } else {
+//握手后
+//解析消息 websocket协议有自己的消息格式
+//解码 编码过程固定的
+                            $data = $this->msg_decode($buffer);
+                            $data = json_decode($data);
+                            $fromuserid = $data->fromuserid;
+                            $touserid = $data->touserid;
+                            $msg = $data->msg;
+
+//存到数据库
+                            $systemTime = Times::GetSystemTime();
+                            $chat = new Chat();
+                            $chat->content = $msg;
+                            $chat->fromuserid = $fromuserid;
+                            $chat->touserid = $touserid;
+                            $chat->sendtime = $systemTime;
+                            $chat->isread = false;
+                            $chat->save();
+//如果在线，直接发送
+                            if(array_key_exists($touserid, $this->users)){
+                                $ret_msg = array("id" => $chat->id, "fromuserid" => $fromuserid, "msg" => $msg, "sendtime" => $systemTime, "isread" => false);
+                                $ret_msg = json_encode($ret_msg);
+                                $ret_msg = $this->msg_encode($ret_msg);
+                                socket_write($this->users[$touserid]['socket'], $ret_msg, strlen($ret_msg));
+                            }
+//编码后发送回去
+
+//                            $return_msg = $msg;
+//                            if(Session::has("userid")){
+//                                $return_msg = 345;
+//                            }
+
+
+//                            $res_msg = $this->msg_encode($return_msg);
+//                            socket_write($socket, $res_msg, strlen($res_msg));
+
+                        }
+                    }
+                }
+            }
         }
+    }
+
+//解除连接
+    private function disconnect($socket)
+    {
+        $key = $this->find_user_by_socket($socket);
+        unset($this->users[$key]);
+        foreach ($this->sockets as $k => $v) {
+            if ($v == $socket)
+                unset($this->sockets[$k]);
+        }
+        socket_shutdown($socket);
+        socket_close($socket);
+    }
+
+//通过socket在users数组中找出user
+    private function find_user_by_socket($socket)
+    {
+        foreach ($this->users as $key => $user) {
+            if ($user['socket'] == $socket) {
+                return $key;
+            }
+        }
+        return -1;
+    }
+
+    private function handshake($k, $buffer)
+    {
+//截取Sec-WebSocket-Key的值并加密
+        $buf = substr($buffer, strpos($buffer, 'Sec-WebSocket-Key:') + 18);
+        $key = trim(substr($buf, 0, strpos($buf, "\r\n")));
+        $new_key = base64_encode(sha1($key . "258EAFA5-E914-47DA-95CA-C5AB0DC85B11", true));
+
+//按照协议组合信息进行返回
+        $new_message = "HTTP/1.1 101 Switching Protocols\r\n";
+        $new_message .= "Upgrade: websocket\r\n";
+        $new_message .= "Sec-WebSocket-Version: 13\r\n";
+        $new_message .= "Connection: Upgrade\r\n";
+        $new_message .= "Sec-WebSocket-Accept: " . $new_key . "\r\n\r\n";
+        socket_write($this->users[$k]['socket'], $new_message, strlen($new_message));
+
+//对已经握手的client做标志
+        $this->users[$k]['handshake'] = true;
         return true;
     }
 
 
-    //解码数据
-    static function unmask($text) {
-        $length = ord($text[1]) & 127;
-        if($length == 126) {
-            $masks = substr($text, 4, 4);
-            $data = substr($text, 8);
+//编码 把消息打包成websocket协议支持的格式
+    private function msg_encode($buffer)
+    {
+        $len = strlen($buffer);
+        if ($len <= 125) {
+            return "\x81" . chr($len) . $buffer;
+        } else if ($len <= 65535) {
+            return "\x81" . chr(126) . pack("n", $len) . $buffer;
+        } else {
+            return "\x81" . char(127) . pack("xxxxN", $len) . $buffer;
         }
-        elseif($length == 127) {
-            $masks = substr($text, 10, 4);
-            $data = substr($text, 14);
-        }
-        else {
-            $masks = substr($text, 2, 4);
-            $data = substr($text, 6);
-        }
-        $text = "";
-        for ($i = 0; $i < strlen($data); ++$i) {
-            $text .= $data[$i] ^ $masks[$i%4];
-        }
-        return $text;
     }
 
-//编码数据
-    static function mask($text)
+//解码 解析websocket数据帧
+    private function msg_decode($buffer)
     {
-        $b1 = 0x80 | (0x1 & 0x0f);
-        $length = strlen($text);
-
-        if($length <= 125)
-            $header = pack('CC', $b1, $length);
-        elseif($length > 125 && $length < 65536)
-            $header = pack('CCn', $b1, 126, $length);
-        elseif($length >= 65536)
-            $header = pack('CCNN', $b1, 127, $length);
-        return $header.$text;
-    }
-
-    //握手的逻辑
-    static function perform_handshaking($receved_header,$client_conn, $host, $port)
-    {
-        $headers = array();
-        $lines = preg_split("/\r\n/", $receved_header);
-        foreach($lines as $line)
-        {
-            $line = chop($line);
-            if(preg_match('/\A(\S+): (.*)\z/', $line, $matches))
-            {
-                $headers[$matches[1]] = $matches[2];
-            }
+        $len = $masks = $data = $decoded = null;
+        $len = ord($buffer[1]) & 127;
+        if ($len === 126) {
+            $masks = substr($buffer, 4, 4);
+            $data = substr($buffer, 8);
+        } else if ($len === 127) {
+            $masks = substr($buffer, 10, 4);
+            $data = substr($buffer, 14);
+        } else {
+            $masks = substr($buffer, 2, 4);
+            $data = substr($buffer, 6);
         }
-
-        $secKey = $headers['Sec-WebSocket-Key'];
-        $secAccept = base64_encode(pack('H*', sha1($secKey . '258EAFA5-E914-47DA-95CA-C5AB0DC85B11')));
-        $upgrade  = "HTTP/1.1 101 Web Socket Protocol Handshake\r\n" .
-            "Upgrade: websocket\r\n" .
-            "Connection: Upgrade\r\n" .
-            "WebSocket-Origin: $host\r\n" .
-            "WebSocket-Location: ws://$host:$port/demo/shout.php\r\n".
-            "Sec-WebSocket-Accept:$secAccept\r\n\r\n";
-        socket_write($client_conn,$upgrade,strlen($upgrade));
+        for ($index = 0; $index < strlen($data); $index++) {
+            $decoded .= $data[$index] ^ $masks[$index % 4];
+        }
+        return $decoded;
     }
 }
-
-
-
-

@@ -36,23 +36,6 @@ App({
       }
     });
 
-    //临时登录
-    utilRequest.NetRequest({
-      url: "login/login",
-      data:{
-        username: "woshijigou",
-        password: utilMd5.hexMD5("woshijigou"),
-      },
-      success:function(res){
-        var jsoncontent = JSON.parse(res.jsoncontent);
-        that.globalData.userid = jsoncontent.userid;
-        that.globalData.role = jsoncontent.role;
-      },
-      fail:function(res){
-
-      }
-    });
-
 
     //获取屏幕信息
     wx.getSystemInfo({

@@ -23,7 +23,7 @@ class Chat extends Controller{
     public function GetChatList(){
         $userid = Session::get("userid");
 
-        $sql = "select * from tdc_chatassist where fromuserid = $userid or touserid = $userid";
+        $sql = "select fromuserid, touserid, hasunreadmsg from tdc_chatassist where fromuserid = $userid or touserid = $userid";
         $result = Db::query($sql);
 
         if(empty($result)){

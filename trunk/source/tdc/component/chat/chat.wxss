@@ -1,0 +1,26 @@
+/* tdc/component/chat/chat.wxss */
+.component{
+  height: 300rpx;
+}
+
+.top-view{
+  display: flex;
+  flex-direction: row;
+}
+
+
+.newtag-view{
+  margin-left: 500rpx;
+
+}
+
+.newtag-image{
+  width: 33rpx;
+  height: 17rpx;
+}
+
+.content-view{
+  font-size: 28rpx;
+
+}
+

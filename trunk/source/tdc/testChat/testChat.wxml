@@ -1,0 +1,6 @@
+<!--tdc/testChat/testChat.wxml-->
+<view>
+  <button bindtap="connect">链接</button>
+  <button bindtap="send">发送</button>
+  <input value="{{msg}}">{{msg}}</input>
+</view>

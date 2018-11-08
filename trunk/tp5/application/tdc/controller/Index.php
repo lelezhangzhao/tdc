@@ -22,9 +22,12 @@ class Index extends Controller{
         if(!GlobalData::$chatServerHasStarted){
             GlobalData::$chatServerHasStarted = true;
 
-            return ChatServer::InitChatServer();
+//            $userid = Session::get("userid");
+            $userid = 16;
 
-            return Status::ReturnJson("ERROR_STATUS_SUCCESS", "开启成功");
+            $chatServet = new ChatServer("127.0.0.1", "9608", $userid);
+            $chatServet->run();
+
 
 
         }

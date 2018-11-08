@@ -1,5 +1,6 @@
 var utilRequest = require("../util/request.js");
-
+var utilMd5 = require("../util/md5.js");
+var app = getApp();
 
 Page({
   data:{
@@ -34,17 +35,36 @@ Page({
     })
 
     //开启聊天服务 
+    // utilRequest.NetRequest({
+    //   url: "index/startchatserver",
+    //   success: function(res){
+    //     if(res.code == "ERROR_STATUS_SUCCESS"){
+    //       console.log("聊天服务开启成功");
+    //     }
+    //   },
+    //   fail: function(){
+
+    //   }
+    // })
+
+    //临时登录
     utilRequest.NetRequest({
-      url: "index/startchatserver",
-      success: function(res){
-        if(res.code == "ERROR_STATUS_SUCCESS"){
-          console.log("聊天服务开启成功");
-        }
+      url: "login/login",
+      data: {
+        username: "woshijigou",
+        password: utilMd5.hexMD5("woshijigou"),
       },
-      fail: function(){
+      success: function (res) {
+        var jsoncontent = JSON.parse(res.jsoncontent);
+        app.globalData.userid = jsoncontent.userid;
+        app.globalData.role = jsoncontent.role;
+      },
+      fail: function (res) {
 
       }
-    })
+
+    });
+
 
     //获取高评用户
     utilRequest.NetRequest({
