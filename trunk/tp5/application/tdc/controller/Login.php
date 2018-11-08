@@ -13,6 +13,7 @@ use app\tdc\api\Times;
 use app\tdc\model\User;
 use think\Controller;
 use think\Request;
+
 use think\Session;
 
 class Login extends Controller{
@@ -38,16 +39,18 @@ class Login extends Controller{
         if($user->password !== $password){
             return Status::ReturnErrorStatus("ERROR_STATUS_USERNAMEORPASSWORDERROR");
         }
-
-
         //登录成功
         $user->lastlogintime = $currentTime;
         $user->save();
+
 
 
         Session::set("userid", $user->id);
 
         $return_arr = array("userid" => $user->id, "role" => $user->role);
         return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "", json_encode($return_arr));
+
+
     }
+
 }

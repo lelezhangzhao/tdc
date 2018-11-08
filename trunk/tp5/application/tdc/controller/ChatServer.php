@@ -5,7 +5,6 @@ namespace app\tdc\controller;
 use app\tdc\api\Times;
 use think\Controller;
 use think\Db;
-use think\Session;
 
 use app\tdc\model\Chat;
 
@@ -14,13 +13,11 @@ class ChatServer extends Controller
     private $sockets;//所有socket连接池包括服务端socket
     private $users;//所有连接用户
     private $server;//服务端 socket
-    private $userid;
 
-    public function __construct($ip, $port, $id)
+    public function __construct($ip, $port)
     {
         set_time_limit(0);
 
-        $this->userid = $id;
         $this->server = socket_create(AF_INET, SOCK_STREAM, 0);
         $this->sockets = array($this->server);
         $this->users = array();
@@ -48,7 +45,7 @@ class ChatServer extends Controller
                 if ($socket == $this->server) {
 //服务端 socket可读说明有新用户连接
                     $user = socket_accept($this->server);
-                    $key = $this->userid;
+                    $key = uniqid();
                     $this->sockets[] = $user;
                     $this->users[$key] = array(
                         'socket' => $user,
@@ -67,6 +64,13 @@ class ChatServer extends Controller
 //没有握手就先握手
                         if (!$this->users[$key]['handshake']) {
                             $this->handshake($key, $buffer);
+
+                            //握手后，返回$key
+                            $handshake_ok = array("key" => $key);
+                            $ret_msg = json_encode($handshake_ok);
+                            $ret_msg = $this->msg_encode($ret_msg);
+                            socket_write($socket, $ret_msg, strlen($ret_msg));
+
                         } else {
 //握手后
 //解析消息 websocket协议有自己的消息格式
@@ -87,11 +91,15 @@ class ChatServer extends Controller
                             $chat->isread = false;
                             $chat->save();
 //如果在线，直接发送
-                            if(array_key_exists($touserid, $this->users)){
+                            $sql = "select chatkey from tdc_user where id = $touserid";
+                            $result = Db::query($sql);
+                            $key = $result[0]["chatkey"];
+
+                            if(array_key_exists($key, $this->users)){
                                 $ret_msg = array("id" => $chat->id, "fromuserid" => $fromuserid, "msg" => $msg, "sendtime" => $systemTime, "isread" => false);
                                 $ret_msg = json_encode($ret_msg);
                                 $ret_msg = $this->msg_encode($ret_msg);
-                                socket_write($this->users[$touserid]['socket'], $ret_msg, strlen($ret_msg));
+                                socket_write($this->users[$key]["socket"], $ret_msg, strlen($ret_msg));
                             }
 //编码后发送回去
 

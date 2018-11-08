@@ -9,10 +9,6 @@
 }
 
 
-.newtag-view{
-  margin-left: 500rpx;
-
-}
 
 .newtag-image{
   width: 33rpx;

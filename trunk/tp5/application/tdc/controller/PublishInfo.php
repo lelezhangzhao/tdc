@@ -62,6 +62,7 @@ class PublishInfo extends Controller{
     public function GetPublishSchoolInfo(Request $request){
         $publishId = $request->param("publishId");
 
+
         $sql = "select * from (select b.id as publishuserid, b.logo, b.tel, b.name, b.nickname, a.id, a.status, a.workaddress, a.introduction, a.wagesbymonthmin, a.wagesbymonthmax, a.wagesbyclassmin, a.wagesbyclassmax, a.wagesfacetoface, a.wagesbymonth, a.wagesbyclass, a.hirecount, a.hireinfo, a.requireinfo, a.tag from tdc_publish as a left join tdc_user as b on a.userid = b.id) as d where status = 0 and id = $publishId";
         $result = Db::query($sql);
         if(empty($result)){

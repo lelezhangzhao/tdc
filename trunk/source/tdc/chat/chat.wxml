@@ -1,7 +1,7 @@
 <!--tdc/chat/chat.wxml-->
 <view class="page">
   <view wx:for="{{chatList}}" wx:key="">
-    <chat-component data-otherId="{{item.touserid}}" bindtap="chatInfo" name="123" hasChatMsg="{{item.haschatmsg}}" content="{{item.content}}" />
+    <chat-component data-otherid="{{item.touserid}}" bindtap="chatInfo" name="{{item.othername}}" hasChatMsg="{{item.hasunreadmsg}}" content="{{item.content}}" />
 
   </view>
 

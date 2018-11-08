@@ -13,29 +13,34 @@ Page({
     scrollTop: 0,
     text: text,
     contentData: '',
-    nickName: '',
+    name: '',
     avatarUrl: '',
     tabdata: '',
+    jia_image: '',
     theOtherUserId:null,
     userid:null,
     loadDataInterval:null,
   },
+
+
   bindChange: function (e) {
     message = e.detail.value
   },
+
+
   //事件处理函数
   add: function (e) {
     var that = this
     // var sendTime = Date.parse(new Date());
+    var msg = {
+      fromuserid: that.data.userid,
+      touserid: that.data.theOtherUserId,
+      msg: message
+    };
 
-    utilRequest.NetRequest({
-      url:"chat/addchatinfo",
-      data:{
-        content: message,
-        theOtherUserId: that.data.theOtherUserId,
-        // sendTime:sendTime,
-      },
-      success:function(res) {
+    wx.sendSocketMessage({
+      data: JSON.stringify(msg),
+      success: function(res){
         that.setData({
           message: ""
         });
@@ -44,23 +49,57 @@ Page({
         row.fromuserid = that.data.userid;
         that.data.contentData.push(row);
 
-        that.setData({ contentData: that.data.contentData});        
+        that.setData({ contentData: that.data.contentData });        
       },
-      fail:function(res){
+      fail: function (res) {
         wx.showToast({
           title: '网络错误,请稍后',
+          icon: "none",
         })
       }
-    });
+
+    })
   },
   onLoad: function (options) {
     var that = this;
-    // openid_talk = options.openid_talk;
-    // zx_info_id = options.zx_info_id;
-    that.setData({userid:app.globalData.userid});
-    that.setData({ theOtherUserId: options.theOtherUserId});
+    that.setData({
+      userid:app.globalData.userid,
+      jia_image: "../image/chat/jia_img.jpg",
+      theOtherUserId: options.theOtherUserId,
+    });
+
+    //获取另一人的name
+    utilRequest.NetRequest({
+      url: "global_data/getname",
+      data:{
+        userid: that.data.theOtherUserId,
+      },
+      success:function(res){
+        var name = res.jsoncontent;
+        that.setData({
+          name: name,
+        })
+        wx.setNavigationBarTitle({
+          title: name,
+        })
+      },
+      fail:function(res){}
+    })
+
 
     that.loadHistoryData()
+
+    wx.onSocketMessage(function(data){
+      var data = JSON.parse(data.data);
+
+      var row = {};
+      row.content = data.msg;
+      row.fromuserid = data.fromuserid;
+      that.data.contentData.push(row);
+
+      that.setData({ contentData: that.data.contentData });        
+
+    })
   },
   loadHistoryData: function(){
     var that = this;
@@ -80,9 +119,9 @@ Page({
       }
     });
     that.bottom();
-    that.data.loadDataInterval = setInterval(function () {
-      that.loadUnReadData()
-    }, 1000);
+    // that.data.loadDataInterval = setInterval(function () {
+    //   that.loadUnReadData()
+    // }, 1000);
   },
   // 页面加载  
   loadUnReadData: function () {

@@ -1,18 +1,6 @@
 <!--tdc/chat/chat.wxml-->
-<view class='tab'>
-  <view class='lan'>{{tabdata.title}}</view>
-  <view class='tent'>
-    <text>{{tabdata.attribute_attribute}}</text>
-    <text class='fl_r '>{{tabdata.num}}</text>
-  </view>
-  <view class='xiahuaxian1'></view>
-  <view>
-    <text class='fabu'>发布时间: {{tabdata.time_agree}}</text>
-  </view>
-</view>
 <view class='news'>
   <view class='xiahuaxian1 xiahuaxia'></view>
-  <view class='new_top_txt'>您正在与{{tabdata.nickname}}进行沟通</view>
   <view class="historycon">
     <scroll-view scroll-y="true" scroll-top="{{scrollTop}}" class="history" wx:for="{{contentData}}" wx:key=''>
       <block wx:if="{{item.fromuserid == userid}}">
@@ -36,5 +24,5 @@
 <view class="sendmessage">
   <input type="emoji" bindinput="bindChange" confirm-type="done" value='{{message}}' placeholder="" />
   <button catchtap="add">发送</button>
-  <image bindtap="upimg1" class='jia_img' src='../image/jia_img.jpg'></image>
+  <image bindtap="upimg1" class='jia-img' src='{{jis_img}}'></image>
 </view>

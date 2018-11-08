@@ -1,0 +1,15 @@
+<!--tdc/admin/admin.wxml-->
+<view class="page">
+  <view bindtap="freezen" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+    <view class="weui-cell__bd">封号</view>
+  </view>
+  <view bindtap="unfreezen" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+    <view class="weui-cell__bd">解封</view>
+  </view>
+  <view bindtap="arbitration" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+    <view class="weui-cell__bd">仲裁</view>
+  </view>
+  <view bindtap="news" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+    <view class="weui-cell__bd">新闻管理</view>
+  </view>
+</view>

@@ -1,0 +1,149 @@
+<!--tdc/freezen/freezen.wxml-->
+<view class="page">
+  <view class="admin-view">
+    <label>发布号</label>
+    <input bindinput="publishIdInput" value="{{publishid}}"></input>
+    <button bindtap="search">搜索</button>
+  </view>
+
+  <view  wx:if="{{has_search}}" class="publish-view">
+    <view class="middle-view">
+    <view wx:if="{{teacher}}">
+      <view class="left-view">
+        <image class="logo" src="{{logo}}">
+        </image>
+      </view>
+      <view class="right-view">
+        <view class="name-view">
+          <label>姓名 : </label>
+          <label>{{name}}</label>
+        </view>
+
+        <view class="address-view">
+          <label>所在地 : </label>
+          <label>{{address}}</label>
+        </view>
+
+        <view class="tel-view">
+          <label>电话 : </label>
+          <label>{{tel}}</label>
+        </view>
+      </view>
+    
+      <view class="info-seperator">
+        <image class="info-seperator-image" src="{{seperator_image}}" />
+      </view>
+
+      <view class="workaddress-view">
+        <view class="work-address-label-view">
+          <label class="work-address-label">工作地址</label>
+        </view>
+        
+        <view class="address">
+          <label class="address-label">{{workaddress}}</label>
+        </view>
+      </view>
+
+    </view>
+
+    <view wx:elif="{{school}}">
+      <view class="left-view">
+        <image class="logo" src="{{logo}}">
+        </image>
+      </view>
+      <view class="right-view">
+        <view class="name-view">
+          <label>{{name}}</label>
+        </view>
+
+        <view class="wages-view">
+          <view wx:if="{{wagesbymonth}}">
+            <label>{{wagesbymonthmin}}~{{wagesbymonthmax}}</label>
+            <label>/月</label>
+          </view>
+
+          <view wx:if="{{wagesbyclass}}">
+            <label>{{wagesbyclassmin}}~{{wagesbyclassmax}}</label>
+            <label>/节</label>
+          </view>
+
+          <view wx:if="{{wagesfacetoface}}">
+            工资面议
+          </view>
+        </view>
+      </view>
+
+      <view class="school-info-view">
+        <view class="hire-view">
+          <label>招聘 : </label>
+          <label>{{hireinfo}}</label>
+        </view>
+
+        <view class="require-view">
+          <label>要求 : </label>
+          <label>{{teacherinfo}}</label>
+        </view>
+
+        <view class="welfare-view">
+          <label>福利 : </label>
+          <label>{{welfareinfo}}</label>
+        </view>
+
+        <view class="workaddress-school-view">
+          <label>工作地址 : </label>
+          <label>{{workaddress}}</label>
+
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="bottom-view">
+    <view class="persional-info-view">
+      <view class="persional-info-title-view">
+        <label class="persional-info-title-label">{{introduction_title}}</label>
+      </view>
+      <view class="persional-info-content-view">
+        <label class="persional-info-content-label">{{introduction}}</label>
+      </view>
+    </view>
+
+
+    <view class="evaluate-view">
+      <view class="evaluate-title-view">
+        <label class="evaluate-title-label">点评
+        </label>
+      </view>
+      
+      <view class="evaluate-content-view">
+        <view wx:for="{{evaluateList}}" wx:key="">
+          <view class="evaluate-item-user">
+            <label>{{item.nickname}}</label>
+            <label>:</label>
+            <view class="evaluate-score-view">
+              <image wx:if="{{item.score >= 1}}" src="{{evaluate_sel_image}}" class="evaluate-score-image"/>
+              <image wx:elif="{{item.score < 1}}" src="{{evaluate_unsel_image}}" class="evaluate-score-image"/>
+              <image wx:if="{{item.score >= 2}}" src="{{evaluate_sel_image}}" class="evaluate-score-image"/>
+              <image wx:elif="{{item.score < 2}}" src="{{evaluate_unsel_image}}" class="evaluate-score-image"/>
+              <image wx:if="{{item.score >= 3}}" src="{{evaluate_sel_image}}" class="evaluate-score-image"/>
+              <image wx:elif="{{item.score < 3}}" src="{{evaluate_unsel_image}}" class="evaluate-score-image"/>
+              <image wx:if="{{item.score >= 4}}" src="{{evaluate_sel_image}}" class="evaluate-score-image"/>
+              <image wx:elif="{{item.score < 4}}" src="{{evaluate_unsel_image}}" class="evaluate-score-image"/>
+              <image wx:if="{{item.score >= 5}}" src="{{evaluate_sel_image}}" class="evaluate-score-image"/>
+              <image wx:elif="{{item.score < 5}}" src="{{evaluate_unsel_image}}" class="evaluate-score-image"/>
+            </view>
+          </view>
+          <view class="evaluate-item-content-view">
+            <label class="evaluate-item-content-label">{{item.content}}</label>
+          </view>
+        </view>
+      </view>
+    </view>
+
+  </view>
+  <view class="chat-online-view">
+    <button bindtap="freezen">封号</button>
+  </view>
+
+  </view>
+</view>

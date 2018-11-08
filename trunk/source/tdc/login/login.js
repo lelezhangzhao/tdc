@@ -153,9 +153,15 @@ Page({
         var jsoncontent = JSON.parse(res.jsoncontent);
           app.globalData.userid = jsoncontent.userid;
           app.globalData.role = jsoncontent.role;
-          wx.switchTab({
-            url: '../index/index',
-          });
+          if(jsoncontent.role == 0 || jsoncontent.role == 1){
+            wx.switchTab({
+              url: '../index/index',
+            });
+          }else if(jsoncontent.role == 2){
+            wx.navigateTo({
+              url: '../admin/admin',
+            })
+          }
         } else if (res.code == "ERROR_STATUS_USERNAMEFORMATERROR") {
           title = "用户名格式错误";
         } else if (res.code == "ERROR_STATUS_USERNAMEORPASSWORDERROR") {

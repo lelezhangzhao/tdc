@@ -23,13 +23,9 @@ class Index extends Controller{
             GlobalData::$chatServerHasStarted = true;
 
 //            $userid = Session::get("userid");
-            $userid = 16;
 
-            $chatServet = new ChatServer("127.0.0.1", "9608", $userid);
+            $chatServet = new ChatServer("127.0.0.1", "9612");
             $chatServet->run();
-
-
-
         }
     }
     public function GetHighEvalList(Request $request){

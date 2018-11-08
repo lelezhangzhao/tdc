@@ -68,13 +68,20 @@ values
 
 insert into tdc_chat(content, fromuserid, touserid, sendtime, isread)
 values
-("聊天记录是个好东西", 5, 16, "2018-11-06 15:00:00", false),
-("其实我觉得聊天记录也是个好东西", 16, 15, "2018-11-06 15:00:10", false),
-("嗯嗯，确实，我们都觉得聊天记录是个好东西", 5, 16, "2018-11-06 15:00:20", false);
+("聊天记录是个好东西", 16, 16, "2018-11-06 15:00:00", false),
+("其实我觉得聊天记录也是个好东西", 16, 16, "2018-11-06 15:00:10", false),
+("嗯嗯，确实，我们都觉得聊天记录是个好东西", 16, 16, "2018-11-06 15:00:20", false);
 
 insert into tdc_chatassist(fromuserid, touserid, hasunreadmsg)
 values
-(5, 16, true),
-(16, 5, true);
+(16, 16, true),
+(16, 16, true);
 
 
+insert into tdc_arbitration(arbitrator, arbitrated, title, content, status)
+values
+(16, 16, "自导自演", "对自己的仲裁，请管理员解决", 0),
+(16, 16, "自导自演", "对自己的仲裁，请管理员解决", 0),
+(16, 16, "自导自演", "对自己的仲裁，请管理员解决", 0),
+(16, 16, "自导自演", "对自己的仲裁，请管理员解决", 0),
+(16, 16, "自导自演", "对自己的仲裁，请管理员解决", 0);

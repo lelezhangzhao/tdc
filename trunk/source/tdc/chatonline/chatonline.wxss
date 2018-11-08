@@ -15,7 +15,7 @@ page {
   margin-bottom: 30rpx;
 }
 
-.jia_img {
+.jia-img {
   height: 80rpx;
   width: 90rpx;
 }

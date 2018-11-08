@@ -23,13 +23,29 @@ class Chat extends Controller{
     public function GetChatList(){
         $userid = Session::get("userid");
 
-        $sql = "select fromuserid, touserid, hasunreadmsg from tdc_chatassist where fromuserid = $userid or touserid = $userid";
+        $sql = "select a.fromuserid, a.touserid, a.sendtime, a.isread, a.content, b.name, b.logo from tdc_chat as a join tdc_user as b on a.fromuserid = b.id or a.touserid = b.id where a.fromuserid = $userid or a.touserid = $userid order by a.sendtime desc";
         $result = Db::query($sql);
-
         if(empty($result)){
             return Status::ReturnErrorStatus("ERROR_STATUS_LISTISNULL");
         }
-        return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "", json_encode($result));
+        $unique_result = array();
+        foreach($result as $item){
+            $key = $item["fromuserid"] . ";" . $item["touserid"];
+            if(!array_key_exists($key, $unique_result)){
+
+                $unique_result[$key] = array("content" => $item['content'], "othername" => $item['name'], "otherlogo" => $item['logo'], "hasunreadmsg" => !$item["isread"]);
+            }
+        }
+
+        $return_result = array();
+        foreach($unique_result as $key => $value){
+            $useridarr = explode(";", $key);
+            $fromuserid = $useridarr[0];
+            $touserid = $useridarr[1];
+            $return_result[] = array("fromuserid" => $fromuserid, "touserid" => $touserid, "content" => $value["content"], "othername" => $value["othername"], "otherlogo" => $value["otherlogo"], "hasunreadmsg" => $value["hasunreadmsg"]);
+        }
+
+        return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "", json_encode($return_result));
     }
 
 

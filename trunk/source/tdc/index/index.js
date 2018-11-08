@@ -34,36 +34,37 @@ Page({
       teacher_logo: "../image/main/teacher.png",
     })
 
-    //开启聊天服务 
-    // utilRequest.NetRequest({
-    //   url: "index/startchatserver",
-    //   success: function(res){
-    //     if(res.code == "ERROR_STATUS_SUCCESS"){
-    //       console.log("聊天服务开启成功");
-    //     }
-    //   },
-    //   fail: function(){
-
-    //   }
-    // })
-
     //临时登录
     utilRequest.NetRequest({
       url: "login/login",
       data: {
-        username: "woshijigou",
-        password: utilMd5.hexMD5("woshijigou"),
+        username: "woshilaoshi",
+        password: utilMd5.hexMD5("woshilaoshi"),
       },
       success: function (res) {
+        
         var jsoncontent = JSON.parse(res.jsoncontent);
         app.globalData.userid = jsoncontent.userid;
         app.globalData.role = jsoncontent.role;
+        wx.navigateTo({
+          url: '../admin/admin',
+        })
+
       },
       fail: function (res) {
 
       }
-
     });
+
+    //暂时在这里开启服务器聊天系统
+    utilRequest.NetRequest({
+      url: "index/startchatserver",
+      success: function(res){
+
+      },
+      fail: function(res){}
+
+    })
 
 
     //获取高评用户
@@ -73,6 +74,7 @@ Page({
         begin: that.data.begin
       },
       success: function (res) {
+        
         var jsoncontent = JSON.parse(res.jsoncontent);
 
         that.setData({ hiEvalList: jsoncontent });

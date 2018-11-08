@@ -19,7 +19,12 @@
     "tdc/tag/tag",
     "tdc/fixItem/fixItem",
     "tdc/findinfo/findinfo",
-    "tdc/testChat/testChat"
+    "tdc/testChat/testChat",
+    "tdc/admin/admin",
+    "tdc/freezen/freezen",
+    "tdc/unfreezen/unfreezen",
+    "tdc/arbitration/arbitration",
+    "tdc/arbitrationInfo/arbitrationInfo"
   ],
   "window": {
     "backgroundTextStyle": "light",

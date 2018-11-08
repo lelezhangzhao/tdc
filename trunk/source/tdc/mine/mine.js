@@ -31,6 +31,13 @@ Page({
    */
   onLoad: function (options) {
     var that = this;
+    if (app.globalData.userid == null) {
+      wx.navigateTo({
+        url: '../login/login',
+      })
+      return;
+    }
+
     that.setData({
       role: app.globalData.role,
       option_image: "../image/mine/option.png",
@@ -76,12 +83,6 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    if(app.globalData.userid == null){
-      wx.navigateTo({
-        url: '../login/login',
-      })
-      return;
-    }
   },
 
   /**
