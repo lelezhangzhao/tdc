@@ -17,8 +17,11 @@
       <icon class="weui-icon-search" type="search" size="14"></icon>
       <view class="weui-search-bar__text">搜索</view>
     </label>
-    <label class="main_address">{{address}}</label>
-    <image src="{{address_logo}}" class="main-address-img"></image>
+
+    <view class="map-view" bindtap="searchByMap">
+      <label class="main_address">{{address}}</label>
+      <image src="{{address_logo}}" class="main-address-img" ></image>
+    </view>
 
   </view>
 

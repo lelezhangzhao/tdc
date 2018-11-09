@@ -26,7 +26,8 @@
     "tdc/arbitration/arbitration",
     "tdc/arbitrationInfo/arbitrationInfo",
     "tdc/news/news",
-    "tdc/newsinfo/newsinfo"
+    "tdc/newsinfo/newsinfo",
+    "tdc/map/map"
   ],
   "window": {
     "backgroundTextStyle": "light",

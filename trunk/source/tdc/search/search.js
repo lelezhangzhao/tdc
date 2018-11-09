@@ -34,28 +34,42 @@ Page({
       angle_image: "../image/search/angle.png",
     });
 
-    //获取搜索历史、热点
-    utilRequest.NetRequest({
-      url: "search/getinitializesearch",
-      success: function(res){
-        if(res.code == "ERROR_STATUS_SUCCESS"){
-          var jsoncontent = JSON.parse(res.jsoncontent);
 
-          var historyList = jsoncontent.history[0];
-          var hotList = jsoncontent.hot;
+    var tagFrom = options.tagFrom;
+    if (tagFrom == "map"){
+      var address = options.address;
+      that.setData({
+        searchText: address,
+      })
+      that.search();
+    }else{
 
-          console.log(historyList);
-          
-          that.setData({
-            searchHistory: historyList.searchhistory.split(";"),
-            searchHot: hotList,
-          })
+      //获取搜索历史、热点
+      utilRequest.NetRequest({
+        url: "search/getinitializesearch",
+        success: function (res) {
+          if (res.code == "ERROR_STATUS_SUCCESS") {
+            var jsoncontent = JSON.parse(res.jsoncontent);
+
+            var historyList = jsoncontent.history[0];
+            var hotList = jsoncontent.hot;
+
+            if (historyList != undefined) {
+              that.setData({
+                searchHistory: historyList.searchhistory.split(";"),
+              })
+            }
+            that.setData({
+              searchHot: hotList,
+            })
+          }
+        },
+        fail: function (res) {
+
         }
-      },
-      fail: function(res){
+      })
 
-      }
-    })
+    }
 
   },
 

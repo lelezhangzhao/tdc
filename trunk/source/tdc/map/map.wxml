@@ -1,0 +1,27 @@
+<!--tdc/map/map.wxml-->
+<view class="page">
+  <view class="top-view">
+    <view class="input-view">
+      <input class="map-input" placeholder="" value="{{map_address}}"></input>
+    </view>
+    <image class="map-image" src="{{map_image}}"></image>
+  </view>
+  <view class="map-view">
+    <view class="page-section page-section-gap ">
+        <map
+          class="map" 
+          id="myMap"
+          latitude="{{latitude}}"
+          longitude="{{longitude}}"
+          markers="{{markers}}"
+          covers="{{covers}}"
+          show-location
+          bindregionchange="mapChange"
+        ></map>
+    </view>
+  </view>
+
+  <view class="bottom-view">
+    <button bindtap="arroundUser">获取附近用户</button>
+  </view>
+</view>

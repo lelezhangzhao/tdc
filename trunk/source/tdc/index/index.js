@@ -132,5 +132,10 @@ Page({
     wx.navigateTo({
       url: '../search/search',
     })
+  },
+  searchByMap: function(e){
+    wx.navigateTo({
+      url: '../map/map',
+    })
   }
 })

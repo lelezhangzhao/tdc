@@ -1,0 +1,25 @@
+/* tdc/map/map.wxss */
+
+.top-view{
+  height: 100rpx;
+  display: flex;
+  flex-direction: row;
+}
+.input-view{
+  background-color: #EEE;
+  height: 60rpx;
+  width: 70%;
+  margin-left: 5%;
+  margin-right: 10%;
+  border-radius: 50rpx;
+  padding: 0 20rpx;
+}
+.map{
+  width: 100%;
+  height: 800rpx;
+}
+.map-image{
+  margin-top: 8rpx;
+  width: 30rpx;
+  height: 40rpx;
+}

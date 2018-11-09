@@ -37,11 +37,14 @@
   font-size: 32rpx;
   vertical-align: middle;
 }
-.main_address{
+.map-view{
   margin-left: 50rpx;
+}
+.main_address{
   width: 150rpx;
 }
 .main-address-img{
+  margin-left: 30rpx;
   width: 40rpx;
   height: 50rpx;
 }
