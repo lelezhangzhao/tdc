@@ -1,0 +1,38 @@
+/* tdc/news/news.wxss */
+.page{
+  margin: 0 5%;
+  width: 90%;
+}
+
+.top-view{
+  height: 50rpx;
+}
+
+.item-view{
+  display: flex;
+  flex-direction: row;
+  height: 200rpx;
+}
+
+.logo-photo-image{
+  width: 150rpx;
+  height: 150rpx;
+}
+.item-title{
+  display: flex;
+  flex-direction: row;
+}
+.delete-image{
+  display: inline-block;
+  width: 21rpx;
+  height: 26rpx;
+  margin-left: 300rpx;
+  margin-top: 15rpx;
+}
+
+.bottom-view{
+  position: absolute;
+  bottom: 10rpx;
+  margin: 0 10%;
+  width: 70%;
+}

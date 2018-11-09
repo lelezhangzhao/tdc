@@ -46,9 +46,9 @@ Page({
         var jsoncontent = JSON.parse(res.jsoncontent);
         app.globalData.userid = jsoncontent.userid;
         app.globalData.role = jsoncontent.role;
-        wx.navigateTo({
-          url: '../admin/admin',
-        })
+        // wx.navigateTo({
+        //   url: '../admin/admin',
+        // })
 
       },
       fail: function (res) {
@@ -57,14 +57,14 @@ Page({
     });
 
     //暂时在这里开启服务器聊天系统
-    utilRequest.NetRequest({
-      url: "index/startchatserver",
-      success: function(res){
+    // utilRequest.NetRequest({
+    //   url: "index/startchatserver",
+    //   success: function(res){
 
-      },
-      fail: function(res){}
+    //   },
+    //   fail: function(res){}
 
-    })
+    // })
 
 
     //获取高评用户

@@ -131,7 +131,7 @@ Page({
       },
       success: function(res){
         if(res.code == "ERROR_STATUS_SUCCESS"){
-          var jsoncontent = JSON.parse(res.jsoncontent);
+          var jsoncontent = JSON.parse(res.jsoncontent)[0];
           teacher = jsoncontent.publishobject == "0";
 
           that.setData({

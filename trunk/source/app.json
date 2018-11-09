@@ -24,7 +24,9 @@
     "tdc/freezen/freezen",
     "tdc/unfreezen/unfreezen",
     "tdc/arbitration/arbitration",
-    "tdc/arbitrationInfo/arbitrationInfo"
+    "tdc/arbitrationInfo/arbitrationInfo",
+    "tdc/news/news",
+    "tdc/newsinfo/newsinfo"
   ],
   "window": {
     "backgroundTextStyle": "light",

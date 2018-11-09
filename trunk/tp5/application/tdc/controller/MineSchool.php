@@ -26,10 +26,10 @@ class MineSchool extends Controller{
         $sql = "select name, logo from tdc_user where id = $userid";
         $result = Db::query($sql);
 
-        $sql_publish = "select a.id, a.tag, a.introduction, a.publishobject, b.name, b.logo from tdc_publish as a join tdc_user as b on a.userid = b.id where b.id = $userid";
-        $result_publish = Db::query($sql_publish);
-
-        $result[0]["publishlist"] = $result_publish;
+//        $sql_publish = "select a.id, a.tag, a.introduction, a.publishobject, b.name, b.logo from tdc_publish as a join tdc_user as b on a.userid = b.id where b.id = $userid";
+//        $result_publish = Db::query($sql_publish);
+//
+//        $result[0]["publishlist"] = $result_publish;
 
         return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "获取成功", json_encode($result));
     }
@@ -73,7 +73,7 @@ class MineSchool extends Controller{
 
     public function GetCollectionList(){
         $userid = Session::get("userid");
-        $sql = "select publishid from tdc_collection where id = $userid";
+        $sql = "select publishid from tdc_collection where userid = $userid";
         $result = Db::query($sql);
 
         if(empty($result)){
@@ -104,7 +104,7 @@ class MineSchool extends Controller{
 
     public function GetHistoryList(){
         $userid = Session::get("userid");
-        $sql = "select publishid from tdc_history where id = $userid";
+        $sql = "select publishid from tdc_history where userid = $userid";
         $result = Db::query($sql);
 
         if(empty($result)){

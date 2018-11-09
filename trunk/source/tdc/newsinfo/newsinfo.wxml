@@ -1,0 +1,54 @@
+<!--tdc/newsinfo/newsinfo.wxml-->
+<view class="page">
+  <view class="top-view">
+    <input placeholder="标题" value="{{title}}" bindinput="titleChange"></input>
+  </view>
+
+  <view class="middle-view">
+    <view class="title-view">
+      <view>
+        <input placeholder="摘要" value="{{abstract}}" bindinput="abstractChange"></input>
+      </view>
+    </view>
+
+    <view class="title-one-view">
+      <view>
+        <input placeholder="标题一" value="{{title_one}}" bindinput="titleOneChange"></input>
+      </view>
+      <view>
+        <input placeholder="正文一" value="{{content_one}}" bindinput="contentOneChange"></input>
+      </view>
+    </view>
+
+    <view class="title-two-view">
+      <view>
+        <input placeholder="标题二" value="{{title_two}}" bindinput="titleTwoChange"></input>
+      </view>
+      <view>
+        <input placeholder="正文二" value="{{content_two}}" bindinput="contentTwoChange"></input>
+      </view>
+    </view>
+
+    <view class="title-three-view">
+      <view>
+        <input placeholder="标题三" value="{{title_three}}" bindinput="titleThreeChange"></input>
+      </view>
+      <view>
+        <input placeholder="正文三" value="{{content_three}}" bindinput="contentThreeChange"></input>
+      </view>
+    </view>
+
+    <view class="title-four-view">
+      <view>
+        <input placeholder="标题四" value="{{title_four}}" bindinput="titleFourChange"></input>
+      </view>
+      <view>
+        <input placeholder="正文四" value="{{content_four}}" bindinput="contentFourChange"></input>
+      </view>
+    </view>
+  </view>
+
+  <view class="bottom-view">
+    <button bindtap="publish">立即发布</button>
+  </view>
+</view>

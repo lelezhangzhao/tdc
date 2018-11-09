@@ -19,6 +19,20 @@ use think\Db;
 
 
 class MineTeacher extends Controller{
+    public function GetInitializeInfo(){
+        //获取第一次加载信息
+        $userid = Session::get("userid");
+        $sql = "select name, logo from tdc_user where id = $userid";
+        $result = Db::query($sql);
+
+//        $sql_publish = "select a.id, a.tag, a.introduction, a.publishobject, b.name, b.logo from tdc_publish as a join tdc_user as b on a.userid = b.id where b.id = $userid";
+//        $result_publish = Db::query($sql_publish);
+//
+//        $result[0]["publishlist"] = $result_publish;
+
+        return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "获取成功", json_encode($result));
+    }
+
     public function GetPublishList(){
         $userid = Session::get("userid");
 
@@ -74,32 +88,18 @@ class MineTeacher extends Controller{
 
     public function GetCollectionList(){
         $userid = Session::get("userid");
-        $sql = "select * from tdc_collection where userid = $userid";
+        $sql = "select publishid from tdc_collection where userid = $userid";
         $result = Db::query($sql);
 
-        if(empty($result)){
+        if($result[0]["publishid"] == null){
             return Status::ReturnErrorStatus("ERROR_STATUS_LISTISNULL");
         }
-        $publishid = $result[0]["publishid"];
-        if(empty($publishid)){
-            return Status::ReturnErrorStatus("ERROR_STATUS_LISTISNULL");
-        }
-        $publishIdArr = explode(";", $publishid);
 
+        //拆分publishid
+        $publishArr = explode(";", $result[0]["publishid"]);
         $publishes = array();
-        if(count($publishIdArr) == 0){
-            return Status::ReturnErrorStatus("ERROR_STATUS_LISTISNULL");
-        }
-
-        foreach($publishIdArr as $item){
-            $sql = "select * from tdc_publish where id = $item";
-            $result = Db::query($sql);
-            if($result[0]["publishobject"] == 0){
-                $sql = "select a.id, a.publishobject, a.evaluateavg, a.evaluatecount, a.tag, a.workaddress, a.introduction, a.photos from tdc_publish as a where a.id = $item and a.publishobject = 0";
-            }else if($result[0]["publishobject"] == 1){
-                $sql = "select a.id, a.publishobject, a.evaluateavg, a.evaluatecount, a.tag, a.workaddress, a.introduction, a.photos from tdc_publish as a where a.id = $item and a.publishobject = 1";
-            }
-
+        foreach($publishArr as $item){
+            $sql = "select a.id, a.publishobject, a.tag, a.introduction, b.name, b.logo from tdc_publish as a join tdc_user as b on a.userid = b.id where a.id = $item";
             $result = Db::query($sql);
 
             $publish = json_encode($result);
@@ -109,7 +109,7 @@ class MineTeacher extends Controller{
             array_push($publishes, json_decode($publish));
         }
 
-        return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "", json_encode($publishes));
+        return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "获取成功", json_encode($publishes));
     }
 
     public function DeleteCollection(Request $request){
@@ -119,29 +119,17 @@ class MineTeacher extends Controller{
 
     public function GetHistoryList(){
         $userid = Session::get("userid");
-        $sql = "select * from tdc_history where userid = $userid";
+        $sql = "select publishid from tdc_history where userid = $userid";
         $result = Db::query($sql);
-
-        if(empty($result)){
+        if($result[0]["publishid"] == null){
             return Status::ReturnErrorStatus("ERROR_STATUS_LISTISNULL");
         }
-        $publishid = $result[0]["publishid"];
-        $publishIdArr = explode(";", $publishid);
 
+        //拆分publishid
+        $publishArr = explode(";", $result[0]["publishid"]);
         $publishes = array();
-        if(count($publishIdArr) == 0){
-            return Status::ReturnErrorStatus("ERROR_STATUS_LISTISNULL");
-        }
-
-        foreach($publishIdArr as $item){
-            $sql = "select * from tdc_publish where id = $item";
-            $result = Db::query($sql);
-            if($result[0]["publishobject"] == 0){
-                $sql = "select a.id, a.publishobject, a.evaluateavg, a.evaluatecount, a.tag, a.workaddress, a.introduction, a.photos from tdc_publish as a where a.id = $item and a.publishobject = 0";
-            }else if($result[0]["publishobject"] == 1){
-                $sql = "select a.id, a.publishobject, a.evaluateavg, a.evaluatecount, a.tag, a.workaddress, a.introduction, a.photos from tdc_publish as a where a.id = $item and a.publishobject = 1";
-            }
-
+        foreach($publishArr as $item){
+            $sql = "select a.id, a.publishobject, a.tag, a.introduction, b.name, b.logo from tdc_publish as a join tdc_user as b on a.userid = b.id where a.id = $item";
             $result = Db::query($sql);
 
             $publish = json_encode($result);
@@ -151,8 +139,7 @@ class MineTeacher extends Controller{
             array_push($publishes, json_decode($publish));
         }
 
-        return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "", json_encode($publishes));
-
+        return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "获取成功", json_encode($publishes));
     }
 
     public function DeleteFooter(Request $request){

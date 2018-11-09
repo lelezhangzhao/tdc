@@ -15,6 +15,8 @@ Page({
     name: "",
     logo: "",
     publishList: [],
+    collectionList: [],
+    historyList: [],
 
     option_image: "",
 
@@ -52,16 +54,13 @@ Page({
     utilRequest.NetRequest({
       url: url,
       success:function(res){
-        console.log(res);
         if(res.code == "ERROR_STATUS_SUCCESS"){
           var jsoncontent = JSON.parse(res.jsoncontent)[0];
           that.setData({
             type: 1,
             name: jsoncontent.name,
             logo: globalData.GetServerHttps() + jsoncontent.logo,
-            publishList: jsoncontent.publishlist,
           })
-          console.log(that.data.publishList);
         }
       },
       fail:function(res){
@@ -69,6 +68,7 @@ Page({
       }
     })
 
+    that.publishRecord();
 
   },
 
@@ -145,7 +145,7 @@ Page({
         }else if(res.code == "ERROR_STATUS_LISTISNULL"){
           that.setData({
             type: 1,
-            publishList: [],
+            publishList: "",
           })
         }
       },
@@ -166,15 +166,15 @@ Page({
       url: url,
       success: function (res) {
         if (res.code == "ERROR_STATUS_SUCCESS") {
-          var jsoncontent = res.jsoncontent;
+          var jsoncontent = JSON.parse(res.jsoncontent);
           that.setData({
+            collectionList: jsoncontent,
             type: 2,
-            publishList: jsoncontent,
           })
         } else if (res.code == "ERROR_STATUS_LISTISNULL") {
           that.setData({
             type: 2,
-            publishList: [],
+            collectionList: "",
           })
         }
       },
@@ -198,12 +198,12 @@ Page({
           var jsoncontent = JSON.parse(res.jsoncontent);
           that.setData({
             type: 3,
-            publishList: jsoncontent,
+            historyList: jsoncontent,
           })
         } else if (res.code == "ERROR_STATUS_LISTISNULL") {
           that.setData({
             type: 3,
-            publishList: [],
+            historyList: "",
           })
         }
       },
@@ -240,5 +240,6 @@ Page({
       url: '../info/info?teacher=' + isTeacher + '&school=' + !isTeacher + '&publishId=' + publishId,
     });
   }
+
   
 })
