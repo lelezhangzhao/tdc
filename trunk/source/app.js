@@ -42,13 +42,16 @@ App({
       success:function(res){
         console.log(res);
         that.globalData.windowHeight = res.windowHeight;
-        that.globalData.windowWieth = res.windowWidth;
+        that.globalData.windowWidth = res.windowWidth;
+        that.globalData.pixelRatio = res.pixelRatio;
       },
       fail:function(res){
 
       }
     })
-
+    // wx.navigateTo({
+    //   url: 'tdc/begin/begin',
+    // })
 
   },
   globalData: {
@@ -57,6 +60,7 @@ App({
     role:null,
     server: "https://localtdc.com/",
     windowHeight: null,
-    windowWeight: null,
+    windowWidth: null,
+    pixelRatio: null,
   }
 })

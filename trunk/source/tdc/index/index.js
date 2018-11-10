@@ -18,13 +18,33 @@ Page({
     address_logo: null,
     school_logo: null,
     teacher_logo: null,
+
+    //begin
+    image: "",
+    image_width: "",
+    image_height: "",
+
+    intervalId: "",
+    hasInitialized: false,
+
   },
   onLoad:function(){
-    
     var that = this;
-    // wx.navigateTo({
-    //   url: '../register/register',
-    // })
+
+    var time = 3;
+
+    //三秒后跳转到主页
+    that.data.intervalId = setInterval(function () {
+      if (time == 0) {
+        clearInterval(that.data.intervalId);
+        that.setData({
+          hasInitialized: true,
+        })
+      } else {
+        --time;
+      }
+    }, 1000)
+
 
 
     that.setData({
@@ -32,29 +52,33 @@ Page({
       address_logo: "../image/main/address.png",
       school_logo: "../image/main/school.png",
       teacher_logo: "../image/main/teacher.png",
+      image: "../image/begin/begin.gif",
+      image_width: app.globalData.windowWidth * app.globalData.pixelRatio - 100,
+      image_height: app.globalData.windowHeight * app.globalData.pixelRatio,
+      hasInitialized: false,
     })
 
-    //临时登录
-    utilRequest.NetRequest({
-      url: "login/login",
-      data: {
-        username: "woshilaoshi",
-        password: utilMd5.hexMD5("woshilaoshi"),
-      },
-      success: function (res) {
+    // //临时登录
+    // utilRequest.NetRequest({
+    //   url: "login/login",
+    //   data: {
+    //     username: "woshilaoshi",
+    //     password: utilMd5.hexMD5("woshilaoshi"),
+    //   },
+    //   success: function (res) {
         
-        var jsoncontent = JSON.parse(res.jsoncontent);
-        app.globalData.userid = jsoncontent.userid;
-        app.globalData.role = jsoncontent.role;
-        // wx.navigateTo({
-        //   url: '../admin/admin',
-        // })
+    //     var jsoncontent = JSON.parse(res.jsoncontent);
+    //     app.globalData.userid = jsoncontent.userid;
+    //     app.globalData.role = jsoncontent.role;
+    //     // wx.navigateTo({
+    //     //   url: '../admin/admin',
+    //     // })
 
-      },
-      fail: function (res) {
+    //   },
+    //   fail: function (res) {
 
-      }
-    });
+    //   }
+    // });
 
     //暂时在这里开启服务器聊天系统
     // utilRequest.NetRequest({

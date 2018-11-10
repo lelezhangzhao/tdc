@@ -119,6 +119,13 @@ class ChatServer extends Controller
         }
     }
 
+    public function DeleteSocket($key){
+        if(array_key_exists($key, $this->users)){
+            unset($this->users, $key);
+            return "OK";
+        }
+        return "ERROR";
+    }
 //解除连接
     private function disconnect($socket)
     {
@@ -197,4 +204,6 @@ class ChatServer extends Controller
         }
         return $decoded;
     }
+
+
 }

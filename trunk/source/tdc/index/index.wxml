@@ -2,7 +2,12 @@
 
 <view class="page">
 
-  <view class="top-view">
+  <view wx:if="{{!hasInitialized}}">
+    <image class='image-image' src="{{image}}" style="height: {{image_height}}rpx; width: {{image_width}}rpx;"></image>
+  </view>
+
+
+  <view class="top-view"  wx:if="{{hasInitialized}}">
     <swiper indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" circular="{{circular}}" class="swiper">
       <block wx:for="{{imgUrls}}" wx:key="*this" class="swiper-block">
         <swiper-item class="swiper-item">
@@ -36,4 +41,5 @@
       <component-brief-introduction name="{{item.name}}" logo="{{item.logo}}" tags="{{item.tag}}" briefIntroduction="{{item.introduction}}" isTeacher="{{item.publishobject == 0}}"/>
     </view>
   </view>
+
 </view>

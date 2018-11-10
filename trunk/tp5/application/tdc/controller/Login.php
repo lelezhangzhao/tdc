@@ -13,6 +13,7 @@ use app\tdc\api\Times;
 use app\tdc\model\User;
 use think\Controller;
 use think\Request;
+use think\Db;
 
 use think\Session;
 
@@ -51,6 +52,24 @@ class Login extends Controller{
         return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "", json_encode($return_arr));
 
 
+    }
+
+    public function Logout(Request $request){
+        $systemTime = Times::GetSystemTime();
+        $userid = Session::get("userid");
+
+
+        $sql = "select chatkey from tdc_user where id = $userid";
+        $result = Db::query($sql);
+
+        $sql = "update tdc_user set logouttime = '" . $systemTime . "' where id = $userid";
+        Db::execute($sql);
+
+        Session::delete("userid");
+
+
+
+        return Status::ReturnErrorStatus("ERROR_STATUS_SUCCESS");
     }
 
 }

@@ -27,7 +27,8 @@
     "tdc/arbitrationInfo/arbitrationInfo",
     "tdc/news/news",
     "tdc/newsinfo/newsinfo",
-    "tdc/map/map"
+    "tdc/map/map",
+    "tdc/begin/begin"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -36,26 +37,37 @@
     "navigationBarTextStyle": "black"
   },
   "tabBar": {
+    "color": "#616161",
     "list": [
       {
         "pagePath": "tdc/index/index",
-        "text": "首页"
+        "text": "首页",
+        "iconPath": "tdc/image/main/main.png",
+        "selectedIconPath": "tdc/image/main/main_sel.png"
       },
       {
         "pagePath": "tdc/find/find",
-        "text": "发现"
+        "text": "发现",
+        "iconPath": "tdc/image/main/find.png",
+        "selectedIconPath": "tdc/image/main/find_sel.png"
       },
       {
         "pagePath": "tdc/preview/preview",
-        "text": "发布"
+        "text": "发布",
+        "iconPath": "tdc/image/main/publish.png",
+        "selectedIconPath": "tdc/image/main/publish_sel.png"
       },
       {
         "pagePath": "tdc/chat/chat",
-        "text": "消息"
+        "text": "消息",
+        "iconPath": "tdc/image/main/msg.png",
+        "selectedIconPath": "tdc/image/main/msg_sel.png"
       },
       {
         "pagePath": "tdc/mine/mine",
-        "text": "我的"
+        "text": "我的",
+        "iconPath": "tdc/image/main/mine.png",
+        "selectedIconPath": "tdc/image/main/mine_sel.png"
       }
     ]
   }

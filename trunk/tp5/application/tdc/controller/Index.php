@@ -17,15 +17,32 @@ use think\Session;
 use think\Db;
 
 
+
 class Index extends Controller{
+    private $chatServer;
+
+    public function DeleteSocket(Request $request){
+        $userid = Session::get("userid");
+        $sql = "select chatkey from tdc_user where id = $userid";
+        $result = Db::query($sql);
+
+        $key = $result[0]["chatkey"];
+
+        return $this->chatServer;
+
+        return Status::ReturnErrorStatus("ERROR_STATUS_SUCCESS");
+    }
+
     public function StartChatServer(){
         if(!GlobalData::$chatServerHasStarted){
             GlobalData::$chatServerHasStarted = true;
 
 //            $userid = Session::get("userid");
 
-            $chatServet = new ChatServer("127.0.0.1", "9612");
-            $chatServet->run();
+
+            $this->chatServer = new ChatServer("127.0.0.1", "9612");
+            return 9612;
+            $this->chatServer->run();
         }
     }
     public function GetHighEvalList(Request $request){

@@ -1,0 +1,4 @@
+<!--tdc/begin/begin.wxml-->
+<view class="page">
+  <image class='image-image' src="{{image}}" style="height: {{image_height}}rpx; width: {{image_width}}rpx;"></image>
+</view>

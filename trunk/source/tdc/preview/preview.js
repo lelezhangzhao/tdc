@@ -217,7 +217,32 @@ Page({
   },
 
   logout:function(e){
+    var that = this;
+    //删除socket
+    // utilRequest.NetRequest({
+    //   url: "index/deletesocket",
+    //   success: function(res){
+    //     console.log(res);
+    //   },
+    //   fail: function(res){
 
+    //   }
+    // })
+
+
+    //退出
+    utilRequest.NetRequest({
+      url: "login/logout",
+      success: function(res){
+        //返回登录界面
+        wx.redirectTo({
+          url: "../login/login",
+        })
+      },
+      fail: function(res){
+
+      }
+    })
   },
 
   publish:function(e){
@@ -432,8 +457,10 @@ Page({
           name: newPhotoItem.substr(60,10),
           header: header,
           success(res) {
+            console.log(res);
           },
           fail(res){
+            console.log(res);
           }
         })
       }
