@@ -34,10 +34,14 @@ class Search extends Controller{
 
     public function SearchByKeyWords(Request $request){
         $keyWords = $request->param("keywords");
+        $userid = $request->param("userid");
 
         if(strlen(trim($keyWords)) == 0){
             return $this->GetDefaultSearch();
         }
+
+        //加入到search中
+
 
         $keyWordsArr = explode(" ", $keyWords);
         //以tag/地址/introduction/进行模糊搜索

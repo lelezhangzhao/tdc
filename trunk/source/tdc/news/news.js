@@ -20,21 +20,6 @@ Page({
       delete_image: "../image/admin/delete.png"
     })
 
-    //获取新闻列表
-    utilRequest.NetRequest({
-      url: "admin/getnewslist",
-      success: function(res){
-        if(res.code == "ERROR_STATUS_SUCCESS"){
-          var jsoncontent = JSON.parse(res.jsoncontent);
-          that.setData({
-            list: jsoncontent,
-          })
-        }
-      },
-      fail: function(res){
-
-      }
-    })
   },
 
   /**
@@ -48,6 +33,22 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    var that = this;
+    //获取新闻列表
+    utilRequest.NetRequest({
+      url: "admin/getnewslist",
+      success: function (res) {
+        if (res.code == "ERROR_STATUS_SUCCESS") {
+          var jsoncontent = JSON.parse(res.jsoncontent);
+          that.setData({
+            list: jsoncontent,
+          })
+        }
+      },
+      fail: function (res) {
+
+      }
+    })
 
   },
 

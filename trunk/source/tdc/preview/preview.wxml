@@ -125,7 +125,7 @@
 
   <view class="introduction-view">
     <label class="introduction-title-label">{{introduction_title}}</label>
-    <textarea class="introduction-content-textarea" value="{{introduction}}" placeholder="{{introduction_title}}" maxlength="1000"></textarea>
+    <textarea class="introduction-content-textarea" value="{{introduction}}" bindinput="introductionChange" placeholder="{{introduction_title}}" maxlength="1000"></textarea>
   </view>
 
     <view class="weui-uploader">

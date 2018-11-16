@@ -7,20 +7,16 @@ Component({
     name:{
       type: String,
     },
-    newtag_image:{
-      type: String,
-      default: "../../image/chat/newtag_image.png"
-    },
     content:{
       type: String,
-    },
-    newtag_label:{
-      type:String,
-      default: "new",
     },
     hasNewMsg:{
       type: Boolean,
       default: false,
+    },
+    otherLogo:{
+      type: String,
+      default: '',
     }
   },
 
@@ -28,7 +24,8 @@ Component({
    * 组件的初始数据
    */
   data: {
-
+    newtag_label: "New",
+    newtag_image: "../../image/chat/newtag_image.png",
   },
 
   /**

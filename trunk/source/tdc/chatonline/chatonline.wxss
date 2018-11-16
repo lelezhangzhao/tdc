@@ -1,7 +1,6 @@
 /* tdc/chat/chat.wxss */
 
 page {
-  background-color: #f7f7f7;
 }
 
 .tab {
@@ -83,6 +82,7 @@ page {
   float: right;
   position: relative;
   right: 40rpx;
+  
 }
 
 .you_left {
@@ -97,12 +97,6 @@ page {
   border-radius: 50%;
 }
 
-.new_txt {
-  width: 380rpx;
-  border-radius: 7px;
-  background-color: #95d4ff;
-  padding: 0rpx 30rpx 0rpx 30rpx;
-}
 
 .sanjiao {
   top: 20rpx;
@@ -171,4 +165,47 @@ page {
   font-size: 14px;
   line-height: 40px;
   word-break: break-all;
+}
+.logo-image{
+  width: 70rpx;
+  height: 70rpx;
+  margin: 0 20rpx;
+}
+.page_row{
+  display: flex;
+  flex-direction: row;
+
+}
+.new-text-view-my{
+  background-color: #9EEB6B;
+  border-radius: 7px;
+  padding-left: 10rpx;
+  margin-left: 100rpx;
+  margin-bottom: 30rpx;
+
+}
+.new-text-view-other{
+  background-color: #EBEBEB;
+  padding-right: 10rpx;
+  margin-right: 100rpx;
+  width: 50%;
+  margin-bottom: 30rpx;
+  border-radius: 7px;
+  
+}
+.new-txt-other{
+  display: block;
+  padding: 20rpx;
+  line-height: 150%;
+  text-align: left;
+}
+.new-txt-my{
+  display: block;
+  
+  padding: 20rpx;
+  line-height: 150%;
+  text-align: left;
+  
+}
+.logo-view{
 }

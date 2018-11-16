@@ -122,6 +122,11 @@ class Register extends Controller{
         $sql = "insert into tdc_history(userid) values ($userid)";
         Db::execute($sql);
 
+        $sql = "insert into tdc_search(userid) values ($userid)";
+        Db:;execute($sql);
+
+
+
         return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "注册成功", "$userid");
     }
 

@@ -26,6 +26,8 @@ Page({
      * 3 history
      */
     type: 1,
+
+    serverHttps: "",
   },
 
   /**
@@ -33,42 +35,11 @@ Page({
    */
   onLoad: function (options) {
     var that = this;
-    if (app.globalData.userid == null) {
-      wx.navigateTo({
-        url: '../login/login',
-      })
-      return;
-    }
-
     that.setData({
-      role: app.globalData.role,
       option_image: "../image/mine/option.png",
+      serverHttps: globalData.GetServerHttps(),
+      type: 0,
     })
-    var url = "";
-    if(that.data.role == 0){
-      url = "mine_teacher/getinitializeinfo";
-    }else if(that.data.role == 1){
-      url = "mine_school/getinitializeinfo";
-    }
-
-    utilRequest.NetRequest({
-      url: url,
-      success:function(res){
-        if(res.code == "ERROR_STATUS_SUCCESS"){
-          var jsoncontent = JSON.parse(res.jsoncontent)[0];
-          that.setData({
-            type: 1,
-            name: jsoncontent.name,
-            logo: globalData.GetServerHttps() + jsoncontent.logo,
-          })
-        }
-      },
-      fail:function(res){
-
-      }
-    })
-
-    that.publishRecord();
 
   },
 
@@ -83,6 +54,45 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    var that = this;
+    if (app.globalData.userid == null) {
+      wx.redirectTo({
+        url: '../login/login',
+      })
+      return;
+    }
+
+    that.setData({
+      role: app.globalData.role,
+    })
+    var url = "";
+    if (that.data.role == 0) {
+      url = "mine_teacher/getinitializeinfo";
+    } else if (that.data.role == 1) {
+      url = "mine_school/getinitializeinfo";
+    }
+
+    if(that.data.type == 0){
+      utilRequest.NetRequest({
+        url: url,
+        success: function (res) {
+          if (res.code == "ERROR_STATUS_SUCCESS") {
+            var jsoncontent = JSON.parse(res.jsoncontent)[0];
+            that.setData({
+              type: 1,
+              name: jsoncontent.name,
+              logo: globalData.GetServerHttps() + jsoncontent.logo,
+            })
+          }
+        },
+        fail: function (res) {
+
+        }
+      })
+
+      that.publishRecord();
+
+    }
   },
 
   /**
@@ -130,6 +140,7 @@ Page({
     var url = "";
     if (that.data.role == 0) {
       url = "mine_teacher/getpublishlist";
+      
     } else if (that.data.role == 1) {
       url = "mine_school/getpublishlist";
     }
@@ -138,6 +149,7 @@ Page({
       success: function (res) {
         if (res.code == "ERROR_STATUS_SUCCESS") {
           var jsoncontent = JSON.parse(res.jsoncontent);
+          console.log(jsoncontent);
           that.setData({
             type: 1,
             publishList: jsoncontent,

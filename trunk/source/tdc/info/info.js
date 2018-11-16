@@ -47,6 +47,10 @@ Page({
     share_button:null,
     seperator_image: null,
     evaluate_image: null,
+
+    show_mine_evaluate: false,
+    mine_evaluate_content: "",
+    mine_item_score: 0,
   },
 
   /**
@@ -76,83 +80,7 @@ Page({
     }
 
 
-    //获取老师或机构信息
-    if(that.data.teacher){
-      utilRequest.NetRequest({
-        url: "publish_info/getpublishteacherinfo",
-        data: {
-          publishId: that.data.publishId
-        },
-        success: function (res) {
-          if(res.code == "ERROR_STATUS_SUCCESS"){
-            var jsoncontent = JSON.parse(res.jsoncontent)[0];
-            that.setData({ 
-              publishUserId: jsoncontent.publishuserid,
-              name: jsoncontent.name,
-              nickName: jsoncontent.nickname,
-              tel: jsoncontent.tel,
-              hasPermission: jsoncontent.tel.indexOf("*") == -1,
-              workaddress: jsoncontent.workaddress,
-              introduction: jsoncontent.introduction,
-              evaluateList: jsoncontent.evaluatelist,
-              logo: globalData.GetServerHttps() + "static/image/logo/" + jsoncontent.logo,
-              hasCollectioned: jsoncontent.hascollectioned,
-            });
-
-            
-          } else if (res.code == "ERROR_STATUS_PUBLISHALREADYDELETE"){
-            
-          }
-        },
-        fail: function (res) {
-
-        }
-      });
-    }else if(that.data.school){
-      utilRequest.NetRequest({
-        url: "publish_info/getpublishschoolinfo",
-        data:{
-          publishId: that.data.publishId
-        },
-        success: function(res){
-          if(res.code == "ERROR_STATUS_SUCCESS"){
-            var jsoncontent = JSON.parse(res.jsoncontent)[0];
-            that.setData({
-              publishUserId: jsoncontent.publishuserid,
-              name: jsoncontent.name,
-              nickName: jsoncontent.nickname,
-              tel: jsoncontent.tel,
-              hasPermission: jsoncontent.tel.indexOf("*") == -1,
-              workaddress: jsoncontent.workaddress,
-              introduction: jsoncontent.introduction,
-              evaluateList: jsoncontent.evaluatelist,
-              logo: globalData.GetServerHttps() + jsoncontent.logo,
-              wagesbymonth: jsoncontent.wagesbymonth,
-              wagesbymonthmin: jsoncontent.wagesbymonthmin,
-              wagesbymonthmax: jsoncontent.wagesbymonthmax,
-              wagesbyclass: jsoncontent.wagesbyclass,
-              wagesbyclassmin: jsoncontent.wagesbyclassmin,
-              wagesbyclassmax: jsoncontent.wagesbyclassmax,
-              wagesfacetoface: jsoncontent.wagesfacetoface,
-              hireinfo: jsoncontent.hireinfo,
-              hasCollectioned: jsoncontent.hascollectioned,
-              
-            });
-
-            var teacherArr = jsoncontent.requireinfo.split(";");
-            var welfareArr = jsoncontent.tag.split(";")[3].split(",");
-            that.setData({
-              teacherinfo: teacherArr.join("/"),
-              welfareinfo: welfareArr.join("/"),
-            })
-          }
-        },
-        fail:function(res){
-
-        }
-      })
-    }
-    
+    that.getInfo();    
   },
 
   /**
@@ -257,5 +185,157 @@ Page({
 
       }
     })
+  },
+  evaluate: function(e){
+    var that = this;
+    that.setData({
+      show_mine_evaluate: true,
+      mine_evaluate_score: 0,
+    })
+  },
+  mine_evaluate_1: function(e){
+    var that = this;
+    that.setData({
+      mine_item_score: 1,
+    })
+  },
+  mine_evaluate_2: function(e){
+    var that = this;
+    that.setData({
+      mine_item_score: 2,
+    })
+  },
+  mine_evaluate_3: function(e){
+    var that = this;
+    that.setData({
+      mine_item_score: 3,
+    })
+  },
+  mine_evaluate_4: function(e){
+    var that = this;
+    that.setData({
+      mine_item_score: 4,
+    })
+  },
+  mine_evaluate_5: function(e){
+    var that = this;
+    that.setData({
+      mine_item_score: 5,
+    })
+  },
+  publishMineEvaluate: function(e){
+    var that = this;
+    utilRequest.NetRequest({
+      url: "publish_info/addevaluate",
+      data:{
+        publishId: that.data.publishId,
+        evaluateContent: that.data.mine_evaluate_content,
+        evaluateScore: that.data.mine_item_score,
+      },
+      success: function(res){
+        if(res.code = "ERROR_STATUS_SUCCESS"){
+          that.setData({
+            show_mine_evaluate: false,
+            mine_evaluate_content: "",
+            mine_item_score: 0,
+          })
+          that.getInfo();
+          wx.showToast({
+            title: '评价成功',
+            icon: "none",
+          })
+        }
+      },
+      fail: function(res){
+
+      }
+    })
+
+  
+  },
+  mineEvaluateContent: function(e){
+    var that = this;
+    that.setData({
+      mine_evaluate_content: e.detail.value,
+    })
+  },
+  getInfo: function(){
+    var that = this;
+    //获取老师或机构信息
+    if (that.data.teacher) {
+      utilRequest.NetRequest({
+        url: "publish_info/getpublishteacherinfo",
+        data: {
+          publishId: that.data.publishId
+        },
+        success: function (res) {
+          if (res.code == "ERROR_STATUS_SUCCESS") {
+            var jsoncontent = JSON.parse(res.jsoncontent)[0];
+            that.setData({
+              publishUserId: jsoncontent.publishuserid,
+              name: jsoncontent.name,
+              nickName: jsoncontent.nickname,
+              tel: jsoncontent.tel,
+              hasPermission: jsoncontent.tel.indexOf("*") == -1,
+              workaddress: jsoncontent.workaddress,
+              introduction: jsoncontent.introduction,
+              evaluateList: jsoncontent.evaluatelist,
+              logo: globalData.GetServerHttps() + jsoncontent.logo,
+              hasCollectioned: jsoncontent.hascollectioned,
+            });
+
+
+          } else if (res.code == "ERROR_STATUS_PUBLISHALREADYDELETE") {
+
+          }
+        },
+        fail: function (res) {
+
+        }
+      });
+    } else if (that.data.school) {
+      utilRequest.NetRequest({
+        url: "publish_info/getpublishschoolinfo",
+        data: {
+          publishId: that.data.publishId
+        },
+        success: function (res) {
+          if (res.code == "ERROR_STATUS_SUCCESS") {
+            var jsoncontent = JSON.parse(res.jsoncontent)[0];
+            that.setData({
+              publishUserId: jsoncontent.publishuserid,
+              name: jsoncontent.name,
+              nickName: jsoncontent.nickname,
+              tel: jsoncontent.tel,
+              hasPermission: jsoncontent.tel.indexOf("*") == -1,
+              workaddress: jsoncontent.workaddress,
+              introduction: jsoncontent.introduction,
+              evaluateList: jsoncontent.evaluatelist,
+              logo: globalData.GetServerHttps() + jsoncontent.logo,
+              wagesbymonth: jsoncontent.wagesbymonth,
+              wagesbymonthmin: jsoncontent.wagesbymonthmin,
+              wagesbymonthmax: jsoncontent.wagesbymonthmax,
+              wagesbyclass: jsoncontent.wagesbyclass,
+              wagesbyclassmin: jsoncontent.wagesbyclassmin,
+              wagesbyclassmax: jsoncontent.wagesbyclassmax,
+              wagesfacetoface: jsoncontent.wagesfacetoface,
+              hireinfo: jsoncontent.hireinfo,
+              hasCollectioned: jsoncontent.hascollectioned,
+
+            });
+
+            var teacherArr = jsoncontent.requireinfo.split(";");
+            var welfareArr = jsoncontent.tag.split(";")[3].split(",");
+            that.setData({
+              teacherinfo: teacherArr.join("/"),
+              welfareinfo: welfareArr.join("/"),
+            })
+          }
+        },
+        fail: function (res) {
+
+        }
+      })
+    }
   }
 })

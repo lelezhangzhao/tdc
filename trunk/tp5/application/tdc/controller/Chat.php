@@ -23,17 +23,33 @@ class Chat extends Controller{
     public function GetChatList(){
         $userid = Session::get("userid");
 
-        $sql = "select a.fromuserid, a.touserid, a.sendtime, a.isread, a.content, b.name, b.logo from tdc_chat as a join tdc_user as b on a.fromuserid = b.id or a.touserid = b.id where a.fromuserid = $userid or a.touserid = $userid order by a.sendtime desc";
+        $sql = "select * from ((select a.fromuserid, a.touserid, a.fromuserid as otherid, a.sendtime, a.isread, a.content, b.name, b.logo from tdc_chat as a join tdc_user as b on a.fromuserid = b.id where a.touserid = $userid) as c) union
+(select a.fromuserid, a.touserid, a.touserid as otherid, a.sendtime, a.isread, a.content, b.name, b.logo from tdc_chat as a join tdc_user as b on a.touserid = b.id where a.fromuserid = $userid) order by sendtime desc";
+
+
+//        $sql = "select a.fromuserid, a.touserid, a.sendtime, a.isread, a.content, b.name, b.logo from tdc_chat as a join tdc_user as b on a.fromuserid = b.id or a.touserid = b.id where a.fromuserid = $userid or a.touserid = $userid order by a.sendtime desc";
         $result = Db::query($sql);
         if(empty($result)){
             return Status::ReturnErrorStatus("ERROR_STATUS_LISTISNULL");
         }
+        $needDelete = array();
         $unique_result = array();
+        for($i = 0; $i < count($result); ++$i){
+            for($j = $i + 1; $j < count($result); ++$j){
+                if($result[$j]["fromuserid"] == $result[$i]["touserid"] && $result[$j]["touserid"] == $result[$i]["fromuserid"]){
+                    $needDelete[] = $j;
+                    break;
+                }
+            }
+        }
+
+        $result = array_diff_key($result, $needDelete);
+
         foreach($result as $item){
             $key = $item["fromuserid"] . ";" . $item["touserid"];
             if(!array_key_exists($key, $unique_result)){
 
-                $unique_result[$key] = array("content" => $item['content'], "othername" => $item['name'], "otherlogo" => $item['logo'], "hasunreadmsg" => !$item["isread"]);
+                $unique_result[$key] = array("content" => $item['content'], "othername" => $item['name'], "otherlogo" => $item['logo'], "otherid" => $item["otherid"], "hasunreadmsg" => !$item["isread"]);
             }
         }
 
@@ -42,7 +58,7 @@ class Chat extends Controller{
             $useridarr = explode(";", $key);
             $fromuserid = $useridarr[0];
             $touserid = $useridarr[1];
-            $return_result[] = array("fromuserid" => $fromuserid, "touserid" => $touserid, "content" => $value["content"], "othername" => $value["othername"], "otherlogo" => $value["otherlogo"], "hasunreadmsg" => $value["hasunreadmsg"]);
+            $return_result[] = array("fromuserid" => $fromuserid, "touserid" => $touserid, "content" => $value["content"], "othername" => $value["othername"], "otherlogo" => $value["otherlogo"], "otherid" => $value["otherid"], "hasunreadmsg" => $value["hasunreadmsg"]);
         }
 
         return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "", json_encode($return_result));
@@ -112,7 +128,9 @@ class Chat extends Controller{
 
         $userid = Session::get("userid");
 
-        $sql = "select * from tdc_chat where (fromuserid = $theOtherUserId and touserid = $userid) or (fromuserid = $userid and touserid = $theOtherUserId) order by sendtime";
+
+        $sql = "select * from ((select fromuserid, fromuserid as otherid, sendtime, content from tdc_chat where fromuserid = $theOtherUserId and touserid = $userid) as a) union 
+(select fromuserid, touserid as otherid, sendtime, content from tdc_chat where fromuserid = $userid and touserid = $theOtherUserId) order by sendtime";
         $result = Db::query($sql);
         if(empty($result)){
             return Status::ReturnErrorStatus("ERROR_STATUS_LISTISNULL");

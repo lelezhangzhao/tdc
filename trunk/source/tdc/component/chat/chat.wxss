@@ -1,22 +1,52 @@
 /* tdc/component/chat/chat.wxss */
 .component{
-  height: 300rpx;
+  height: 180rpx;
+  display: flex;
+  flex-direction: row;
 }
-
+.left-view{
+  float: left;
+  width: 150rpx;
+  height: 150rpx;
+}
+.other-image{
+  width: 150rpx;
+  height: 150rpx;
+}
+.right-view{
+  margin-left: 20rpx;
+}
 .top-view{
   display: flex;
   flex-direction: row;
 }
 
-
-
-.newtag-image{
-  width: 33rpx;
-  height: 17rpx;
+.newtag-view{
+  position: absolute;
+  display: block;
+  right: 20rpx;
+  width: 70rpx;
 }
 
+.newtag-image{
+  width: 66rpx;
+  height: 34rpx;
+}
+.newtag-label{
+  position: absolute;
+  display: block;
+  font-size: 22rpx;
+  margin-top: -51rpx;
+  margin-left: 8rpx;
+  color: #FFF;
+}
 .content-view{
   font-size: 28rpx;
 
 }
-
+.chat-name-label{
+  font-size: 28rpx;
+}
+.chat-content-label{
+  font-size: 26rpx;
+}

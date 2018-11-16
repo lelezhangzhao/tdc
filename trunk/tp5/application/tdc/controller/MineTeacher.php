@@ -52,7 +52,7 @@ class MineTeacher extends Controller{
 
         foreach($publishIdArr as $item){
 
-            $sql = "select a.id, a.publishobject, a.evaluateavg, a.evaluatecount, a.tag, a.workaddress, a.introduction, a.photos from tdc_publish as a where a.id = $item";
+            $sql = "select a.id, a.publishobject, a.evaluateavg, a.evaluatecount, a.tag, a.workaddress, a.introduction, a.photos, b.name, b.logo from tdc_publish as a join tdc_user as b on a.userid = b.id where a.id = $item";
             $result = Db::query($sql);
 
             $publish = json_encode($result);
@@ -118,13 +118,15 @@ class MineTeacher extends Controller{
 
 
     public function GetHistoryList(){
+
         $userid = Session::get("userid");
         $sql = "select publishid from tdc_history where userid = $userid";
         $result = Db::query($sql);
+
         if($result[0]["publishid"] == null){
+
             return Status::ReturnErrorStatus("ERROR_STATUS_LISTISNULL");
         }
-
         //拆分publishid
         $publishArr = explode(";", $result[0]["publishid"]);
         $publishes = array();

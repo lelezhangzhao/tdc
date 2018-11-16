@@ -1,2 +1,5 @@
 /* tdc/begin/begin.wxss */
+.page{
+  text-align: center;
+}
 

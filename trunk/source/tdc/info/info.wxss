@@ -123,16 +123,56 @@
 .evaluate-content-view{
   margin-left: 20rpx;
   font-size: 28rpx;
+  
 }
 .evaluate-item-user{
+  display: block;
   line-height: 80rpx;
+}
+.evaluate-nickname-label{
+  display: inline-block;
 }
 .evaluate-score-view{
   display: inline;
   margin-left: 10rpx;
 }
-.chat-online-view{
+.option-view{
   position: absolute;
+  display: flex;
+  flex-direction: row;
   bottom: 1rpx;
-  width: 90%;
+  left: 0;
+  width: 100%;
+  height: 100rpx;
+  border-top: #666 solid 2rpx;
+  text-align: center;
+}
+.chat-online-view{
+  display: inline-block;
+  width: 50%;
+  line-height: 100rpx;
+  font-size: 28rpx;
+}
+.evaluate-button-view{
+  width: 50%;
+  line-height: 100rpx;
+  font-size: 28rpx;
+  
+}
+.chat-online-seperator{
+  display: inline-block;
+  width: 2rpx;
+  margin-top: 15rpx;
+  margin-bottom: 15rpx;
+  background-color: #666;
+}
+.mine-evaluate-publish-button{
+  float: right;
+  height: 50rpx;
+  line-height: 50rpx;
+  font-size: 26rpx;
+  margin-top: 6rpx;
+}
+.mine-evaluate-content-view{
+  font-size: 28rpx;
 }

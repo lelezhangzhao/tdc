@@ -6,14 +6,24 @@
       <block wx:if="{{item.fromuserid == userid}}">
         <view class='my_right'>
           <view class='page_row'>
-            <text class='new_txt'>{{item.content}}</text>
+            <view class="new-text-view-my">
+              <text class='new-txt-my'>{{item.content}}</text>
+            </view>
+            <view class="logo-view">
+              <image class="logo-image" src="{{myLogo}}"></image>
+            </view>
           </view>
         </view>
       </block>
       <block wx:else>
         <view class='you_left'>
           <view class='page_row'>
-            <text class='new_txt'>{{item.content}}</text>
+            <view class="logo-view">
+              <image class="logo-image" src="{{otherLogo}}"></image>
+            </view>
+            <view class="new-text-view-other">
+              <text class='new-txt-other'>{{item.content}}</text>
+            </view>
           </view>
         </view>
       </block>
@@ -24,5 +34,4 @@
 <view class="sendmessage">
   <input type="emoji" bindinput="bindChange" confirm-type="done" value='{{message}}' placeholder="" />
   <button catchtap="add">发送</button>
-  <image bindtap="upimg1" class='jia-img' src='{{jis_img}}'></image>
 </view>

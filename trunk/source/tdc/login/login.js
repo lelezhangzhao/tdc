@@ -17,6 +17,8 @@ Page({
     wx_logo: null,
     captcha: 0,
 
+    userInfo: {},
+
   },
 
   /**
@@ -188,6 +190,36 @@ Page({
     wx.navigateTo({
       url: '../forgetPassword/forgetPassword',
     })
+  },
+  login_by_wx: function(e){
+    var that = this;
+    wx.getSetting({
+      success: res => {
+        if (res.authSetting['scope.userInfo']) {
+          wx.getUserInfo({
+            success: res => {
+              // 可以将 res 发送给后台解码出 unionId
+              that.data.userInfo = res.userInfo;
+              //微信登录
+              utilRequest.NetRequest({
+                url: "login/loginbywx",
+                data:{
+                  userInfo: res.userInfo,
+                },
+                success: function(res){
+                  if(res.code == "ERROR_STATUS_SUCCESS"){
+                    
+                  }
+                },
+                fail: function(res){
+
+                }
+              })
+            }
+          })
+        }
+      }
+    });
   }
 
 

@@ -1,20 +1,26 @@
 <!--tdc/component/chat/chat.wxml-->
 <view class="component">
-  <view class="top-view">
-    <view class="name-view">
-      <label>{{name}}</label>
-    </view>
-
-    <view class="newtag-view">
-      <image class="newtag-image" src="{{newtag_image}}"></image>
-      <label>{{newtag_label}}</label>
-      
-    </view>
+  <view class="left-view">
+    <image class="other-image" src="{{otherLogo}}"></image>
   </view>
 
-  <view class="bottom-view">
-    <view class="content-view">
-      <label>{{content}}</label>
+  <view class="right-view">
+    <view class="top-view">
+      <view class="name-view">
+        <label class="chat-name-label">{{name}}</label>
+      </view>
+
+      <view class="newtag-view">
+        <image class="newtag-image" src="{{newtag_image}}"></image>
+        <label class="newtag-label">{{newtag_label}}</label>
+        
+      </view>
+    </view>
+
+    <view class="bottom-view">
+      <view class="content-view">
+        <label class="chat-content-label">{{content}}</label>
+      </view>
     </view>
   </view>
 </view>

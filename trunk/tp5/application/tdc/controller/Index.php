@@ -41,7 +41,6 @@ class Index extends Controller{
 
 
             $this->chatServer = new ChatServer("127.0.0.1", "9612");
-            return 9612;
             $this->chatServer->run();
         }
     }

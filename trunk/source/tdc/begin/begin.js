@@ -27,7 +27,7 @@ Page({
       success: function (res) {
         that.setData({
           image_height: res.windowHeight * res.pixelRatio,
-          image_width: res.windowWidth * res.pixelRatio,
+          image_width: res.windowWidth * res.pixelRatio - 90,
         })
       },
       fail: function (res) {

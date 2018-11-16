@@ -64,6 +64,27 @@ Page({
       hire_info_image: "../image/preview/hireinfoview.png",
     })
 
+
+    // if (app.globalData.userid == null) {
+    //   wx.navigateTo({
+    //     url: '../login/login',
+    //   })
+    // }
+  },
+
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
+    var that = this;
+
     if (app.globalData.userid == null) {
       wx.navigateTo({
         url: '../login/login',
@@ -153,25 +174,6 @@ Page({
       });
     }
 
-    // if (app.globalData.userid == null) {
-    //   wx.navigateTo({
-    //     url: '../login/login',
-    //   })
-    // }
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-    var that = this;
   },
 
   /**
@@ -219,15 +221,15 @@ Page({
   logout:function(e){
     var that = this;
     //删除socket
-    // utilRequest.NetRequest({
-    //   url: "index/deletesocket",
-    //   success: function(res){
-    //     console.log(res);
-    //   },
-    //   fail: function(res){
+    utilRequest.NetRequest({
+      url: "index/deletesocket",
+      success: function(res){
+        console.log(res);
+      },
+      fail: function(res){
 
-    //   }
-    // })
+      }
+    })
 
 
     //退出
@@ -470,6 +472,12 @@ Page({
     wx.previewImage({
       current: e.currentTarget.id, // 当前显示图片的http链接
       urls: this.data.photos // 需要预览的图片http链接列表
+    })
+  },
+  introductionChange: function(e){
+    var that = this;
+    that.setData({
+      introduction: e.detail.value,
     })
   }
 

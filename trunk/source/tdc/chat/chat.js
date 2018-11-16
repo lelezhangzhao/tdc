@@ -1,16 +1,21 @@
 var utilRequest = require("../util/request.js");
+var globalData = require("../util/globaldata.js");
 
 var app = getApp();
 
 Page({
   data: {
     chatList:[],
-    theOtherUserId:null,
     userid: "",
+    serverHttps: "",
   },
   //事件处理函数
   onLoad: function (options) {
     var that = this;
+    that.setData({
+      serverHttps: globalData.GetServerHttps(),
+    })
+
     if (app.globalData.userid == null) {
       wx.navigateTo({
         url: '../login/login',
@@ -34,19 +39,19 @@ Page({
     })
     wx.onSocketMessage(function (data) {
       var data = JSON.parse(data.data);
-      if(data.key != undefined){
+      if (data.key != undefined) {
         //把这个key放到服务器
         utilRequest.NetRequest({
           url: "global_data/addchatkey",
-          data:{
+          data: {
             userid: that.data.userid,
             key: data.key,
           },
-          success: function(res){
+          success: function (res) {
 
           },
-          fail: function(res){
-            
+          fail: function (res) {
+
           }
         })
       }
@@ -57,12 +62,16 @@ Page({
       console.log('websocket连接失败！');
     })
 
+  },
+  onShow:function(options){
+    var that = this;
+
 
 
     utilRequest.NetRequest({
       url: "chat/getchatlist",
       success: function (res) {
-        
+
         if (res.code == "ERROR_STATUS_SUCCESS") {
           var jsoncontent = JSON.parse(res.jsoncontent);
           console.log(jsoncontent);
@@ -73,17 +82,14 @@ Page({
 
       }
     }); 
-  },
-  onShow:function(options){
+
   },
   chatInfo:function(e){
     var that = this;
+    console.log(e);
     var theOtherUserId = e.currentTarget.dataset.otherid;
-    that.setData({ 
-      theOtherUserId: theOtherUserId
-    });
     wx.navigateTo({
-      url:"../chatonline/chatonline?theOtherUserId=" + that.data.theOtherUserId
+      url: "../chatonline/chatonline?theOtherUserId=" + theOtherUserId
     })
   }
 

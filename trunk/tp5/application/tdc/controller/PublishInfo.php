@@ -28,6 +28,9 @@ class PublishInfo extends Controller{
         if(empty($result)){
             return Status::ReturnErrorStatus("ERROR_STATUS_PUBLISHALREADYDELETE");
         }
+        //加入到history
+        $this->AddHistory($publishId);
+
 
         $sql_evaluate = "select a.score,a.content,a.evaluatetime,a.disabledtime,a.status,b.nickname from tdc_evaluate as a join tdc_user as b on a.userid = b.id where a.publishid = $publishId";
         $result_evaluate = Db::query($sql_evaluate);
@@ -68,6 +71,11 @@ class PublishInfo extends Controller{
         if(empty($result)){
             return Status::ReturnErrorStatus("ERROR_STATUS_PUBLISHALREADYDELETE");
         }
+
+        //加入到history
+       $this->AddHistory($publishId);
+
+
         $sql_evaluate = "select a.score, a.content, a.evaluatetime, a.disabledtime, a.status, b.nickname from tdc_evaluate as a join tdc_user as b on a.userid = b.id where a.publishid = $publishId";
         $result_evaluate = Db::query($sql_evaluate);
 
@@ -173,6 +181,70 @@ class PublishInfo extends Controller{
         }
 
         return Status::ReturnJson("ERROR_STATUS_SUCCESS", "申请成功，等待对方确认");
+    }
+
+    private function AddHistory($publishId){
+        $userid = Session::get("userid");
+        //存入history
+        $sql = "select publishid from tdc_history where userid = $userid";
+        $result = Db::query($sql);
+
+        $publishid = $result[0]["publishid"];
+
+        $publishidArr = explode(";", $publishid);
+        $publish_len = count($publishidArr);
+
+        //已经存在，移到最后
+        if(in_array($publishId, $publishidArr)){
+
+            for($i = 0; $i < $publish_len; ++$i){
+                if($publishidArr[$i] == $publishId){
+
+                    $publishidArr[$i] = $publishidArr[$publish_len - 1];
+                    $publishidArr[$publish_len - 1] = $publishId;
+
+
+                    $publishid = implode(";", $publishidArr);
+                    $sql = "update tdc_history set publishid = '" . $publishid . "' where userid = $userid";
+                    Db::execute($sql);
+
+                    return;
+                }
+            }
+        }
+
+        //否则，加入publish
+        if($publish_len == GlobalDataApi::$maxHistoryCount){
+            $this->RebuildArray($publishidArr, GlobalDataApi::$maxHistoryCount);
+        }
+        if($publishid == ""){
+
+            $publishid = $publishId;
+
+        }else{
+
+            $publishidArr[] = $publishId;
+            $publishid = implode(";", $publishidArr);
+        }
+
+        $sql = "update tdc_history set publishid = '" . $publishid . "' where userid = $userid";
+
+        Db::execute($sql);
+
+    }
+
+    public function AddEvaluate(Request $request){
+        $systemTime = Times::GetSystemTime();
+        $publishId = $request->param("publishId");
+        $evaluateContent = $request->param("evaluateContent");
+        $evaluateScore = $request->param('evaluateScore');
+        $userid = Session::get("userid");
+
+        $sql = "insert into tdc_evaluate(userid, publishid, score, content, evaluatetime, status) values($userid, $publishId, $evaluateScore, '" . $evaluateContent . "', '" . $systemTime . "', 0)";
+        Db::execute($sql);
+
+        return Status::ReturnErrorStatus("ERROR_STATUS_SUCCESS");
+
     }
 
 }

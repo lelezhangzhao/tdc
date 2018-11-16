@@ -1,5 +1,6 @@
 var utilRequest = require("../util/request.js");
 var utilMd5 = require("../util/md5.js");
+var utilGloabl = require("../util/globaldata.js");
 var app = getApp();
 
 Page({
@@ -25,27 +26,13 @@ Page({
     image_height: "",
 
     intervalId: "",
-    hasInitialized: false,
+    hasInitialized: true,
+
+    serverHttps: "",
 
   },
   onLoad:function(){
     var that = this;
-
-    var time = 3;
-
-    //三秒后跳转到主页
-    that.data.intervalId = setInterval(function () {
-      if (time == 0) {
-        clearInterval(that.data.intervalId);
-        that.setData({
-          hasInitialized: true,
-        })
-      } else {
-        --time;
-      }
-    }, 1000)
-
-
 
     that.setData({
       address: "天河区",
@@ -55,40 +42,109 @@ Page({
       image: "../image/begin/begin.gif",
       image_width: app.globalData.windowWidth * app.globalData.pixelRatio - 100,
       image_height: app.globalData.windowHeight * app.globalData.pixelRatio,
-      hasInitialized: false,
+      hasInitialized: true,
+      serverHttps: utilGloabl.GetServerHttps(),
     })
 
-    // //临时登录
-    // utilRequest.NetRequest({
-    //   url: "login/login",
-    //   data: {
-    //     username: "woshilaoshi",
-    //     password: utilMd5.hexMD5("woshilaoshi"),
-    //   },
-    //   success: function (res) {
-        
-    //     var jsoncontent = JSON.parse(res.jsoncontent);
-    //     app.globalData.userid = jsoncontent.userid;
-    //     app.globalData.role = jsoncontent.role;
-    //     // wx.navigateTo({
-    //     //   url: '../admin/admin',
-    //     // })
 
-    //   },
-    //   fail: function (res) {
 
+    // var time = 3;
+
+    // //三秒后跳转到主页
+    // that.data.intervalId = setInterval(function () {
+    //   if (time == 0) {
+    //     clearInterval(that.data.intervalId);
+    //     that.setData({
+    //       hasInitialized: true,
+    //     })
+
+    //     wx.login({
+    //       success: res => {
+    //         // 发送 res.code 到后台换取 openId, sessionKey, unionId
+    //       }
+    //     })
+    //     // 获取用户信息
+    //     wx.getSetting({
+    //       success: res => {
+    //         if (res.authSetting['scope.userInfo']) {
+    //           // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
+    //           wx.getUserInfo({
+    //             success: res => {
+    //               // 可以将 res 发送给后台解码出 unionId
+    //               that.data.userInfo = res.userInfo
+    //               console.log(res.userInfo);
+
+    //               // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
+    //               // 所以此处加入 callback 以防止这种情况
+    //               if (this.userInfoReadyCallback) {
+    //                 this.userInfoReadyCallback(res)
+    //               }
+    //             }
+    //           })
+    //         }
+    //       }
+    //     });
+
+    //     if (app.globalData.userid == null) {
+    //       wx.navigateTo({
+    //         url: '../login/login',
+    //       })
+    //     }
+
+    //   } else {
+    //     --time;
     //   }
-    // });
+    // }, 1000)
+
+
+
+    //临时登录
+    utilRequest.NetRequest({
+      url: "login/login",
+      data: {
+        username: "woshilaoshi",
+        password: utilMd5.hexMD5("woshilaoshi"),
+      },
+      success: function (res) {
+        var jsoncontent = JSON.parse(res.jsoncontent);
+        app.globalData.userid = jsoncontent.userid;
+        app.globalData.role = jsoncontent.role;
+
+        // wx.navigateTo({
+        //   url: '../admin/admin',
+        // })
+      },
+      fail: function (res) {
+
+      }
+
+    });
+
+    // if (app.globalData.userid == null) {
+    //   wx.redirectTo({
+    //     url: '../login/login',
+    //   })
+    // }
 
     //暂时在这里开启服务器聊天系统
-    // utilRequest.NetRequest({
-    //   url: "index/startchatserver",
-    //   success: function(res){
+    utilRequest.NetRequest({
+      url: "index/startchatserver",
+      success: function(res){
+        console.log(res);
+      },
+      fail: function(res){
+        console.log(res);
+      }
+    })
 
-    //   },
-    //   fail: function(res){}
 
+
+    // wx.navigateTo({
+    //   url: '../login/login',
     // })
+  },
+  onShow: function(){
+    var that = this;
 
 
     //获取高评用户
@@ -98,7 +154,7 @@ Page({
         begin: that.data.begin
       },
       success: function (res) {
-        
+
         var jsoncontent = JSON.parse(res.jsoncontent);
 
         that.setData({ hiEvalList: jsoncontent });
@@ -108,13 +164,6 @@ Page({
       }
     });
 
-    // wx.navigateTo({
-    //   url: '../login/login',
-    // })
-  },
-  onShow: function(){
-
-    var that = this;
   },
 
   publishInfo:function(e){

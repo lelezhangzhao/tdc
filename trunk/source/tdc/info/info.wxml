@@ -112,14 +112,13 @@
 
     <view class="evaluate-view">
       <view class="evaluate-title-view">
-        <label class="evaluate-title-label">点评
-        </label>
+        <label class="evaluate-title-label">点评</label>
       </view>
       
       <view class="evaluate-content-view">
         <view wx:for="{{evaluateList}}" wx:key="">
           <view class="evaluate-item-user">
-            <label>{{item.nickname}}</label>
+            <label class="evaluate-nickname-label">{{item.nickname}}</label>
             <label>:</label>
             <view class="evaluate-score-view">
               <image wx:if="{{item.score >= 1}}" src="{{evaluate_sel_image}}" class="evaluate-score-image"/>
@@ -142,8 +141,36 @@
     </view>
 
   </view>
-  <view class="chat-online-view">
-    <button bindtap="chat">在线聊天</button>
+
+  <view class="mine-evaluate" wx:if="{{show_mine_evaluate}}">
+    <view class="mine-evaluate-score-view">
+      <image wx:if="{{mine_item_score >= 1}}" src="{{evaluate_sel_image}}" class="evaluate-score-image" bindtap="mine_evaluate_1"/>
+      <image wx:elif="{{mine_item_score < 1}}" src="{{evaluate_unsel_image}}" class="evaluate-score-image" bindtap="mine_evaluate_1"/>
+      <image wx:if="{{mine_item_score >= 2}}" src="{{evaluate_sel_image}}" class="evaluate-score-image" bindtap="mine_evaluate_2"/>
+      <image wx:elif="{{mine_item_score < 2}}" src="{{evaluate_unsel_image}}" class="evaluate-score-image" bindtap="mine_evaluate_2"/>
+      <image wx:if="{{mine_item_score >= 3}}" src="{{evaluate_sel_image}}" class="evaluate-score-image" bindtap="mine_evaluate_3"/>
+      <image wx:elif="{{mine_item_score < 3}}" src="{{evaluate_unsel_image}}" class="evaluate-score-image" bindtap="mine_evaluate_3"/>
+      <image wx:if="{{mine_item_score >= 4}}" src="{{evaluate_sel_image}}" class="evaluate-score-image" bindtap="mine_evaluate_4"/>
+      <image wx:elif="{{mine_item_score < 4}}" src="{{evaluate_unsel_image}}" class="evaluate-score-image" bindtap="mine_evaluate_4"/>
+      <image wx:if="{{mine_item_score >= 5}}" src="{{evaluate_sel_image}}" class="evaluate-score-image" bindtap="mine_evaluate_5"/>
+      <image wx:elif="{{mine_item_score < 5}}" src="{{evaluate_unsel_image}}" class="evaluate-score-image" bindtap="mine_evaluate_5"/>
+      <button class="mine-evaluate-publish-button" bindtap="publishMineEvaluate">发布</button>
+    </view>
+
+    <view class="mine-evaluate-content-view">
+      <textarea bindinput="mineEvaluateContent" placeholder='请输入评价内容' value="{{mine_evaluate_content}}"></textarea>
+    </view>
+  </view>
+
+  <view class="option-view">
+    <view class="chat-online-view" bindtap="chat">在线聊天
+    </view>
+
+    <view class="chat-online-seperator">
+    </view>
+
+    <view class="evaluate-button-view" bindtap="evaluate">点评
+    </view>
   </view>
 
 </view>

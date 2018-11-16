@@ -36,21 +36,34 @@ class MineSchool extends Controller{
 
     public function GetPublishList(){
         $userid = Session::get("userid");
-        $sql = "select a.id, a.tag, a.introduction, a.publishobject, b.name, b.logo from tdc_publish as a join tdc_user as b on a.userid = b.id where b.id = $userid";
+
+        $sql = "select * from tdc_user where id = $userid";
         $result = Db::query($sql);
 
+        $publishId = $result[0]["publishid"];
 
-        if(empty($result)){
+
+        $publishIdArr = explode(";", $publishId);
+
+        if(count($publishIdArr) == 0){
             return Status::ReturnErrorStatus("ERROR_STATUS_LISTISNULL");
         }
 
+        $publishes = array();
 
-        return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "获取成功", json_encode($result));
-    }
+        foreach($publishIdArr as $item){
 
-    public function GetPublishInfo(Request $request){
-        $publishId = $request->param("puoblishId");
+            $sql = "select a.id, a.publishobject, a.evaluateavg, a.evaluatecount, a.tag, a.workaddress, a.introduction, a.photos from tdc_publish as a where a.id = $item";
+            $result = Db::query($sql);
 
+            $publish = json_encode($result);
+
+            $publish = substr($publish, 1, strlen($publish) - 2);
+
+            array_push($publishes, json_decode($publish));
+        }
+
+        return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "", json_encode($publishes));
 
     }
 

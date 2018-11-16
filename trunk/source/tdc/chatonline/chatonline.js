@@ -1,4 +1,5 @@
 var utilRequest = require("../util/request.js");
+var globalData = require("../util/globaldata.js");
 
 var app = getApp();
 var message = '';
@@ -12,14 +13,16 @@ Page({
     news: '',
     scrollTop: 0,
     text: text,
-    contentData: '',
-    name: '',
+    contentData: [],
+    otherName: '',
+    name: "",
     avatarUrl: '',
     tabdata: '',
     jia_image: '',
     theOtherUserId:null,
     userid:null,
-    loadDataInterval:null,
+    myLogo: '',
+    otherLogo: '',
   },
 
 
@@ -32,6 +35,8 @@ Page({
   add: function (e) {
     var that = this
     // var sendTime = Date.parse(new Date());
+    console.log(that.data.userid);
+    console.log(that.data.theOtherUserId);
     var msg = {
       fromuserid: that.data.userid,
       touserid: that.data.theOtherUserId,
@@ -68,6 +73,23 @@ Page({
       theOtherUserId: options.theOtherUserId,
     });
 
+    //获取我的名字
+    utilRequest.NetRequest({
+      url: "global_data/getname",
+      data:{
+        userid: that.data.userid,
+      },
+      success: function(res){
+        var name = res.jsoncontent;
+        that.setData({
+          name: name,
+        })
+      },
+      fail: function(res){
+
+      }
+    })
+
     //获取另一人的name
     utilRequest.NetRequest({
       url: "global_data/getname",
@@ -75,17 +97,52 @@ Page({
         userid: that.data.theOtherUserId,
       },
       success:function(res){
-        var name = res.jsoncontent;
+        var otherName = res.jsoncontent;
         that.setData({
-          name: name,
+          otherName: otherName,
         })
         wx.setNavigationBarTitle({
-          title: name,
+          title: otherName,
         })
       },
       fail:function(res){}
     })
 
+    //获取我的logo
+    utilRequest.NetRequest({
+      url: "global_data/getlogo",
+      data:{
+        userid: that.data.userid,
+      },
+      success: function(res){
+        if(res.code == "ERROR_STATUS_SUCCESS"){
+          that.setData({
+            myLogo: globalData.GetServerHttps() + res.jsoncontent,
+          })
+        }
+      },
+      fail: function(res){
+
+      }
+    })
+
+    //获取另一个人的logo
+    utilRequest.NetRequest({
+      url: "global_data/getlogo",
+      data: {
+        userid: that.data.theOtherUserId,
+      },
+      success: function (res) {
+        if (res.code == "ERROR_STATUS_SUCCESS") {
+          that.setData({
+            otherLogo: globalData.GetServerHttps() + res.jsoncontent,
+          })
+        }
+      },
+      fail: function (res) {
+
+      }
+    })
 
     that.loadHistoryData()
 
@@ -111,7 +168,18 @@ Page({
       success: function (res) {
         if(res.code == "ERROR_STATUS_SUCCESS"){
           var jsoncontent = JSON.parse(res.jsoncontent);
-          that.setData({ contentData: jsoncontent });
+          console.log(jsoncontent);
+
+          for(var i = 0; i < jsoncontent.length; ++i){
+            var row = {};
+            row.content = jsoncontent[i].content;
+            row.fromuserid = jsoncontent[i].fromuserid;
+            that.data.contentData.push(row);
+          }
+          that.setData({ 
+            contentData: that.data.contentData 
+          });
+
         }
       },
       fail: function (res) {
@@ -119,9 +187,6 @@ Page({
       }
     });
     that.bottom();
-    // that.data.loadDataInterval = setInterval(function () {
-    //   that.loadUnReadData()
-    // }, 1000);
   },
   // 页面加载  
   loadUnReadData: function () {

@@ -39,9 +39,20 @@ class GlobalData{
         $userid = $request->param("userid");
 
         $sql = "select name from tdc_user where id = $userid";
+
+
         $result = Db::query($sql);
         $name = $result[0]["name"];
         return Status::ReturnJsonWithContent("RROR_STATUS_SUCCESS", "", $name);
+    }
+
+    public function GetLogo(Request $request){
+        $userid = $request->param("userid");
+
+        $sql = "select logo from tdc_user where id = $userid";
+        $result = Db::query($sql);
+        $logo = $result[0]["logo"];
+        return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "", $logo);
     }
 
 }

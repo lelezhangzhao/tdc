@@ -7,11 +7,7 @@ Component({
   properties: {
     "logo":{
       type: String,
-      value: "../../image/global/logo.png",
-    },
-    "isServerLogo":{
-      type: Boolean,
-      value: true,
+      value: "",
     },
     "tags":{
       type: String,
@@ -81,17 +77,6 @@ Component({
   },
   ready: function(){
     var that = this;
-
-    that.splitTag();
-
-
-    var isServerLogo = that.properties.isServerLogo;
-    if (isServerLogo){
-      var logo = that.properties.logo;
-      that.setData({
-        logo: GlobalData.GetServerHttps() + "static/image/logo/" + logo,
-      })
-    }
 
   }
 })
