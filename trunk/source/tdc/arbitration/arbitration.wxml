@@ -1,6 +1,6 @@
 <view class="page">
   <view class="top-view">
-    <label>仲裁列表</label>
+    <label class="arbitration-title-label">仲裁列表</label>
   </view>
 
   <view class="bottom-view">

@@ -1,5 +1,15 @@
 <!--tdc/registerjump/registerJump.wxml-->
 <view class="page">
-  <button bindtap='imteacher'>我是老师</button>
-  <button bindtap='imschool'>我是机构</button>
+  <view class="role-view">
+    <view class="role-school">
+      <image class="role-school-image" src="{{role_school_image}}"  bindtap='imschool'></image>
+      <label class="role-school-label">我是机构</label>
+
+    </view>
+
+    <view class="role-teacher">
+      <image class="role-teacher-image" src="{{role_teacher_image}}" bindtap='imteacher'></image>
+      <label class="role-teacher-label">我是老师</label>
+    </view>
+  </view>
 </view>

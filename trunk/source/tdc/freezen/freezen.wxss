@@ -3,6 +3,26 @@
   margin: 0% 5%;
   width: 90%;
 }
+.publish-title-label{
+  font-size: 28rpx;
+  margin-right: 20rpx;
+}
+.publish-input{
+  font-size: 28rpx;
+  width: 60%;
+  border-radius: 7rpx;
+  background-color: #ECECEC;
+}
+.publish-search{
+  margin-left: -40rpx;
+}
+.publish-button{
+  width: 100rpx;
+  height: 50rpx;
+  padding: 0;
+  font-size: 28rpx;
+  line-height: 50rpx;
+}
 .admin-view{
   display: flex;
   flex-direction: row;

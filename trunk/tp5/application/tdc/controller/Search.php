@@ -32,9 +32,8 @@ class Search extends Controller{
         return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "", json_encode($result));
     }
 
-    public function SearchByKeyWords(Request $request){
+    public function SearchUserByKeyWords(Request $request){
         $keyWords = $request->param("keywords");
-        $userid = $request->param("userid");
 
         if(strlen(trim($keyWords)) == 0){
             return $this->GetDefaultSearch();
@@ -48,7 +47,46 @@ class Search extends Controller{
 
         $results = [];
         foreach($keyWordsArr as $item){
-            $sql = 'select a.id,a.publishobject,a.evaluateavg,a.tag,a.introduction,b.logo,b.name from tdc_publish as a join tdc_user as b on a.userid = b.id where a.tag like "%' . $item . '%" or a.workaddress like "%' . $item . '%" or a.introduction like "%' . $item . '%"';
+            $sql = 'select distinct(b.id),b.publishobject,b.evaluateavg,b.tag,b.introduction, b.workaddress, b.detailworkaddress, a.logo,a.name from tdc_user as a right join tdc_publish as b on b.userid = a.id where b.tag like "%' . $item . '%" or b.detailworkaddress like "%' . $item . '%" or b.introduction like "%' . $item . '%" or a.name like "%' . $item . '%" ';
+            $result = Db::query($sql);
+
+            if(!empty($result)){
+                foreach($result as $resultItem){
+                    array_push($results, $resultItem);
+                }
+            }
+        }
+
+        if(empty($results)){
+            return Status::ReturnErrorStatus("ERROR_STATUS_LISTISNULL");
+        }
+
+        return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "", json_encode($results));
+    }
+
+    public function SearchByKeyWords(Request $request){
+        $keyWords = $request->param("keywords");
+        $roleType = $request->param("roletype");
+
+        if(strlen(trim($keyWords)) == 0){
+            return $this->GetDefaultSearch();
+        }
+
+        //加入到search中
+
+
+        $keyWordsArr = explode(" ", $keyWords);
+        //以tag/地址/introduction/进行模糊搜索
+
+        $results = [];
+        foreach($keyWordsArr as $item){
+            if($roleType == "0"){
+                $sql = 'select a.id,a.publishobject,a.evaluateavg,a.tag,a.introduction, a.workaddress,b.logo,b.name from tdc_publish as a join tdc_user as b on a.userid = b.id where (a.tag like "%' . $item . '%" or a.workaddress like "%' . $item . '%" or a.introduction like "%' . $item . '%" or b.name like "%' . $item . '%") and a.publishobject = 0';
+            }else if($roleType == "1"){
+                $sql = 'select a.id,a.publishobject,a.evaluateavg,a.tag,a.introduction, a.workaddress,b.logo,b.name from tdc_publish as a join tdc_user as b on a.userid = b.id where (a.tag like "%' . $item . '%" or a.workaddress like "%' . $item . '%" or a.introduction like "%' . $item . '%" or b.name like "%' . $item . '%") and a.publishobject = 1';
+            }else{
+                $sql = 'select a.id,a.publishobject,a.evaluateavg,a.tag,a.introduction, a.workaddress,b.logo,b.name from tdc_publish as a join tdc_user as b on a.userid = b.id where a.tag like "%' . $item . '%" or a.workaddress like "%' . $item . '%" or a.introduction like "%' . $item . '%" or b.name like "%' . $item . '%"';
+            }
             $result = Db::query($sql);
 
             if(!empty($result)){

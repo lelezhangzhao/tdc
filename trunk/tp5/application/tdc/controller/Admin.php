@@ -23,7 +23,7 @@ class Admin extends Controller
         $sql = "select userid, publishobject from tdc_publish where id = $publishId";
         $result = Db::query($sql);
 
-        return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "", json_content($result));
+        return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "", json_encode($result));
     }
 
     public function FreezenUser(Request $request)
@@ -61,7 +61,7 @@ class Admin extends Controller
 
         $arbitrationId = $request->param("arbitrationId");
 
-        $sql = "select a.title, a.content, b.name as arbitratorname, b.tel as arbitratortel, c.tel as arbitratortel from tdc_arbitration as a join tdc_user as b on a.arbitratorid = b.id join tdc_user as c on a.arbitratorid = c.id where a.id = $arbitrationId";
+        $sql = "select a.title, a.content, b.name as arbitratorname, b.tel as arbitratortel, c.tel as arbitratedtel from tdc_arbitration as a join tdc_user as b on a.arbitrator = b.id join tdc_user as c on a.arbitrated = c.id where a.id = $arbitrationId";
         $result = Db::query($sql);
 
         return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "", json_encode($result));

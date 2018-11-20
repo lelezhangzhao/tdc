@@ -1,1 +1,21 @@
 /* tdc/arbitration/arbitration.wxss */
+.page{
+  margin: 0 5%;
+  width: 90%;
+}
+.arbitration-title-label{
+  font-size: 28rpx;
+}
+.arbitration-view{
+  margin-top: 50rpx;
+}
+.arbitration-title{
+  font-size: 30rpx;
+  font-weight: bold;
+  line-height: 100%;
+}
+.arbitration-content{
+  font-size: 26rpx;
+  line-height: 100%;
+  color: #7A7A7A;
+}

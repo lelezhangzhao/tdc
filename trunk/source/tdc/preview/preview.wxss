@@ -89,6 +89,8 @@
   width: 100%;
   display: block;
   font-size: 28rpx;
+  color: #A9A9A9;
+  border: #C9C9C9 solid 1rpx;
 }
 .hire-job-view{
   font-size: 28rpx;
@@ -150,4 +152,19 @@
   display:block;
   width:150rpx;
   height:150rpx;
+}
+.signal-view{
+  margin-top: 20rpx;
+}
+.teacher-info-view{
+  font-size: 30rpx;
+}
+.introduction-title-label{
+  font-size: 30rpx;
+}
+.upload-picture-view{
+  font-size: 28rpx;
+}
+.uploader{
+  margin-top: 50rpx;
 }

@@ -1,9 +1,10 @@
 <!--tdc/freezen/freezen.wxml-->
 <view class="page">
   <view class="admin-view">
-    <label>发布号</label>
-    <input bindinput="publishIdInput" value="{{publishid}}"></input>
-    <button bindtap="search">搜索</button>
+    <label class="publish-title-label">发布号</label>
+    <input class="publish-input" bindinput="publishIdInput" value="{{publishid}}"></input>
+    <icon class="weui-icon-search publish-search" type="search" size="16"></icon>
+    <button class="publish-button" bindtap="search">搜索</button>
   </view>
 
   <view  wx:if="{{has_search}}" class="publish-view">

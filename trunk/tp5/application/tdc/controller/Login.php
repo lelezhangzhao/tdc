@@ -72,4 +72,69 @@ class Login extends Controller{
         return Status::ReturnErrorStatus("ERROR_STATUS_SUCCESS");
     }
 
+    public function LoginByWx(Request $request){
+        $code = $request->param("code");
+
+        $urls = "https://api.weixin.qq.com/sns/jscode2session";
+        $appid = "?appid=wx11615bd4e97a1c58";
+        $secret = "&secret=032200031701fb194e3e980f3766d69b";
+        $js_code = "&js_code=" . $code;
+        $grant_type = "&grant_type=authorization_code";
+
+        $url= $urls . $appid . $secret . $js_code . $grant_type;
+
+        $userinfo = json_decode(file_get_contents($url), true);
+
+
+        $openid = $userinfo["openid"];
+        $session_key = $userinfo["session_key"];
+
+        $sql = "select id, role from tdc_user where username = '" . $openid . "'";
+        $result = Db::query($sql);
+        if(empty($result) || $result[0]["role"] == null){
+            $systemTime = Times::GetSystemTime();
+            //注册成功
+            $user = new User();
+            $user->username = $openid;
+            $user->password = $session_key;
+            $user->logo = "static/image/logo/logo.png";
+            $user->status = 1; //注册，未选择身份
+            $user->rmb = 0;
+            $user->score = 0;
+            $user->registertime = $systemTime;
+            $user->evaluateavg = 0;
+            $user->evaluatecount = 0;
+            $user->sex = 0;
+            $user->name = "姓名";
+            $user->nickname = "昵称";
+            $user->tel = "电话";
+            $user->workaddress = "工作地址";
+            $user->tag = "拉丁;全职;在校;";
+            $user->introduction = "";
+
+            //注册成功直接登录
+            $user->lastlogintime = $systemTime;
+            $user->save();
+
+            $userid = $user->id;
+            Session::set("userid", $userid);
+
+            //增加配套数据表
+            $sql = "insert into tdc_collection(userid) values ($userid)";
+            Db::execute($sql);
+
+            $sql = "insert into tdc_history(userid) values ($userid)";
+            Db::execute($sql);
+
+            $sql = "insert into tdc_search(userid) values ($userid)";
+            Db::execute($sql);
+
+            return Status::ReturnJsonWithContent("ERROR_STATUS_WXREGISTERSUCCESS", "", $userid);
+        }
+
+        $return_arr = array("userid" => $result[0]["id"], "role" => $result[0]["role"]);
+        return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "", json_encode($return_arr));
+
+    }
+
 }

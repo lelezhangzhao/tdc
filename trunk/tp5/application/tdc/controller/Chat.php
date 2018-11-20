@@ -23,8 +23,10 @@ class Chat extends Controller{
     public function GetChatList(){
         $userid = Session::get("userid");
 
-        $sql = "select * from ((select a.fromuserid, a.touserid, a.fromuserid as otherid, a.sendtime, a.isread, a.content, b.name, b.logo from tdc_chat as a join tdc_user as b on a.fromuserid = b.id where a.touserid = $userid) as c) union
-(select a.fromuserid, a.touserid, a.touserid as otherid, a.sendtime, a.isread, a.content, b.name, b.logo from tdc_chat as a join tdc_user as b on a.touserid = b.id where a.fromuserid = $userid) order by sendtime desc";
+//        $sql = "select * from ((select a.fromuserid, a.touserid, a.fromuserid as otherid, a.sendtime, a.isread, a.content, b.name, b.logo from tdc_chat as a join tdc_user as b on a.fromuserid = b.id where a.touserid = $userid) as c) union
+//(select a.fromuserid, a.touserid, a.touserid as otherid, a.sendtime, a.isread, a.content, b.name, b.logo from tdc_chat as a join tdc_user as b on a.touserid = b.id where a.fromuserid = $userid) order by sendtime desc";
+        $sql = "select * from ((select a.fromuserid, a.touserid, a.fromuserid as otherid, a.lastsendtime, a.hasunreadmsg, a.briefcontent, b.name as othername, b.logo as otherlogo from tdc_chatassist as a join tdc_user as b on a.fromuserid = b.id where a.touserid = $userid) as c) union
+(select a.fromuserid, a.touserid, a.touserid as otherid, a.lastsendtime, a.hasunreadmsg, a.briefcontent, b.name as othername, b.logo as otherlogo from tdc_chatassist as a join tdc_user as b on a.touserid = b.id where a.fromuserid = $userid) order by lastsendtime desc";
 
 
 //        $sql = "select a.fromuserid, a.touserid, a.sendtime, a.isread, a.content, b.name, b.logo from tdc_chat as a join tdc_user as b on a.fromuserid = b.id or a.touserid = b.id where a.fromuserid = $userid or a.touserid = $userid order by a.sendtime desc";
@@ -35,36 +37,73 @@ class Chat extends Controller{
         $needDelete = array();
         $unique_result = array();
         for($i = 0; $i < count($result); ++$i){
+            if(array_key_exists($i, $needDelete)){
+                continue;
+            }
             for($j = $i + 1; $j < count($result); ++$j){
+                if(array_key_exists($j, $needDelete)){
+                    continue;
+                }
                 if($result[$j]["fromuserid"] == $result[$i]["touserid"] && $result[$j]["touserid"] == $result[$i]["fromuserid"]){
                     $needDelete[] = $j;
-                    break;
                 }
             }
         }
 
         $result = array_diff_key($result, $needDelete);
 
-        foreach($result as $item){
-            $key = $item["fromuserid"] . ";" . $item["touserid"];
-            if(!array_key_exists($key, $unique_result)){
-
-                $unique_result[$key] = array("content" => $item['content'], "othername" => $item['name'], "otherlogo" => $item['logo'], "otherid" => $item["otherid"], "hasunreadmsg" => !$item["isread"]);
+        foreach($result as &$item){
+            if($item["fromuserid"] != $userid){
+                $hasunreadmsg = $item["hasunreadmsg"];
+            }else{
+                $hasunreadmsg = false;
             }
+            $item["hasunreadmsg"] = $hasunreadmsg;
         }
 
-        $return_result = array();
-        foreach($unique_result as $key => $value){
-            $useridarr = explode(";", $key);
-            $fromuserid = $useridarr[0];
-            $touserid = $useridarr[1];
-            $return_result[] = array("fromuserid" => $fromuserid, "touserid" => $touserid, "content" => $value["content"], "othername" => $value["othername"], "otherlogo" => $value["otherlogo"], "otherid" => $value["otherid"], "hasunreadmsg" => $value["hasunreadmsg"]);
-        }
 
-        return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "", json_encode($return_result));
+//        foreach($result as $item){
+//            $key = $item["fromuserid"] . ";" . $item["touserid"];
+//            if(!array_key_exists($key, $unique_result)){
+//
+//                if($item["fromuserid"] != $userid){
+//                    $hasunreadmsg = !$item["isread"];
+//                }else{
+//                    $hasunreadmsg = false;
+//                }
+//                $unique_result[$key] = array("content" => $item['content'], "othername" => $item['name'], "otherlogo" => $item['logo'], "otherid" => $item["otherid"], "hasunreadmsg" => $hasunreadmsg);
+//
+//            }
+//        }
+//
+//        $return_result = array();
+//        foreach($unique_result as $key => $value){
+//            $useridarr = explode(";", $key);
+//            $fromuserid = $useridarr[0];
+//            $touserid = $useridarr[1];
+//            $return_result[] = array("fromuserid" => $fromuserid, "touserid" => $touserid, "content" => $value["content"], "othername" => $value["othername"], "otherlogo" => $value["otherlogo"], "otherid" => $value["otherid"], "hasunreadmsg" => $value["hasunreadmsg"]);
+//        }
+
+        return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "", json_encode($result));
     }
 
 
+//    public function HasUnreadInfo(Request $request){
+//        $theOtherUserId = $request->param("theOtherUserId");
+//        $userid = Session::get("userid");
+//
+//        $sql = "select hasunreadmsg from tdc_chatassist where fromuserid = $theOtherUserId and touserid = $userid";
+//        $result = Db::query($sql);
+//
+//        if(empty($result)){
+//            return Status::ReturnErrorStatus("ERROR_STATUS_LISTISNULL");
+//        }
+//
+//
+//        $returnJsoncontent = $result[0]["hasunreadmsg"] ? "true" : "false";
+//
+//        return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "", $returnJsoncontent);
+//    }
 
     //获取未读聊天信息
     public function GetUnReadInfo(Request $request){

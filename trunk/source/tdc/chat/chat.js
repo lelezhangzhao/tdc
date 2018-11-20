@@ -31,7 +31,6 @@ Page({
     wx.connectSocket({
       url: 'ws://localhost:9612',
       success: function (res) {
-        console.log(res);
       }
 
     })
@@ -71,10 +70,9 @@ Page({
     utilRequest.NetRequest({
       url: "chat/getchatlist",
       success: function (res) {
-
+        console.log(res);
         if (res.code == "ERROR_STATUS_SUCCESS") {
           var jsoncontent = JSON.parse(res.jsoncontent);
-          console.log(jsoncontent);
           that.setData({ chatList: jsoncontent });
         }
       },
@@ -86,7 +84,6 @@ Page({
   },
   chatInfo:function(e){
     var that = this;
-    console.log(e);
     var theOtherUserId = e.currentTarget.dataset.otherid;
     wx.navigateTo({
       url: "../chatonline/chatonline?theOtherUserId=" + theOtherUserId

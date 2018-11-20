@@ -4,8 +4,9 @@
   
 }
 .brief-image{
-  height: 200rpx;
-  width: 200rpx;
+  margin-top: 10rpx;
+  height: 150rpx;
+  width: 150rpx;
 }
 
 .right-view{

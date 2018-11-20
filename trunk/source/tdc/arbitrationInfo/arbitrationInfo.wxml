@@ -1,25 +1,28 @@
 <!--tdc/arbitrationInfo/arbitrationInfo.wxml-->
 <view class="page">
   <view class="top-view">
-    <view>
-        <label>提交人 : </label>
-          <checkbox-group bindchange="checked">
-            <checkbox value="check" checked="{{checked}}">已解决</checkbox>
-          </checkbox-group>
+    <view class="arbitration-title-view">
+        <label class="arbitration-title-label">提交人 : </label>
+        <label class="arbitration-name-label">{{from_arbitration}}</label>
+        <checkbox-group class="checkbox" bindchange="checked">
+          <checkbox value="check" checked="{{checked}}" >已解决</checkbox>
+        </checkbox-group>
     </view>
 
-    <view>
-      <label>{{from_arbitration}}</label>
-    </view>
   </view>
 
   <view class="middle-view">
-    <label class="title">{{title}}</label>
-    <label class="content">{{content}}</label>
+    <view class="title-view">
+      <label class="title">{{title}}</label>
+    </view>
+    <view class="content-view">
+      <label class="content">{{content}}</label>
+    </view>
   </view>
 
   <view class="bottom-view">
-    <button bindtap="connectArbitrator">联系仲裁人</button>
-    <button bindtap="connectArbitrated">联系被仲裁人</button>
+    <view bindtap="connectArbitrator" class="connect-arbitrator">联系仲裁人</view>
+    <view class="connect-seperator"></view>
+    <view bindtap="connectArbitrated" class="connect-arbitrated">联系被仲裁人</view>
   </view>
 </view>

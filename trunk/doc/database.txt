@@ -72,10 +72,11 @@ values
 ("其实我觉得聊天记录也是个好东西", 16, 16, "2018-11-06 15:00:10", false),
 ("嗯嗯，确实，我们都觉得聊天记录是个好东西", 16, 16, "2018-11-06 15:00:20", false);
 
-insert into tdc_chatassist(fromuserid, touserid, hasunreadmsg)
+insert into tdc_chatassist(fromuserid, touserid, hasunreadmsg, lastsendtime, briefcontent)
 values
-(16, 16, true),
-(16, 16, true);
+(15, 2, true, "2018-11-14", "15===>2"),
+(15, 16, true, "2018-11-15", "15===>16"),
+(16, 15, false, "2018-11-14", "16===>15");
 
 
 insert into tdc_arbitration(arbitrator, arbitrated, title, content, status)

@@ -10,7 +10,7 @@ Component({
     content:{
       type: String,
     },
-    hasNewMsg:{
+    hasChatMsg:{
       type: Boolean,
       default: false,
     },

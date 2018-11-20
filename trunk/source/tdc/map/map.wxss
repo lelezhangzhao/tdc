@@ -1,5 +1,7 @@
 /* tdc/map/map.wxss */
-
+.page{
+  font-size: 28rpx;
+}
 .top-view{
   height: 100rpx;
   display: flex;
@@ -8,7 +10,7 @@
 .input-view{
   background-color: #EEE;
   height: 60rpx;
-  width: 70%;
+  width: 60%;
   margin-left: 5%;
   margin-right: 10%;
   border-radius: 50rpx;
@@ -22,4 +24,28 @@
   margin-top: 8rpx;
   width: 30rpx;
   height: 40rpx;
+}
+.search-view{
+  width: 100rpx;
+  text-align: right;
+}
+.search-label{
+  font-size: 32rpx;
+  width: 100rpx;
+}
+.confirm-button{
+  margin-top: 5rpx;
+  margin-right: 30rpx;
+  height: 60rpx;
+  width: 120rpx;
+  line-height: 50rpx;
+  font-size: 28rpx;
+  padding: 0;
+  text-align: center;
+}
+.mine-image{
+  width: 50rpx;
+  height: 50rpx;
+  margin-top: 50rpx;
+  margin-left: 90%;
 }

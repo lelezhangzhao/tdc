@@ -1,6 +1,7 @@
 // tdc/search/search.js
 var app = getApp();
 var utilRequest = require("../util/request.js");
+var globalData = require("../util/globaldata.js");
 Page({
 
   /**
@@ -15,6 +16,7 @@ Page({
     roleTypeRange: [],
     roleType: 0,
 
+    serverHttps: "",
 
     angle_image: "",
 
@@ -32,6 +34,7 @@ Page({
       roleTypeRange: ["全部", "机构", "老师"],
       roleType: 0,
       angle_image: "../image/search/angle.png",
+      serverHttps: globalData.GetServerHttps(),
     });
 
 
@@ -143,6 +146,7 @@ Page({
       url: "search/searchbykeywords",
       data:{
         keywords: that.data.searchText,
+        roletype: that.data.roleType,
       },
       success:function(res){
         if(res.code == "ERROR_STATUS_SUCCESS"){
@@ -179,6 +183,13 @@ Page({
 
     wx.navigateTo({
       url: '../info/info?teacher=' + teacher + '&school=' + school + '&publishId=' + publishId,
+    })
+  },
+  roleTypeChange: function(e){
+    var that = this;
+    console.log(e);
+    that.setData({
+      roleType: e.detail.value,
     })
   }
 })

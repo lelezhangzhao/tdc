@@ -7,7 +7,7 @@ Page({
    */
   data: {
     title: "",
-    abstrace: "",
+    abstract_content: "",
     title_one: "",
     content_one: "",
     photo_one: "",
@@ -17,9 +17,12 @@ Page({
     title_three: "",
     content_three: "",
     photo_three: "",
-    title_four: "",
-    content_four: "",
-    photo_four: "",
+
+
+    hasPhotoOne: false,
+    hasPhotoTwo: false,
+    hasPhotoThree: false,
+
   },
 
   /**
@@ -27,6 +30,43 @@ Page({
    */
   onLoad: function (options) {
     var that = this;
+
+    var ispublish = options.ispublish;
+    if(ispublish){
+      var newsid = options.newsId;
+      utilRequest.NetRequest({
+        url: "find/getfindinfo",
+        data: {
+          newsId: newsid,
+        },
+        success: function(res){
+          if(res.code == "ERROR_STATUS_SUCCESS"){
+            var jsoncontent = JSON.parse(res.jsoncontent)[0];
+            that.setData({
+              title: jsoncontent.title,
+              abstract_content: jsoncontent.content,
+              title_one: jsoncontent.titleone,
+              content_one: jsoncontent.contentone,
+              photo_one: jsoncontent.photoone,
+              title_two: jsoncontent.titletwo,
+              content_two: jsoncontent.contenttwo,
+              photo_two: jsoncontent.phototwo,
+              title_three: jsoncontent.titlethree,
+              content_three: jsoncontent.contentthree,
+              photo_three: jsoncontent.photothree,
+              hasPhotoOne: jsoncontent.photoone != null,
+              hasPhotoTwo: jsoncontent.phototwo != null,
+              hasPhotoThree: jsoncontent.photothree != null,
+
+          })
+          }
+        },
+        fail: function(res){
+
+        }
+      })
+
+    }
   },
 
   /**
@@ -93,9 +133,6 @@ Page({
         title_three: that.data.title_three,
         content_three: that.data.content_three,
         photo_three: that.data.photo_three,
-        title_four: that.data.title_four,
-        content_four: that.data.content_four,
-        photo_four: that.data.photo_four,
       },
       success: function(res){
         if(res.code == "ERROR_STATUS_SUCCESS"){
@@ -166,18 +203,85 @@ Page({
       content_three: content_three,
     })
   },
-  titleFourChange: function(e){
+  // previewImage: function (e) {
+  //   var photo = [e.target.id];
+  //   wx.previewImage({
+  //     current: e.target.id, // 当前显示图片的http链接
+  //     urls: photo // 需要预览的图片http链接列表
+  //   })
+  // },
+  chooseImage: function (e) {
     var that = this;
-    var title_four = e.detail.value;
-    that.setData({
-      title_four: title_four,
+    wx.chooseImage({
+      count: 1,
+      sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+      sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+      success: function (res) {
+        // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
+        var newPhotoItem = res.tempFilePaths[0];        
+        if(e.currentTarget.id == "1"){
+          that.setData({
+            photo_one: newPhotoItem,
+            hasPhotoOne: true,
+          })
+        }else if(e.currentTarget.id == "2"){
+          that.setData({
+            photo_two: newPhotoItem,
+            hasPhotoTwo: true,
+            
+          })
+        }else if(e.currentTarget.id == "3"){
+          that.setData({
+            photo_three: newPhotoItem,
+            hasPhotoThree: true,
+            
+          })
+        }
+        var session_id = wx.getStorageSync('PHPSESSID');//本地取存储的sessionID
+        var header = {
+          'content-type': 'multipart/form-data', 'Cookie': session_id };
+
+        var url = "";
+        if (that.data.role == 0) {
+          url = globalData.GetServerHttps() + "index.php/tdc/mine_teacher/uploadphoto";
+        } else if (that.data.role == 1) {
+          url = globalData.GetServerHttps() + "index.php/tdc/mine_school/uploadphoto";
+        }
+        wx.uploadFile({
+          url: url,
+          filePath: newPhotoItem,
+          name: newPhotoItem.substr(60, 10),
+          header: header,
+          success(res) {
+            console.log(res);
+          },
+          fail(res) {
+            console.log(res);
+          }
+        })
+      }
     })
   },
-  contentFourChange: function(e){
+  deleteImage: function(e){
     var that = this;
-    var content_four = e.detail.value;
-    that.setData({
-      content_four: content_four,
-    })
+    var id = e.currentTarget.id;
+    if(id == "1"){
+      that.setData({
+        photo_one: "",
+        hasPhotoOne: false,
+      })
+    }else if(id == "2"){
+      that.setData({
+        photo_two: "",
+        hasPhotoTwo: false,
+      })
+    }else if(id == "3"){
+      that.setData({
+        photo_three: "",
+        hasPhotoThree: false,
+      })
+    }
   }
+
+
 })

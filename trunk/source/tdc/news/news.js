@@ -89,14 +89,14 @@ Page({
   publish: function(e){
     var that = this;
     wx.navigateTo({
-      url: '../newsinfo/newsinfo',
+      url: '../newsinfo/newsinfo?ispublish=false',
     })
   },
   newsInfo: function(e){
     var that = this;
     var newsId = e.currentTarget.dataset.id;
     wx.navigateTo({
-      url: '../findinfo/findinfo?newsId=' + newsId,
+      url: '../newsinfo/newsinfo?ispublish=true&newsId=' + newsId,
     })
   },
   deleteNews: function(e){

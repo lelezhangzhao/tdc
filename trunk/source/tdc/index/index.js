@@ -99,26 +99,35 @@ Page({
 
 
     //临时登录
-    utilRequest.NetRequest({
-      url: "login/login",
-      data: {
-        username: "woshilaoshi",
-        password: utilMd5.hexMD5("woshilaoshi"),
-      },
-      success: function (res) {
-        var jsoncontent = JSON.parse(res.jsoncontent);
-        app.globalData.userid = jsoncontent.userid;
-        app.globalData.role = jsoncontent.role;
+    // utilRequest.NetRequest({
+    //   url: "login/login",
+    //   data: {
+    //     username: "woshilaoshi",
+    //     password: utilMd5.hexMD5("woshilaoshi"),
+    //   },
+    //   success: function (res) {
+    //     var jsoncontent = JSON.parse(res.jsoncontent);
+    //     app.globalData.userid = jsoncontent.userid;
+    //     app.globalData.role = jsoncontent.role;
+    //     if (jsoncontent.role == 0 || jsoncontent.role == 1) {
+    //       wx.switchTab({
+    //         url: '../index/index',
+    //       });
+    //     } else if (jsoncontent.role == 2) {
+    //       wx.redirectTo({
+    //         url: '../admin/admin',
+    //       })
+    //     }
 
-        // wx.navigateTo({
-        //   url: '../admin/admin',
-        // })
-      },
-      fail: function (res) {
+    //     // wx.navigateTo({
+    //     //   url: '../admin/admin',
+    //     // })
+    //   },
+    //   fail: function (res) {
 
-      }
+    //   }
 
-    });
+    // });
 
     // if (app.globalData.userid == null) {
     //   wx.redirectTo({
@@ -188,6 +197,12 @@ Page({
   },
   findTeacher:function(e){
     var that = this;
+    if (app.globalData.userid == null) {
+      wx.navigateTo({
+        url: '../login/login',
+      })
+      return;
+    }
 
     wx.navigateTo({
       url: '../searchItem/searchItem?searchtype=0',
@@ -195,6 +210,14 @@ Page({
   },
   findSchool:function(e){
     var that = this;
+
+    if (app.globalData.userid == null) {
+      wx.navigateTo({
+        url: '../login/login',
+      })
+      return;
+    }
+
     wx.navigateTo({
       url: '../searchItem/searchItem?searchtype=1',
     })

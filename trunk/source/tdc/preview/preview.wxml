@@ -56,71 +56,73 @@
   </view>
 
 
-  <view wx:if="{{role == 1}}" class="hire-view">
-    <view class="hire-job-view">
-      <label class="hire-title">招聘职位</label>
-      <picker class="dance-type-picker" bindchange="danceTypeChange" mode="selector" range="{{danceTypes}}">
-        <label>{{danceType}}</label>
-        <image class="hire-info-image" src="{{hire_info_image}}"></image>
-      </picker>
+  <view class="signal-view">
+    <view wx:if="{{role == 1}}" class="hire-view">
+      <view class="hire-job-view">
+        <label class="hire-title">招聘职位</label>
+        <picker class="dance-type-picker" bindchange="danceTypeChange" mode="selector" range="{{danceTypes}}">
+          <label>{{danceType}}</label>
+          <image class="hire-info-image" src="{{hire_info_image}}"></image>
+        </picker>
 
-      <picker class="work-type-picker" bindchange="workTypeChange" mode="selector" range="{{workTypes}}">
-        <label>{{workType}}</label>
-        <image class="hire-info-image" src="{{hire_info_image}}"></image>
-      </picker>
-     
-      <picker class="teacher-type-picker" bindchange="teacherTypeChange" mode="selector" range="{{teacherTypes}}">
-        <label>{{teacherType}}</label>
-        <image class="hire-info-image" src="{{hire_info_image}}"></image>
-      </picker>
+        <picker class="work-type-picker" bindchange="workTypeChange" mode="selector" range="{{workTypes}}">
+          <label>{{workType}}</label>
+          <image class="hire-info-image" src="{{hire_info_image}}"></image>
+        </picker>
       
-      <picker class="count-picker" bindchange="countChange" mode="selector" range="{{counts}}">
-        <label class="hire-count">{{count}}</label>
-        <image class="hire-info-image" src="{{hire_info_image}}"></image>
-      </picker>
-      <label class="hire-end-label">位</label>
-    </view>
+        <picker class="teacher-type-picker" bindchange="teacherTypeChange" mode="selector" range="{{teacherTypes}}">
+          <label>{{teacherType}}</label>
+          <image class="hire-info-image" src="{{hire_info_image}}"></image>
+        </picker>
+        
+        <picker class="count-picker" bindchange="countChange" mode="selector" range="{{counts}}">
+          <label class="hire-count">{{count}}</label>
+          <image class="hire-info-image" src="{{hire_info_image}}"></image>
+        </picker>
+        <label class="hire-end-label">位</label>
+      </view>
 
-    <view class="wagestructure-view">
-      <label>薪资结构</label>
-      <view class="wages-view">
-        <view class="wages-by-month">
-          <checkbox-group bindchange="wagesbymonth" class="wages-by-month-checkbox-group">
-            <checkbox value="month" checked="{{wagesbymonth}}">按月</checkbox>
-          </checkbox-group>
-          <input type="digit" bindinput="wagesbymonthminchange" disabled="{{!wagesbymonth}}" class="wages-input">{{wagesbymonthmin}}</input>
-          <label>~</label>
-          <input type="digit" bindinput="wagesbymonthmaxchange" disabled="{{!wagesbymonth}}" class="wages-input">{{wagesbymonthmax}}</input>
-          <label> /月</label>
-        </view>
-        <view class="wages-by-class">
-          <checkbox-group bindchange="wagesbyclass" class="wages-by-class-checkbox-group">
-            <checkbox value="class" checked="{{wagesbyclass}}">按节</checkbox>
-          </checkbox-group>
-          <input type="digit" bindinput="wagesbyclassminchange" disabled="{{!wagesbyclass}}" class="wages-input">{{wagesbyclassmin}}</input>
-          <label>~</label>
-          <input type="digit" bindinput="wagesbyclassmaxchange" disabled="{{!wagesbyclass}}" class="wages-input">{{wagesbyclassmax}}</input>
-          <label> /节</label>
-        </view>
-        <view class="wages-facetoface">
-          <checkbox-group bindchange="wagesfacetoface">
-            <checkbox value="face" checked="{{wagesfacetoface}}">工资面议</checkbox>
-          </checkbox-group>
+      <view class="wagestructure-view">
+        <label>薪资结构</label>
+        <view class="wages-view">
+          <view class="wages-by-month">
+            <checkbox-group bindchange="wagesbymonth" class="wages-by-month-checkbox-group">
+              <checkbox value="month" checked="{{wagesbymonth}}">按月</checkbox>
+            </checkbox-group>
+            <input type="digit" bindinput="wagesbymonthminchange" disabled="{{!wagesbymonth}}" class="wages-input">{{wagesbymonthmin}}</input>
+            <label>~</label>
+            <input type="digit" bindinput="wagesbymonthmaxchange" disabled="{{!wagesbymonth}}" class="wages-input">{{wagesbymonthmax}}</input>
+            <label> /月</label>
+          </view>
+          <view class="wages-by-class">
+            <checkbox-group bindchange="wagesbyclass" class="wages-by-class-checkbox-group">
+              <checkbox value="class" checked="{{wagesbyclass}}">按节</checkbox>
+            </checkbox-group>
+            <input type="digit" bindinput="wagesbyclassminchange" disabled="{{!wagesbyclass}}" class="wages-input">{{wagesbyclassmin}}</input>
+            <label>~</label>
+            <input type="digit" bindinput="wagesbyclassmaxchange" disabled="{{!wagesbyclass}}" class="wages-input">{{wagesbyclassmax}}</input>
+            <label> /节</label>
+          </view>
+          <view class="wages-facetoface">
+            <checkbox-group bindchange="wagesfacetoface">
+              <checkbox value="face" checked="{{wagesfacetoface}}">工资面议</checkbox>
+            </checkbox-group>
+          </view>
         </view>
       </view>
+
     </view>
 
-  </view>
-
-  <view>
-  <!-- <navigator class="weui-cell weui-cell_access" hover-class="weui-cell_active"> -->
-    <view class="weui-cell__bd">工作地点</view>
-    <view class="weui-cell__ft weui-cell__ft_in-access">
-    <picker mode="region" bindchange="changeWorkAddress" value="{{region}}" >
-      <label class="region-content-label">{{region[0]}}-{{region[1]}}-{{region[2]}}</label>
-    </picker>
+    <view class="teacher-info-view">
+    <!-- <navigator class="weui-cell weui-cell_access" hover-class="weui-cell_active"> -->
+      <view class="weui-cell__bd">工作地点</view>
+      <view class="weui-cell__ft weui-cell__ft_in-access">
+      <picker mode="region" bindchange="changeWorkAddress" value="{{region}}" >
+        <label class="region-content-label">{{region[0]}}-{{region[1]}}-{{region[2]}}</label>
+      </picker>
+      </view>
+    <!-- </navigator> -->
     </view>
-  <!-- </navigator> -->
   </view>
 
   <view class="introduction-view">
@@ -128,9 +130,9 @@
     <textarea class="introduction-content-textarea" value="{{introduction}}" bindinput="introductionChange" placeholder="{{introduction_title}}" maxlength="1000"></textarea>
   </view>
 
-    <view class="weui-uploader">
+    <view class="weui-uploader uploader">
       <view class="weui-uploader__hd">
-          <view class="weui-uploader__title">图片上传</view>
+          <view class="weui-uploader__title upload-picture-view">图片上传</view>
           <view class="weui-uploader__info">{{photos.length}}/4</view>
       </view>
       <view class="weui-uploader__bd">

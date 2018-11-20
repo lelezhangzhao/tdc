@@ -19,12 +19,12 @@
 
   <view class="middle-view">
     <label class="search-bar__label" bindtap="searchTap">
-      <icon class="weui-icon-search" type="search" size="14"></icon>
-      <view class="weui-search-bar__text">搜索</view>
+      <icon class="weui-icon-search search-icon" type="search" size="20"></icon>
+      <view class="weui-search-bar__text search-bar-view">搜索</view>
     </label>
 
     <view class="map-view" bindtap="searchByMap">
-      <label class="main_address">{{address}}</label>
+      <label class="main_address"></label>
       <image src="{{address_logo}}" class="main-address-img" ></image>
     </view>
 

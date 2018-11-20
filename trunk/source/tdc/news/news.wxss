@@ -24,10 +24,10 @@
 }
 .delete-image{
   display: inline-block;
-  width: 21rpx;
-  height: 26rpx;
-  margin-left: 300rpx;
-  margin-top: 15rpx;
+  width: 35rpx;
+  height: 35rpx;
+  margin-left: 50rpx;
+  margin-top: 5rpx;
 }
 
 .bottom-view{
@@ -35,4 +35,19 @@
   bottom: 10rpx;
   margin: 0 10%;
   width: 70%;
+}
+.top-title-label{
+  font-size: 32rpx;
+  color: #A9A9A9;
+}
+
+.title-label{
+  font-size: 30rpx;
+  width: 400rpx;
+}
+.content-label{
+  display: block;
+  font-size: 28rpx;
+  color: #A9A9A9;
+  line-height: 100%;
 }

@@ -55,4 +55,12 @@ class GlobalData{
         return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "", $logo);
     }
 
+    public function GetRoleByPublishId(Request $request){
+        $publishid = $request->param("publishid");
+        $sql = "select publishobject from tdc_publish where id = $publishid";
+        $result = Db::query($sql);
+
+        return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "", $result[0]["publishobject"]);
+    }
+
 }

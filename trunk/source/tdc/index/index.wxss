@@ -1,6 +1,7 @@
 .page{
   margin: 0 5%;
   width: 90%;
+  font-size: 28rpx;
 }
 .top-view {
   margin: 0 auto;
@@ -18,12 +19,13 @@
   flex-direction: row;
   top: 310rpx;
   height: 80rpx;
+  margin-top: 50rpx;
 }
 
 .search-bar__label {
   display: inline-block;
   left: 5%;
-  width: 60%;
+  width: 90%;
   height: 60rpx;
   border-radius: 28rpx;
   padding-left: 3%;
@@ -31,10 +33,12 @@
   color: #9b9b9b;
   background: #EEE;
 }
-
+.search-bar-view{
+  width: 80%;
+}
 .weui-search-bar__text {
   display: inline-block;
-  font-size: 32rpx;
+  font-size: 28rpx;
   vertical-align: middle;
 }
 .map-view{
@@ -72,4 +76,7 @@
 
 .high-eval-item{
   height: 250rpx;
+}
+.search-icon{
+  margin-top: 10rpx;
 }

@@ -1,5 +1,8 @@
 /* tdc/chat/chat.wxss */
-
+.page{
+  margin: 0 5%;
+  width: 90%;
+}
 .chat-view{
   height: 180rpx;
 }

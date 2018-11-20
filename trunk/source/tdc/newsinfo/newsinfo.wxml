@@ -1,54 +1,85 @@
 <!--tdc/newsinfo/newsinfo.wxml-->
 <view class="page">
+
   <view class="top-view">
-    <input placeholder="标题" value="{{title}}" bindinput="titleChange"></input>
+    <view class="title-top-line">
+    </view>
+    <input placeholder="新闻标题" value="{{title}}" bindinput="titleChange" class="title-input"></input>
+    <view>
+      <textarea placeholder="摘要" value="{{abstract_content}}" bindinput="abstractChange" class="briefcontent"></textarea>
+    </view>
   </view>
 
   <view class="middle-view">
-    <view class="title-view">
-      <view>
-        <input placeholder="摘要" value="{{abstract}}" bindinput="abstractChange"></input>
-      </view>
-    </view>
 
     <view class="title-one-view">
       <view>
-        <input placeholder="标题一" value="{{title_one}}" bindinput="titleOneChange"></input>
+        <input placeholder="标题一" value="{{title_one}}" bindinput="titleOneChange" class="little-title"></input>
       </view>
-      <view>
-        <input placeholder="正文一" value="{{content_one}}" bindinput="contentOneChange"></input>
+      <view class="little-content-view">
+        <textarea placeholder="正文一" value="{{content_one}}" bindinput="contentOneChange" class="little-content"></textarea>
+      </view>
+      <view class="weui-uploader__bd">
+        <view class="weui-uploader__files" id="uploaderFiles">
+          <view wx:if="{{hasPhotoOne}}" class="weui-uploader__file photo-view" >
+            <image class="weui-uploader__img photo" src="{{photo_one}}" mode="aspectFill" id="{{photo_one}}"/>
+            <icon class="photo-delete" type="cancel" size="23"  bindtap="deleteImage" id="1"></icon>
+
+          </view>
+          <view wx:else class="weui-uploader__input-box">
+            <view class="weui-uploader__input photo" bindtap="chooseImage" id="1"></view>
+          </view>
+
+        </view>
       </view>
     </view>
 
     <view class="title-two-view">
       <view>
-        <input placeholder="标题二" value="{{title_two}}" bindinput="titleTwoChange"></input>
+        <input placeholder="标题二" value="{{title_two}}" bindinput="titleTwoChange" class="little-title"></input>
       </view>
-      <view>
-        <input placeholder="正文二" value="{{content_two}}" bindinput="contentTwoChange"></input>
+      <view class="little-content-view">
+        <textarea placeholder="正文二" value="{{content_two}}" bindinput="contentTwoChange" class="little-content"></textarea>
+      </view>
+      <view class="weui-uploader__bd">
+        <view class="weui-uploader__files" id="uploaderFiles">
+          <view wx:if="{{hasPhotoTwo}}" class="weui-uploader__file photo-view" >
+            <image class="weui-uploader__img photo" src="{{photo_two}}" mode="aspectFill" id="{{photo_two}}"/>
+            <icon class="photo-delete" type="cancel" size="23"  bindtap="deleteImage" id="2"></icon>
+
+          </view>
+          <view wx:else class="weui-uploader__input-box">
+            <view class="weui-uploader__input photo" bindtap="chooseImage" id="2"></view>
+          </view>
+
+        </view>
       </view>
     </view>
 
     <view class="title-three-view">
       <view>
-        <input placeholder="标题三" value="{{title_three}}" bindinput="titleThreeChange"></input>
+        <input placeholder="标题三" value="{{title_three}}" bindinput="titleThreeChange" class="little-title"></input>
       </view>
-      <view>
-        <input placeholder="正文三" value="{{content_three}}" bindinput="contentThreeChange"></input>
+      <view class="little-content-view">
+        <textarea placeholder="正文三" value="{{content_three}}" bindinput="contentThreeChange" class="little-content"></textarea>
       </view>
-    </view>
+      <view class="weui-uploader__bd">
+        <view class="weui-uploader__files" id="uploaderFiles">
+          <view wx:if="{{hasPhotoThree}}" class="weui-uploader__file photo-view" >
+            <image class="weui-uploader__img photo" src="{{photo_three}}" mode="aspectFill" id="{{photo_three}}"/>
+            <icon class="photo-delete" type="cancel" size="23"  bindtap="deleteImage" id="3"></icon>
 
-    <view class="title-four-view">
-      <view>
-        <input placeholder="标题四" value="{{title_four}}" bindinput="titleFourChange"></input>
-      </view>
-      <view>
-        <input placeholder="正文四" value="{{content_four}}" bindinput="contentFourChange"></input>
+          </view>
+          <view wx:else class="weui-uploader__input-box">
+            <view class="weui-uploader__input photo" bindtap="chooseImage" id="3"></view>
+          </view>
+
+        </view>
       </view>
     </view>
   </view>
 
   <view class="bottom-view">
-    <button bindtap="publish">立即发布</button>
+    <button bindtap="publish" type="primary">立即发布</button>
   </view>
 </view>

@@ -160,7 +160,7 @@ Page({
               url: '../index/index',
             });
           }else if(jsoncontent.role == 2){
-            wx.navigateTo({
+            wx.redirectTo({
               url: '../admin/admin',
             })
           }
@@ -193,33 +193,90 @@ Page({
   },
   login_by_wx: function(e){
     var that = this;
-    wx.getSetting({
-      success: res => {
-        if (res.authSetting['scope.userInfo']) {
-          wx.getUserInfo({
-            success: res => {
-              // 可以将 res 发送给后台解码出 unionId
-              that.data.userInfo = res.userInfo;
-              //微信登录
-              utilRequest.NetRequest({
-                url: "login/loginbywx",
-                data:{
-                  userInfo: res.userInfo,
-                },
-                success: function(res){
-                  if(res.code == "ERROR_STATUS_SUCCESS"){
-                    
-                  }
-                },
-                fail: function(res){
 
-                }
+    // 登录
+    wx.login({
+      success: res => {
+        // 发送 res.code 到后台换取 openId, sessionKey, unionId
+        utilRequest.NetRequest({
+          url: "login/loginbywx",
+          data:{
+            code: res.code,
+          },
+          success: function(res){
+            if(res.code == "ERROR_STATUS_SUCCESS"){
+              var jsoncontent = JSON.parse(res.jsoncontent);
+              app.globalData.userid = jsoncontent.userid;
+              app.globalData.role = jsoncontent.role;
+              wx.switchTab({
+                url: '../index/index',
+              })
+            }else if(res.code == "ERROR_STATUS_WXREGISTERSUCCESS"){
+              var jsoncontent = res.jsoncontent;
+              app.globalData.userid = jsoncontent;
+              wx.navigateTo({
+                url: '../registerJump/registerJump',
               })
             }
-          })
-        }
+          },
+          fail: function(res){
+
+          }
+        })
       }
-    });
+    })
+    // 获取用户信息
+    // wx.getSetting({
+    //   success: res => {
+    //     if (res.authSetting['scope.userInfo']) {
+    //       // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
+    //       wx.getUserInfo({
+    //         success: res => {
+    //           // 可以将 res 发送给后台解码出 unionId
+    //           this.globalData.userInfo = res.userInfo
+    //           console.log(res.userInfo);
+
+    //           // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
+    //           // 所以此处加入 callback 以防止这种情况
+    //           if (this.userInfoReadyCallback) {
+    //             this.userInfoReadyCallback(res)
+    //           }
+    //         }
+    //       })
+    //     }
+    //   }
+    // });
+
+
+
+    // wx.getSetting({
+    //   success: res => {
+    //     if (res.authSetting['scope.userInfo']) {
+    //       wx.getUserInfo({
+    //         success: res => {
+    //           // 可以将 res 发送给后台解码出 unionId
+    //           that.data.userInfo = res.userInfo;
+
+    //           //微信登录
+    //           utilRequest.NetRequest({
+    //             url: "login/loginbywx",
+    //             data:{
+    //               userInfo: res.userInfo,
+    //             },
+    //             success: function(res){
+    //               if(res.code == "ERROR_STATUS_SUCCESS"){
+                    
+    //               }
+    //             },
+    //             fail: function(res){
+
+    //             }
+    //           })
+    //         }
+    //       })
+    //     }
+    //   }
+    // });
   }
 
 

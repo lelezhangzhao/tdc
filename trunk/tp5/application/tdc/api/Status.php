@@ -33,6 +33,7 @@ class Status{
         "ERROR_STATUS_LISTISNULL" => "列表为空",
         "ERROR_STATUS_PUBLISHLISTISFULL" => "发布列表已满",
         "ERROR_STATUS_PUBLISHHASCOLLECTIONED" => "该发布已收藏",
+        "ERROR_STATUS_WXREGISTERSUCCESS" => "微信注册成功",
     );
 
     static public function ReturnJson($code, $msg){

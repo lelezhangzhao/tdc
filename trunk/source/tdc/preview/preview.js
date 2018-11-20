@@ -64,29 +64,8 @@ Page({
       hire_info_image: "../image/preview/hireinfoview.png",
     })
 
-
-    // if (app.globalData.userid == null) {
-    //   wx.navigateTo({
-    //     url: '../login/login',
-    //   })
-    // }
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-    var that = this;
-
     if (app.globalData.userid == null) {
-      wx.navigateTo({
+      wx.redirectTo({
         url: '../login/login',
       })
       return;
@@ -173,6 +152,23 @@ Page({
         }
       });
     }
+
+
+  },
+
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
+    var that = this;
+
 
   },
 

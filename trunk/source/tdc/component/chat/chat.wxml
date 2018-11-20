@@ -10,7 +10,7 @@
         <label class="chat-name-label">{{name}}</label>
       </view>
 
-      <view class="newtag-view">
+      <view wx:if="{{hasChatMsg}}" class="newtag-view">
         <image class="newtag-image" src="{{newtag_image}}"></image>
         <label class="newtag-label">{{newtag_label}}</label>
         
