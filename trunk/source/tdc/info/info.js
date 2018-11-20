@@ -1,6 +1,7 @@
 // tdc/info/info.js
 var utilRequest = require("../util/request.js");
 var globalData = require("../util/globaldata.js");
+var app = getApp();
 
 Page({
 
@@ -138,6 +139,13 @@ Page({
   collection:function(e){
     var that = this;
 
+    if(app.globalData.userid == null){
+      wx.navigateTo({
+        url: '../login/login',
+      })
+      return;
+    }
+
     utilRequest.NetRequest({
       url:"publish_info/collection",
       data:{
@@ -157,6 +165,13 @@ Page({
   },
   chat:function(e){
     var that = this;
+    if (app.globalData.userid == null) {
+      wx.navigateTo({
+        url: '../login/login',
+      })
+      return;
+    }
+
     wx.navigateTo({
       url: "../chatonline/chatonline?theOtherUserId=" + that.data.publishUserId,
     });
@@ -166,6 +181,12 @@ Page({
   },
   applyForPermission:function(e){
     var that = this;
+    if(app.globalData.userid == null){
+      wx.navigateTo({
+        url: '../login/login',
+      })
+      return;
+    }
     utilRequest.NetRequest({
       url: "publish_info/applyforpermission",
       data:{
@@ -188,6 +209,14 @@ Page({
   },
   evaluate: function(e){
     var that = this;
+    if (app.globalData.userid == null) {
+      wx.navigateTo({
+        url: '../login/login',
+      })
+      return;
+    }
+
+
     that.setData({
       show_mine_evaluate: true,
       mine_evaluate_score: 0,
@@ -300,6 +329,7 @@ Page({
           publishId: that.data.publishId
         },
         success: function (res) {
+          console.log(res);
           if (res.code == "ERROR_STATUS_SUCCESS") {
             var jsoncontent = JSON.parse(res.jsoncontent)[0];
             that.setData({

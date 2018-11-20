@@ -41,6 +41,14 @@ Page({
       type: 0,
     })
 
+    if (app.globalData.userid == null) {
+      wx.redirectTo({
+        url: '../login/login',
+      })
+      return;
+    }
+
+
   },
 
   /**
@@ -55,12 +63,6 @@ Page({
    */
   onShow: function () {
     var that = this;
-    if (app.globalData.userid == null) {
-      wx.redirectTo({
-        url: '../login/login',
-      })
-      return;
-    }
 
     that.setData({
       role: app.globalData.role,

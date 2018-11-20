@@ -191,6 +191,7 @@ Page({
     }
     var teacher = publishObject == 0 ? true : false;
     var school = !teacher;
+
     wx.navigateTo({
       url: '../info/info?teacher=' + teacher + '&school=' + school + '&publishId=' + publishId,
     })
@@ -224,12 +225,27 @@ Page({
   },
   searchTap:function(e){
     var that = this;
+    if (app.globalData.userid == null) {
+      wx.navigateTo({
+        url: '../login/login',
+      })
+      return;
+    }
 
     wx.navigateTo({
       url: '../search/search',
     })
   },
   searchByMap: function(e){
+    var that = this;
+    if (app.globalData.userid == null) {
+      wx.navigateTo({
+        url: '../login/login',
+      })
+      return;
+    }
+
+
     wx.navigateTo({
       url: '../map/map',
     })

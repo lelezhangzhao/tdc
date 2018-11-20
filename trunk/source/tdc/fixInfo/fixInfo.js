@@ -47,8 +47,11 @@ Page({
       utilRequest.NetRequest({
         url: "mine_teacher/getmineteacherinfo",
         success: function (res) {
+          console.log(res);
+          
           if(res.code == "ERROR_STATUS_SUCCESS"){
             var jsoncontent = JSON.parse(res.jsoncontent)[0];
+            
             var ServerLogo = globalData.GetServerHttps() + jsoncontent.logo;
             that.setData({ logo: ServerLogo });
             that.setData({ name: jsoncontent.name });

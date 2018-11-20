@@ -42,6 +42,9 @@ class MineSchool extends Controller{
 
         $publishId = $result[0]["publishid"];
 
+        if($publishId == null){
+            return Status::ReturnErrorStatus("ERROR_STATUS_LISTISNULL");
+        }
 
         $publishIdArr = explode(";", $publishId);
 
@@ -92,9 +95,13 @@ class MineSchool extends Controller{
         if(empty($result)){
             return Status::ReturnErrorStatus("ERROR_STATUS_LISTISNULL");
         }
+        $publishId = $result[0]["publishid"];
+        if($publishId == null){
+            return Status::ReturnErrorStatus("ERROR_STATUS_LISTISNULL");
+        }
 
         //拆分publishid
-        $publishArr = explode(";", $result[0]["publishid"]);
+        $publishArr = explode(";", $publishId);
         $publishes = array();
         foreach($publishArr as $item){
             $sql = "select a.id, a.publishobject, a.tag, a.introduction, b.name, b.logo from tdc_publish as a join tdc_user as b on a.userid = b.id where a.id = $item";
@@ -123,9 +130,13 @@ class MineSchool extends Controller{
         if(empty($result)){
             return Status::ReturnErrorStatus("ERROR_STATUS_LISTISNULL");
         }
+        $publishId = $result[0]["publishid"];
+        if($publishId == null){
+            return Status::ReturnErrorStatus("ERROR_STATUS_LISTISNULL");
+        }
 
         //拆分publishid
-        $publishArr = explode(";", $result[0]["publishid"]);
+        $publishArr = explode(";", $publishId);
         $publishes = array();
         foreach($publishArr as $item){
             $sql = "select a.id, a.publishobject, a.tag, a.introduction, b.name, b.logo from tdc_publish as a join tdc_user as b on a.userid = b.id where a.id = $item";

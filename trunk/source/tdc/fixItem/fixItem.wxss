@@ -1,1 +1,14 @@
 /* tdc/fixItem/fixItem.wxss */
+.page{
+  margin: 0 5%;
+  width: 90%;
+  font-size: 28rpx;
+}
+.input-input{
+  background-color: #EEE;
+  border-radius: 30rpx;
+  padding: 0 20rpx;
+}
+.save-button{
+  margin-top: 30rpx;
+}

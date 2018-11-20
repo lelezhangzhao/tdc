@@ -112,6 +112,17 @@
   height: 100rpx;
   width: 100rpx;
 }
+.wxlogin-button{
+  position: absolute;
+  top: 240rpx;
+  left: 43%;
+  height: 100rpx;
+  width: 100rpx;
+  border-radius: 50rpx;
+  background-image: url("https://localtdc.com/static/image/login/wx_logo.png");
+  background-repeat:no-repeat;
+  background-size:100% 100%;
+}
 .third-part-account-style{
   position: absolute;
   top: 170rpx;

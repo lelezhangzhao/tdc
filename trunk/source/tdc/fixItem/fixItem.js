@@ -29,6 +29,10 @@ Page({
     var value = options.value;
     var type = options.type;
 
+    wx.setNavigationBarTitle({
+      title: options.caption,
+    })
+
     that.setData({
       caption: caption,
       value: value,
@@ -113,8 +117,8 @@ Page({
       prevPage.changeSchollTel(that.data.value);
       break;
     }
-    wx.navigateTo({
-      url: '../fixInfo/fixInfo',
+    wx.navigateBack({
+      delta: 1,
     })
   }
 })

@@ -4,7 +4,7 @@
     <view class="weui-cells weui-cells_after-title">
       <view bindtap="fixLogo" class="weui-cell weui-cell_access" hover-class="weui-cell_active" style="height:40">
         <view class="weui-cell__bd">头像</view>
-        <image class="weui-cell__ft weui-cell__ft_in-access" src="{{logo}}"></image>
+        <image class="weui-cell__ft weui-cell__ft_in-access logo-view" src="{{logo}}"></image>
       </view>
       <view bindtap="fixName" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
         <view class="weui-cell__bd">姓名</view>

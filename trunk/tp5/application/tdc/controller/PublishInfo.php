@@ -28,8 +28,11 @@ class PublishInfo extends Controller{
         if(empty($result)){
             return Status::ReturnErrorStatus("ERROR_STATUS_PUBLISHALREADYDELETE");
         }
-        //加入到history
-        $this->AddHistory($publishId);
+
+        if(Session::has("userid")){
+            //加入到history
+            $this->AddHistory($publishId);
+        }
 
 
         $sql_evaluate = "select a.score,a.content,a.evaluatetime,a.disabledtime,a.status,b.nickname from tdc_evaluate as a join tdc_user as b on a.userid = b.id where a.publishid = $publishId";
@@ -37,26 +40,31 @@ class PublishInfo extends Controller{
         $result[0]["evaluatelist"] = $result_evaluate;
 
 
-        //是否已收藏该publishid
-        $userid = Session::get("userid");
-        $sql_hascollection = "select publishid from tdc_collection where userid = $userid";
-        $result_hascollection = Db::query($sql_hascollection);
-
         $hasCollectioned = 0;
-        if(!empty($result_hascollection)){
-            if($this->ExistPublishId($result_hascollection[0]["publishid"], $publishId)){
-                $hasCollectioned = 1;
+        if(Session::has("userid")){
+            //是否已收藏该publishid
+            $userid = Session::get("userid");
+            $sql_hascollection = "select publishid from tdc_collection where userid = $userid";
+            $result_hascollection = Db::query($sql_hascollection);
+
+            if(!empty($result_hascollection)){
+                if($this->ExistPublishId($result_hascollection[0]["publishid"], $publishId)){
+                    $hasCollectioned = 1;
+                }
             }
         }
         $result[0]["hascollectioned"] = $hasCollectioned;
 
-        //是否有电话权限
-        $fromUserId = Session::get("userid");
-        $toUserId = $result[0]["publishuserid"];
-        $sql_tel = "select * from tdc_telpermission where fromuserid = $fromUserId and touserid = $toUserId and status = 0";
-        $result_tel = Db::query($sql_tel);
-        if($fromUserId != $toUserId && empty($result_tel)){
-            $result[0]["tel"] = "1**********";
+        $result[0]["tel"] = "1**********";
+        if(Session::has("userid")){
+            //是否有电话权限
+            $fromUserId = Session::get("userid");
+            $toUserId = $result[0]["publishuserid"];
+            $sql_tel = "select * from tdc_telpermission where fromuserid = $fromUserId and touserid = $toUserId and status = 0";
+            $result_tel = Db::query($sql_tel);
+            if($fromUserId != $toUserId && empty($result_tel)){
+                $result[0]["tel"] = "1**********";
+            }
         }
 
         return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "获取成功", json_encode($result));
@@ -67,29 +75,33 @@ class PublishInfo extends Controller{
 
 
         $sql = "select * from (select b.id as publishuserid, b.logo, b.tel, b.name, b.nickname, a.id, a.status, a.workaddress, a.introduction, a.wagesbymonthmin, a.wagesbymonthmax, a.wagesbyclassmin, a.wagesbyclassmax, a.wagesfacetoface, a.wagesbymonth, a.wagesbyclass, a.hirecount, a.hireinfo, a.requireinfo, a.tag from tdc_publish as a left join tdc_user as b on a.userid = b.id) as d where status = 0 and id = $publishId";
+
         $result = Db::query($sql);
         if(empty($result)){
             return Status::ReturnErrorStatus("ERROR_STATUS_PUBLISHALREADYDELETE");
         }
 
-        //加入到history
-       $this->AddHistory($publishId);
-
+        if(Session::has("userid")){
+            //加入到history
+            $this->AddHistory($publishId);
+        }
 
         $sql_evaluate = "select a.score, a.content, a.evaluatetime, a.disabledtime, a.status, b.nickname from tdc_evaluate as a join tdc_user as b on a.userid = b.id where a.publishid = $publishId";
         $result_evaluate = Db::query($sql_evaluate);
 
         $result[0]["evaluatelist"] = $result_evaluate;
 
-        //是否已收藏该publishid
-        $userid = Session::get("userid");
-        $sql_hascollection = "select publishid from tdc_collection where userid = $userid";
-        $result_hascollection = Db::query($sql_hascollection);
-
         $hasCollectioned = 0;
-        if(!empty($result_hascollection)){
-            if($this->ExistPublishId($result_hascollection[0]["publishid"], $publishId)){
-                $hasCollectioned = 1;
+        if(Session::has("userid")){
+            //是否已收藏该publishid
+            $userid = Session::get("userid");
+            $sql_hascollection = "select publishid from tdc_collection where userid = $userid";
+            $result_hascollection = Db::query($sql_hascollection);
+
+            if(!empty($result_hascollection)){
+                if($this->ExistPublishId($result_hascollection[0]["publishid"], $publishId)){
+                    $hasCollectioned = 1;
+                }
             }
         }
         $result[0]["hascollectioned"] = $hasCollectioned;
@@ -181,6 +193,13 @@ class PublishInfo extends Controller{
         }
 
         return Status::ReturnJson("ERROR_STATUS_SUCCESS", "申请成功，等待对方确认");
+    }
+
+    public function GetTelPermissionInfo(Request $request){
+        //别人向我申请的
+        $sql = "select * from "
+
+        //我向别人申请的
     }
 
     private function AddHistory($publishId){

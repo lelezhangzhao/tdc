@@ -56,7 +56,8 @@ App({
 
   },
   globalData: {
-    userInfo: null,
+    userInfo: null, //使用微信登录时才会此属性
+    loginType: 0, //0->账号密码 1->微信
     userid:null,
     role:null,
     server: "https://localtdc.com/",

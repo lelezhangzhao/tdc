@@ -91,7 +91,8 @@ class Login extends Controller{
 
         $sql = "select id, role from tdc_user where username = '" . $openid . "'";
         $result = Db::query($sql);
-        if(empty($result) || $result[0]["role"] == null){
+
+        if(empty($result)){
             $systemTime = Times::GetSystemTime();
             //注册成功
             $user = new User();
@@ -132,9 +133,27 @@ class Login extends Controller{
             return Status::ReturnJsonWithContent("ERROR_STATUS_WXREGISTERSUCCESS", "", $userid);
         }
 
+        $userid = $result[0]["id"];
+        Session::set('userid', $userid);
         $return_arr = array("userid" => $result[0]["id"], "role" => $result[0]["role"]);
         return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "", json_encode($return_arr));
 
+    }
+
+    public function AddWxInfo(Request $request){
+        $nickname = $request->param("nickname");
+        $sex = $request->param("sex");
+        $sex = $sex == 1 ? 0 : 1;
+        $address = $request->param("address");
+        $detailaddress = str_replace('-','',$address);
+
+        $userid = Session::get("userid");
+
+        $sql = "update tdc_user set nickname = '" . $nickname . "', sex = $sex, address = '" . $address . "', workaddress='" . $address . "', detailaddress = '" . $detailaddress . "', detailworkaddress = '" . $detailaddress . "' where id = $userid";
+
+        Db::execute($sql);
+        return $sql;
+        return Status::ReturnErrorStatus("ERROR_STATUS_SUCCESS");
     }
 
 }

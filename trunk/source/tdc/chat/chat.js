@@ -17,7 +17,7 @@ Page({
     })
 
     if (app.globalData.userid == null) {
-      wx.navigateTo({
+      wx.redirectTo({
         url: '../login/login',
       })
       return;
@@ -26,6 +26,7 @@ Page({
     that.setData({
       userid: app.globalData.userid,
     })
+
 
     //开启聊天服务 
     wx.connectSocket({
@@ -61,12 +62,6 @@ Page({
       console.log('websocket连接失败！');
     })
 
-  },
-  onShow:function(options){
-    var that = this;
-
-
-
     utilRequest.NetRequest({
       url: "chat/getchatlist",
       success: function (res) {
@@ -80,6 +75,13 @@ Page({
 
       }
     }); 
+
+  },
+  onShow:function(options){
+    var that = this;
+
+
+
 
   },
   chatInfo:function(e){

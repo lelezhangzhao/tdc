@@ -104,7 +104,10 @@ class Register extends Controller{
         $user->name = "姓名";
         $user->nickname = "昵称";
         $user->tel = "电话";
-        $user->workaddress = "工作地址";
+        $user->address = "广东省-广州市-天河区";
+        $user->detailaddress = "广东省广州市天河区";
+        $user->workaddress = "广东省-广州市-天河区";
+        $user->detailworkaddress = "广东省广州市天河区";
         $user->tag = "拉丁;全职;在校;";
         $user->introduction = "";
 
