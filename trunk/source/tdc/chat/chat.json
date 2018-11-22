@@ -1,6 +1,7 @@
 {
   "usingComponents":{
-    "chat-component": "../component/chat/chat"
+    "chat-component": "../component/chat/chat",
+    "tel-permission": "../component/telPermission/telPermission"
   }
 
 }

@@ -16,4 +16,11 @@ class GlobalData{
     static public $maxHistoryCount = 10;
     static public $chatServerHasStarted = false;
     static public $maxUserNumber = 500;
+
+    static public function GetChatServerHasStarted(){
+        return self::$chatServerHasStarted;
+    }
+    static public function SetChatServerHasStarted($hasStarted){
+        self::$chatServerHasStarted = $hasStarted;
+    }
 }

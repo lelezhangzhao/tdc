@@ -17,6 +17,8 @@ Page({
     wx_logo: null,
     captcha: 0,
 
+    userid: "",
+
     userInfo: {},
 
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
@@ -157,6 +159,9 @@ Page({
         var jsoncontent = JSON.parse(res.jsoncontent);
           app.globalData.userid = jsoncontent.userid;
           app.globalData.role = jsoncontent.role;
+          that.setData({
+            userid: jsoncontent.userid,
+          })
           if(jsoncontent.role == 0 || jsoncontent.role == 1){
             wx.switchTab({
               url: '../index/index',
@@ -166,6 +171,8 @@ Page({
               url: '../admin/admin',
             })
           }
+          
+          that.connectSocket();
         } else if (res.code == "ERROR_STATUS_USERNAMEFORMATERROR") {
           title = "用户名格式错误";
         } else if (res.code == "ERROR_STATUS_USERNAMEORPASSWORDERROR") {
@@ -214,7 +221,9 @@ Page({
               var jsoncontent = JSON.parse(res.jsoncontent);
               app.globalData.userid = jsoncontent.userid;
               app.globalData.loginType = 1;
-
+              that.setData({
+                userid: jsoncontent.userid,
+              })
               if (jsoncontent.role == null) {
                 wx.redirectTo({
                   url: '../registerJump/registerJump',
@@ -225,6 +234,8 @@ Page({
               wx.switchTab({
                 url: '../index/index',
               })
+              that.connectSocket();
+
             }else if(res.code == "ERROR_STATUS_WXREGISTERSUCCESS"){
               var jsoncontent = res.jsoncontent;
               app.globalData.userid = jsoncontent;
@@ -276,7 +287,6 @@ Page({
       success: res => {
         if (res.authSetting['scope.userInfo']) {
           // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
-          console.log("已经授权");
           wx.getUserInfo({
             lang: "zh_CN",
             success: res => {
@@ -285,7 +295,6 @@ Page({
 
 
               //昵称，性别，地址上送到服务器
-              console.log(res.userInfo);
               var userinfo = res.userInfo;
               var nickname = userinfo.nickName;
               var sex = userinfo.gender;
@@ -298,7 +307,6 @@ Page({
                   address: address,
                 },
                 success: function (res) {
-                  console.log(res);
                   if (res.code == "ERROR_STATUS_SUCCESS") {
 
                   }
@@ -311,12 +319,59 @@ Page({
             }
           })
         } else {
-          console.log("未授权");
         }
       },
       fail: res => {
       }
     });
+  },
+  connectSocket: function(){
+    var that = this;
+    
+    //开启聊天服务 
+    wx.connectSocket({
+      url: 'ws://localhost:9612',
+      data:{
+        name: "zhang",
+        nickname: "zhao",
+      },
+      success: function (res) {
+      }
+
+    })
+    wx.onSocketOpen(function () {
+    })
+    wx.onSocketError(function () {
+
+    })
+    wx.onSocketClose(function (res) {
+
+    })
+
+    wx.onSocketMessage(function (data) {
+
+      var data = JSON.parse(data.data);
+      var type = data.type;
+      if (type == 0) {//连接成功，返回key
+      
+        //把这个key放到服务器
+        utilRequest.NetRequest({
+          url: "global_data/addchatkey",
+          data: {
+            userid: that.data.userid,
+            key: data.key,
+          },
+          success: function (res) {
+
+          },
+          fail: function (res) {
+
+          }
+        })
+      }
+
+    })
+
   }
 
 

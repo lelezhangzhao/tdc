@@ -5,32 +5,40 @@ namespace app\tdc\controller;
 use app\tdc\api\Times;
 use think\Controller;
 use think\Db;
+use think\Session;
 
 use app\tdc\model\Chat;
 
+
+
 class ChatServer extends Controller
 {
-    private $sockets;//所有socket连接池包括服务端socket
-    private $users;//所有连接用户
-    private $server;//服务端 socket
+    static public $sockets;//所有socket连接池包括服务端socket
+    static public $users;//所有连接用户
+    static public $server;//服务端 socket
+    static public $test = 1;
 
-    public function __construct($ip, $port)
+
+
+    public static function buildScket($ip, $port)
     {
         set_time_limit(0);
 
-        $this->server = socket_create(AF_INET, SOCK_STREAM, 0);
-        $this->sockets = array($this->server);
-        $this->users = array();
-        socket_bind($this->server, $ip, $port);
-        socket_listen($this->server, 3);
+        self::$server = socket_create(AF_INET, SOCK_STREAM, 0);
+        self::$sockets = array(self::$server);
+        self::$users = array();
+        socket_bind(self::$server, $ip, $port);
+        socket_listen(self::$server, 3);
+
+        self::$test = 2;
     }
 
-    public function run()
+    public static function run()
     {
         $write = NULL;
         $except = NULL;
         while (true) {
-            $active_sockets = $this->sockets;
+            $active_sockets = self::$sockets;
             socket_select($active_sockets, $write, $except, NULL);
 //这个函数很重要
 //前三个参数时传入的是数组的引用,会依次从传入的数组中选择出可读的,可写的,异常的socket,我们只需要选择出可读的socket
@@ -42,76 +50,75 @@ class ChatServer extends Controller
 //第三，timeout的值大于0，这就是等待的超时时间，即 select在timeout时间内阻塞，超时时间之内有事件到来就返回了，
 //否则在超时后不管怎样一定返回，返回值同上述。
             foreach ($active_sockets as $socket) {
-                if ($socket == $this->server) {
+                if ($socket == self::$server) {
 //服务端 socket可读说明有新用户连接
-                    $user = socket_accept($this->server);
+                    $user = socket_accept(self::$server);
                     $key = uniqid();
-                    $this->sockets[] = $user;
-                    $this->users[$key] = array(
+                    self::$sockets[] = $user;
+                    self::$users[$key] = array(
                         'socket' => $user,
                         'handshake' => false, //是否完成websocket握手
                     );
+                    self::$test = 2;
+//                    Session::set("users", self::$users);
 
                 } else {
 //用户socket可读
                     $buffer = '';
                     $bytes = socket_recv($socket, $buffer, 1024, 0);
-                    $key = $this->find_user_by_socket($socket); //通过socket在users数组中找出user
+                    $key = self::find_user_by_socket($socket); //通过socket在users数组中找出user
                     if ($bytes == 0) {
 //没有数据 关闭连接
-                        $this->disconnect($socket);
+                        self::disconnect($socket);
                     } else {
 //没有握手就先握手
-                        if (!$this->users[$key]['handshake']) {
-                            $this->handshake($key, $buffer);
+                        if (!self::$users[$key]['handshake']) {
+                            self::handshake($key, $buffer);
 
                             //握手后，返回$key
-                            $handshake_ok = array("key" => $key);
+                            $handshake_ok = array("type" => 0, "key" => $key);
                             $ret_msg = json_encode($handshake_ok);
-                            $ret_msg = $this->msg_encode($ret_msg);
+                            $ret_msg = self::msg_encode($ret_msg);
                             socket_write($socket, $ret_msg, strlen($ret_msg));
 
                         } else {
 //握手后
 //解析消息 websocket协议有自己的消息格式
 //解码 编码过程固定的
-                            $data = $this->msg_decode($buffer);
+                            $data = self::msg_decode($buffer);
                             $data = json_decode($data);
-                            $fromuserid = $data->fromuserid;
-                            $touserid = $data->touserid;
-                            $msg = $data->msg;
+                            switch($data->status){
+                                case 1:
+                                    $fromuserid = $data->fromuserid;
+                                    $touserid = $data->touserid;
+                                    $msg = $data->msg;
 
 //存到数据库
-                            $systemTime = Times::GetSystemTime();
-                            $chat = new Chat();
-                            $chat->content = $msg;
-                            $chat->fromuserid = $fromuserid;
-                            $chat->touserid = $touserid;
-                            $chat->sendtime = $systemTime;
-                            $chat->isread = false;
-                            $chat->save();
+                                    $systemTime = Times::GetSystemTime();
+                                    $chat = new Chat();
+                                    $chat->content = $msg;
+                                    $chat->fromuserid = $fromuserid;
+                                    $chat->touserid = $touserid;
+                                    $chat->sendtime = $systemTime;
+                                    $chat->isread = false;
+                                    $chat->save();
 //如果在线，直接发送
-                            $sql = "select chatkey from tdc_user where id = $touserid";
-                            $result = Db::query($sql);
-                            $key = $result[0]["chatkey"];
+                                    $sql = "select chatkey from tdc_user where id = $touserid";
+                                    $result = Db::query($sql);
+                                    $key = $result[0]["chatkey"];
 
-                            if(array_key_exists($key, $this->users)){
-                                $ret_msg = array("id" => $chat->id, "fromuserid" => $fromuserid, "msg" => $msg, "sendtime" => $systemTime, "isread" => false);
-                                $ret_msg = json_encode($ret_msg);
-                                $ret_msg = $this->msg_encode($ret_msg);
-                                socket_write($this->users[$key]["socket"], $ret_msg, strlen($ret_msg));
+                                    if(array_key_exists($key, self::$users)){
+                                        $ret_msg = array("type" => 1, "id" => $chat->id, "fromuserid" => $fromuserid, "msg" => $msg, "sendtime" => $systemTime, "isread" => false);
+                                        $ret_msg = json_encode($ret_msg);
+                                        $ret_msg = self::msg_encode($ret_msg);
+                                        socket_write(self::$users[$key]["socket"], $ret_msg, strlen($ret_msg));
+                                    }
+
+                                    break;
+                                case 2:
+
+                                    break;
                             }
-//编码后发送回去
-
-//                            $return_msg = $msg;
-//                            if(Session::has("userid")){
-//                                $return_msg = 345;
-//                            }
-
-
-//                            $res_msg = $this->msg_encode($return_msg);
-//                            socket_write($socket, $res_msg, strlen($res_msg));
-
                         }
                     }
                 }
@@ -119,30 +126,30 @@ class ChatServer extends Controller
         }
     }
 
-    public function DeleteSocket($key){
-        if(array_key_exists($key, $this->users)){
-            unset($this->users, $key);
-            return "OK";
-        }
-        return "ERROR";
-    }
+//    public static function DeleteSocket($key){
+//        if(array_key_exists($key, self::$users)){
+//            unset(self::$users, $key);
+//            return "OK";
+//        }
+//        return "ERROR";
+//    }
 //解除连接
-    private function disconnect($socket)
+    private static function disconnect($socket)
     {
-        $key = $this->find_user_by_socket($socket);
-        unset($this->users[$key]);
-        foreach ($this->sockets as $k => $v) {
+        $key = self::find_user_by_socket($socket);
+        unset(self::$users[$key]);
+        foreach (self::$sockets as $k => $v) {
             if ($v == $socket)
-                unset($this->sockets[$k]);
+                unset(self::$sockets[$k]);
         }
         socket_shutdown($socket);
         socket_close($socket);
     }
 
 //通过socket在users数组中找出user
-    private function find_user_by_socket($socket)
+    private static function find_user_by_socket($socket)
     {
-        foreach ($this->users as $key => $user) {
+        foreach (self::$users as $key => $user) {
             if ($user['socket'] == $socket) {
                 return $key;
             }
@@ -150,7 +157,7 @@ class ChatServer extends Controller
         return -1;
     }
 
-    private function handshake($k, $buffer)
+    private static function handshake($k, $buffer)
     {
 //截取Sec-WebSocket-Key的值并加密
         $buf = substr($buffer, strpos($buffer, 'Sec-WebSocket-Key:') + 18);
@@ -163,16 +170,16 @@ class ChatServer extends Controller
         $new_message .= "Sec-WebSocket-Version: 13\r\n";
         $new_message .= "Connection: Upgrade\r\n";
         $new_message .= "Sec-WebSocket-Accept: " . $new_key . "\r\n\r\n";
-        socket_write($this->users[$k]['socket'], $new_message, strlen($new_message));
+        socket_write(self::$users[$k]['socket'], $new_message, strlen($new_message));
 
 //对已经握手的client做标志
-        $this->users[$k]['handshake'] = true;
+        self::$users[$k]['handshake'] = true;
         return true;
     }
 
 
 //编码 把消息打包成websocket协议支持的格式
-    private function msg_encode($buffer)
+    private static function msg_encode($buffer)
     {
         $len = strlen($buffer);
         if ($len <= 125) {
@@ -185,7 +192,7 @@ class ChatServer extends Controller
     }
 
 //解码 解析websocket数据帧
-    private function msg_decode($buffer)
+    private static function msg_decode($buffer)
     {
         $len = $masks = $data = $decoded = null;
         $len = ord($buffer[1]) & 127;

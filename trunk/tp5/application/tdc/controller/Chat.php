@@ -28,7 +28,6 @@ class Chat extends Controller{
         $sql = "select * from ((select a.fromuserid, a.touserid, a.fromuserid as otherid, a.lastsendtime, a.hasunreadmsg, a.briefcontent, b.name as othername, b.logo as otherlogo from tdc_chatassist as a join tdc_user as b on a.fromuserid = b.id where a.touserid = $userid) as c) union
 (select a.fromuserid, a.touserid, a.touserid as otherid, a.lastsendtime, a.hasunreadmsg, a.briefcontent, b.name as othername, b.logo as otherlogo from tdc_chatassist as a join tdc_user as b on a.touserid = b.id where a.fromuserid = $userid) order by lastsendtime desc";
 
-
 //        $sql = "select a.fromuserid, a.touserid, a.sendtime, a.isread, a.content, b.name, b.logo from tdc_chat as a join tdc_user as b on a.fromuserid = b.id or a.touserid = b.id where a.fromuserid = $userid or a.touserid = $userid order by a.sendtime desc";
         $result = Db::query($sql);
         if(empty($result)){

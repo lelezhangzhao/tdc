@@ -37,6 +37,16 @@ App({
     //   }
     // });
 
+    //暂时在这里开启服务器聊天系统
+    utilRequest.NetRequest({
+      url: "index/startchatserver",
+      success: function (res) {
+        console.log(res);
+      },
+      fail: function (res) {
+        console.log(res);
+      }
+    })
 
     //获取屏幕信息
     wx.getSystemInfo({

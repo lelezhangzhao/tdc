@@ -40,14 +40,15 @@ Page({
     var msg = {
       fromuserid: that.data.userid,
       touserid: that.data.theOtherUserId,
-      msg: message
+      msg: message,
+      status: 1,
     };
 
     wx.sendSocketMessage({
       data: JSON.stringify(msg),
       success: function(res){
         that.setData({
-          message: ""
+          message: msg
         });
         var row = {};
         row.content = message;
@@ -146,17 +147,18 @@ Page({
 
     that.loadHistoryData()
 
-    wx.onSocketMessage(function(data){
-      var data = JSON.parse(data.data);
+    // wx.onSocketMessage(function(data){
+    //   console.log("chatonline onsocketmessage");
+    //   var data = JSON.parse(data.data);
 
-      var row = {};
-      row.content = data.msg;
-      row.fromuserid = data.fromuserid;
-      that.data.contentData.push(row);
+    //   var row = {};
+    //   row.content = data.msg;
+    //   row.fromuserid = data.fromuserid;
+    //   that.data.contentData.push(row);
 
-      that.setData({ contentData: that.data.contentData });        
+    //   that.setData({ contentData: that.data.contentData });        
 
-    })
+    // })
   },
   loadHistoryData: function(){
     var that = this;

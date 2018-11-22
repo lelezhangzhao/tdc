@@ -1,0 +1,22 @@
+<!--tdc/component/telPermission/telPermission.wxml-->
+<view class="component">
+  <view wx:if="{{status == 1}}" >
+    <view class="tome-view">
+      <label>申请中</label>
+    </view>
+
+    <view class="tome-content">
+      <label>{{name}}申请访问电话</label>
+    </view>
+  </view>
+
+  <view wx:elif="{{status == 4}}">
+    <view>
+      <label>已确认</label>
+    </view>
+
+    <view>
+      <label>向{{name}}申请电话被授权</label>
+    </view>
+  </view>
+</view>

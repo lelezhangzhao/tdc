@@ -34,6 +34,24 @@ Page({
   onLoad:function(){
     var that = this;
 
+
+    utilRequest.NetRequest({
+      url: "index/test1",
+      success: function(res){
+      },
+      fail: function(res){},
+    })
+
+    utilRequest.NetRequest({
+      url: "index/test2",
+      success: function (res) {
+        console.log(res);
+      },
+      fail: function (res) { }
+    })
+
+
+
     that.setData({
       address: "天河区",
       address_logo: "../image/main/address.png",
@@ -135,16 +153,6 @@ Page({
     //   })
     // }
 
-    //暂时在这里开启服务器聊天系统
-    utilRequest.NetRequest({
-      url: "index/startchatserver",
-      success: function(res){
-        console.log(res);
-      },
-      fail: function(res){
-        console.log(res);
-      }
-    })
 
 
 
@@ -163,7 +171,7 @@ Page({
         begin: that.data.begin
       },
       success: function (res) {
-
+        console.log(res);
         var jsoncontent = JSON.parse(res.jsoncontent);
 
         that.setData({ hiEvalList: jsoncontent });
@@ -191,6 +199,8 @@ Page({
     }
     var teacher = publishObject == 0 ? true : false;
     var school = !teacher;
+    var url = '../info/info?teacher=' + teacher + '&school=' + school + '&publishId=' + publishId;
+    console.log(url);
 
     wx.navigateTo({
       url: '../info/info?teacher=' + teacher + '&school=' + school + '&publishId=' + publishId,

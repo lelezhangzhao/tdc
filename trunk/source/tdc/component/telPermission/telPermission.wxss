@@ -1,0 +1,6 @@
+/* tdc/component/telPermission/telPermission.wxss */
+.component{
+  font-size: 28rpx;
+
+}
+

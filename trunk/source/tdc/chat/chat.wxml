@@ -1,5 +1,8 @@
 <!--tdc/chat/chat.wxml-->
 <view class="page">
+  <view wx:for="{{applyForTelPermissionList}}" wx:key="" class="tel-permission-view">
+    <tel-permission name="{{item.name}}" status="{{item.status}}" bindtap="permissionClick" id="{{index}}" />
+  </view>
   <view wx:for="{{chatList}}" wx:key="" class="chat-view" >
     <chat-component bindtap="chatInfo" data-otherid="{{item.otherid}}" otherLogo="{{serverHttps + item.otherlogo}}" name="{{item.othername}}" hasChatMsg="{{item.hasunreadmsg}}" content="{{item.briefcontent}}" />
 

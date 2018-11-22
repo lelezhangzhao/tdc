@@ -111,6 +111,7 @@ class Register extends Controller{
         $user->tag = "拉丁;全职;在校;";
         $user->introduction = "";
 
+
         //注册成功直接登录
         $user->lastlogintime = $currentTime;
         $user->save();

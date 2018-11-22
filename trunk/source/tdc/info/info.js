@@ -191,8 +191,10 @@ Page({
       url: "publish_info/applyforpermission",
       data:{
         touserid: that.data.publishUserId,
+        publishid: that.data.publishId,
       },
       success:function(res){
+        console.log(res);
         if(res.code = "ERROR_STATUS_SUCCESS"){
           wx.showModal({
             title: "申请成功",
@@ -298,6 +300,7 @@ Page({
           publishId: that.data.publishId
         },
         success: function (res) {
+          console.log(res);
           if (res.code == "ERROR_STATUS_SUCCESS") {
             var jsoncontent = JSON.parse(res.jsoncontent)[0];
             that.setData({
@@ -319,6 +322,7 @@ Page({
           }
         },
         fail: function (res) {
+          console.log(res);
 
         }
       });

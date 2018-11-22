@@ -17,7 +17,6 @@ use think\Session;
 use think\Db;
 
 
-
 class Index extends Controller{
     private $chatServer;
 
@@ -28,24 +27,27 @@ class Index extends Controller{
 
         $key = $result[0]["chatkey"];
 
-        return $this->chatServer;
 
         return Status::ReturnErrorStatus("ERROR_STATUS_SUCCESS");
     }
 
     public function StartChatServer(){
+
         if(!GlobalData::$chatServerHasStarted){
             GlobalData::$chatServerHasStarted = true;
 
 //            $userid = Session::get("userid");
 
 
-            $this->chatServer = new ChatServer("127.0.0.1", "9612");
-            $this->chatServer->run();
+            ChatServer::buildScket("127.0.0.1", "9612");
+            ChatServer::run();
+
+//            $this->chatServer = new ChatServer();
+//            $this->chatServer->run();
         }
     }
     public function GetHighEvalList(Request $request){
-
+        GlobalData::$chatServerHasStarted = true;
 
         //返回evaluateavg为10的项，每次返回20个
         $begin = $request->param("begin");
@@ -61,6 +63,16 @@ class Index extends Controller{
 
         return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "获取成功", json_encode($result));
 
+    }
+
+    public $chatServerHasStarted = false;
+    public function Test1(){
+        while(true){
+            $this->chatServerHasStarted = true;
+        }
+    }
+    public function Test2(){
+        return $this->chatServerHasStarted ?  1111 : 2222;
     }
 
 

@@ -8,6 +8,8 @@
 
 namespace app\tdc\controller;
 
+use app\tdc\model\Telpermission;
+
 use app\tdc\api\Status;
 use app\tdc\api\Times;
 use app\tdc\api\GlobalData as GlobalDataApi;
@@ -30,6 +32,7 @@ class PublishInfo extends Controller{
         }
 
         if(Session::has("userid")){
+
             //加入到history
             $this->AddHistory($publishId);
         }
@@ -178,28 +181,80 @@ class PublishInfo extends Controller{
     public function ApplyForPermission(Request $request){
         $systemTime = Times::GetSystemTime();
         $toUserId = $request->param("touserid");
+        $publishId = $request->param("publishid");
+
         $fromUserId = Session::get("userid");
 
         $sql = "select * from tdc_telpermission where fromuserid = $fromUserId and touserid = $toUserId";
         $result = Db::query($sql);
+        $telPermissionId = 0;
         if(!empty($result)){
             if($result[0]["status"] != 0){
                 $sql = "update tdc_telpermission set permissiontime = '". $systemTime ."', status = 0 where fromuserid = $fromUserId and touserid = $toUserId";
                 Db::execute($sql);
+
+                $sql_id = "select id from tdc_telpermission where fromuserid = $fromUserId and touserid = $toUserId";
+                $result_id = Db::query($sql_id);
+
+                global $telPermissionId;
+                $telPermissionId = $result_id[0]["id"];
             }
         }else{
-            $sql = "insert into tdc_telpermission(fromuserid, touserid, permissiontime, status) values($fromUserId, $toUserId, '" . $systemTime . "', 1)";
-            Db::execute($sql);
+            $telPermission = new TelPermission();
+            $telPermission->fromuserid = $fromUserId;
+            $telPermission->touserid = $toUserId;
+            $telPermission->permissiontime = $systemTime;
+            $telPermission->status = 1;
+            $telPermission->publishid = $publishId;
+            $telPermission->save();
+            global $telPermissionId;
+            $telPermissionId = $telPermission->id;
+        }
+
+        $users = ChatServer::$users;
+        return GlobalDataApi::$chatServerHasStarted ? 1111 : 1110;
+        return ChatServer::$test;
+        $sql_key = "select chatkey from tdc_user where id = $toUserId";
+        $result_key = Db::query($sql_key);
+        $key = $result_key[0]["chatkey"];
+        if(array_key_exists($key, $users)) {
+
+
+            $ret_msg = array("type" => 2, "id" => $telPermissionId, "fromuserid" => $fromUserId, "sendtime" => $systemTime, "status" => 1, "publishid" => $publishId);
+            $ret_msg = json_encode($ret_msg);
+            $ret_msg = $this->msg_encode($ret_msg);
+            socket_write($users[$key]["socket"], $ret_msg, strlen($ret_msg));
         }
 
         return Status::ReturnJson("ERROR_STATUS_SUCCESS", "申请成功，等待对方确认");
     }
 
     public function GetTelPermissionInfo(Request $request){
-        //别人向我申请的
-        $sql = "select * from "
 
-        //我向别人申请的
+        //别人向我申请的
+        $userid = Session::get("userid");
+        $sql_tomy = "select a.*, b.name, b.role from tdc_telpermission as a join tdc_user as b on a.touserid = b.id where a.touserid = $userid and a.status = 1";
+        $result_tomy = Db::query($sql_tomy);
+
+
+        //我向别人申请的,并且已被授权未读的
+        $sql_frommy = "select a.*, b.name, b.role from tdc_telpermission as a join tdc_user as b on a.fromuserid = b.id where a.fromuserid = $userid and a.status = 4";
+        $result_frommy = Db::query($sql_frommy);
+
+        $telPermission = array("tome" => json_encode($result_tomy), "fromme" => json_encode($result_frommy));
+
+        return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "", json_encode($telPermission));
+
+    }
+
+    public function ChangePermissionStatus(Request $request){
+        $permissionid = $request->param("permissionid");
+        $status = $request->param("status");
+
+        $sql = "update tdc_telpermission set status = $status where id = $permissionid";
+        Db::execute($sql);
+
+        return Status::ReturnErrorStatus("ERROR_STATUS_SUCCESS");
     }
 
     private function AddHistory($publishId){
@@ -265,5 +320,19 @@ class PublishInfo extends Controller{
         return Status::ReturnErrorStatus("ERROR_STATUS_SUCCESS");
 
     }
+
+    //编码 把消息打包成websocket协议支持的格式
+    private function msg_encode($buffer)
+    {
+        $len = strlen($buffer);
+        if ($len <= 125) {
+            return "\x81" . chr($len) . $buffer;
+        } else if ($len <= 65535) {
+            return "\x81" . chr(126) . pack("n", $len) . $buffer;
+        } else {
+            return "\x81" . char(127) . pack("xxxxN", $len) . $buffer;
+        }
+    }
+
 
 }
