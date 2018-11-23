@@ -137,17 +137,21 @@
       </view>
       <view class="weui-uploader__bd">
           <view class="weui-uploader__files" id="uploaderFiles">
-              <view class="weui-uploader__file" wx:if="{{photos.length >= 1}}" bindtap="previewImage" id="{{photos[0]}}">
-                <image class="weui-uploader__img" src="{{photos[0]}}" mode="aspectFill" />
+              <view class="weui-uploader__file upload-view" wx:if="{{photos.length >= 1}}" bindtap="previewImage" id="{{photos[0]}}">
+                <image class="weui-uploader__img" src="{{serverHttps + photos[0]}}" mode="aspectFill" />
+                <image class="delete-image" src="{{delete_image}}" bindtap="deletePhoto"  id="0"></image>
               </view>
-              <view class="weui-uploader__file" wx:if="{{photos.length >= 2}}" bindtap="previewImage" id="{{photos[1]}}">
-                <image class="weui-uploader__img" src="{{photos[1]}}" mode="aspectFill" />
+              <view class="weui-uploader__file upload-view" wx:if="{{photos.length >= 2}}" bindtap="previewImage" id="{{photos[1]}}">
+                <image class="weui-uploader__img" src="{{serverHttps + photos[1]}}" mode="aspectFill" />
+                <image class="delete-image" src="{{delete_image}}" bindtap="deletePhoto"  id="1"></image>
               </view>
-              <view class="weui-uploader__file" wx:if="{{photos.length >= 3}}" bindtap="previewImage" id="{{photos[2]}}">
-                <image class="weui-uploader__img" src="{{photos[2]}}" mode="aspectFill" />
+              <view class="weui-uploader__file upload-view" wx:if="{{photos.length >= 3}}" bindtap="previewImage" id="{{photos[2]}}">
+                <image class="weui-uploader__img" src="{{serverHttps + photos[2]}}" mode="aspectFill" />
+                <image class="delete-image" src="{{delete_image}}" bindtap="deletePhoto"  id="2"></image>
               </view>
-              <view class="weui-uploader__file" wx:if="{{photos.length >= 4}}" bindtap="previewImage" id="{{photos[3]}}">
-                <image class="weui-uploader__img" src="{{photos[3]}}" mode="aspectFill" />
+              <view class="weui-uploader__file upload-view" wx:if="{{photos.length >= 4}}" bindtap="previewImage" id="{{photos[3]}}">
+                <image class="weui-uploader__img" src="{{serverHttps + photos[3]}}" mode="aspectFill" />
+                <image class="delete-image" src="{{delete_image}}" bindtap="deletePhoto"  id="3"></image>
               </view>
               <view class="weui-uploader__input-box" wx:if="{{photos.length < 4}}">
                 <view class="weui-uploader__input" bindtap="chooseImage"></view>

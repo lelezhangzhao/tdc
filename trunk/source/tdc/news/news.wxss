@@ -7,16 +7,20 @@
 .top-view{
   height: 50rpx;
 }
-
+.middle-view{
+  margin-top: 50rpx;
+}
 .item-view{
   display: flex;
   flex-direction: row;
   height: 200rpx;
 }
-
+.left-view{
+  margin-right: 30rpx;
+}
 .logo-photo-image{
-  width: 150rpx;
-  height: 150rpx;
+  width: 120rpx;
+  height: 120rpx;
 }
 .item-title{
   display: flex;
@@ -39,15 +43,19 @@
 .top-title-label{
   font-size: 32rpx;
   color: #A9A9A9;
+  
 }
 
 .title-label{
   font-size: 30rpx;
   width: 400rpx;
+  overflow:hidden;
 }
 .content-label{
   display: block;
   font-size: 28rpx;
   color: #A9A9A9;
+  width: 500rpx;
+  overflow:hidden;
   line-height: 100%;
 }

@@ -21,7 +21,6 @@ Page({
 
     userInfo: {},
 
-    canIUse: wx.canIUse('button.open-type.getUserInfo'),
 
   },
 
@@ -172,7 +171,7 @@ Page({
             })
           }
           
-          that.connectSocket();
+          // that.connectSocket();
         } else if (res.code == "ERROR_STATUS_USERNAMEFORMATERROR") {
           title = "用户名格式错误";
         } else if (res.code == "ERROR_STATUS_USERNAMEORPASSWORDERROR") {
@@ -215,6 +214,7 @@ Page({
             code: res.code,
           },
           success: function(res){
+            console.log(res);
             that.uploadUserInfo();
             
             if(res.code == "ERROR_STATUS_SUCCESS"){
@@ -234,7 +234,7 @@ Page({
               wx.switchTab({
                 url: '../index/index',
               })
-              that.connectSocket();
+              // that.connectSocket();
 
             }else if(res.code == "ERROR_STATUS_WXREGISTERSUCCESS"){
               var jsoncontent = res.jsoncontent;
@@ -325,54 +325,54 @@ Page({
       }
     });
   },
-  connectSocket: function(){
-    var that = this;
+  // connectSocket: function(){
+  //   var that = this;
     
-    //开启聊天服务 
-    wx.connectSocket({
-      url: 'ws://localhost:9612',
-      data:{
-        name: "zhang",
-        nickname: "zhao",
-      },
-      success: function (res) {
-      }
+  //   //开启聊天服务 
+  //   wx.connectSocket({
+  //     url: 'ws://localhost:9612',
+  //     data:{
+  //       name: "zhang",
+  //       nickname: "zhao",
+  //     },
+  //     success: function (res) {
+  //     }
 
-    })
-    wx.onSocketOpen(function () {
-    })
-    wx.onSocketError(function () {
+  //   })
+  //   wx.onSocketOpen(function () {
+  //   })
+  //   wx.onSocketError(function () {
 
-    })
-    wx.onSocketClose(function (res) {
+  //   })
+  //   wx.onSocketClose(function (res) {
 
-    })
+  //   })
 
-    wx.onSocketMessage(function (data) {
+  //   wx.onSocketMessage(function (data) {
 
-      var data = JSON.parse(data.data);
-      var type = data.type;
-      if (type == 0) {//连接成功，返回key
+  //     var data = JSON.parse(data.data);
+  //     var type = data.type;
+  //     if (type == 0) {//连接成功，返回key
       
-        //把这个key放到服务器
-        utilRequest.NetRequest({
-          url: "global_data/addchatkey",
-          data: {
-            userid: that.data.userid,
-            key: data.key,
-          },
-          success: function (res) {
+  //       //把这个key放到服务器
+  //       utilRequest.NetRequest({
+  //         url: "global_data/addchatkey",
+  //         data: {
+  //           userid: that.data.userid,
+  //           key: data.key,
+  //         },
+  //         success: function (res) {
 
-          },
-          fail: function (res) {
+  //         },
+  //         fail: function (res) {
 
-          }
-        })
-      }
+  //         }
+  //       })
+  //     }
 
-    })
+  //   })
 
-  }
+  // }
 
 
 })

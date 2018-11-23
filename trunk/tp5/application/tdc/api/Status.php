@@ -34,6 +34,8 @@ class Status{
         "ERROR_STATUS_PUBLISHLISTISFULL" => "发布列表已满",
         "ERROR_STATUS_PUBLISHHASCOLLECTIONED" => "该发布已收藏",
         "ERROR_STATUS_WXREGISTERSUCCESS" => "微信注册成功",
+        "ERROR_STATUS_UPLOADISNOTIMAGE" => "上传的不是图片",
+        "ERROR_STATUS_PHOTOISFULL" => "上传的图片已满",
     );
 
     static public function ReturnJson($code, $msg){

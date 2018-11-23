@@ -38,15 +38,15 @@ App({
     // });
 
     //暂时在这里开启服务器聊天系统
-    utilRequest.NetRequest({
-      url: "index/startchatserver",
-      success: function (res) {
-        console.log(res);
-      },
-      fail: function (res) {
-        console.log(res);
-      }
-    })
+    // utilRequest.NetRequest({
+    //   url: "index/startchatserver",
+    //   success: function (res) {
+    //     console.log(res);
+    //   },
+    //   fail: function (res) {
+    //     console.log(res);
+    //   }
+    // })
 
     //获取屏幕信息
     wx.getSystemInfo({
@@ -70,7 +70,7 @@ App({
     loginType: 0, //0->账号密码 1->微信
     userid:null,
     role:null,
-    server: "https://localtdc.com/",
+    server: "https://baofenzhijia.top/",
     windowHeight: null,
     windowWidth: null,
     pixelRatio: null,

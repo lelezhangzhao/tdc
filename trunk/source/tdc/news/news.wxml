@@ -7,7 +7,7 @@
   <view class="middle-view">
     <view class="item-view" wx:for="{{list}}" wx:key="">
       <view class="left-view">
-        <image class="logo-photo-image" src="{{item.logophoto}}" ></image>
+        <image class="logo-photo-image" src="{{serverHttps + item.logophoto}}" ></image>
       </view>
 
       <view class="right-view">

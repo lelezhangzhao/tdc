@@ -11,6 +11,8 @@ namespace app\tdc\controller;
 use app\tdc\api\Status;
 use app\tdc\api\Times;
 
+use app\tdc\model\News;
+
 use think\Controller;
 use think\Request;
 use think\Db;
@@ -102,6 +104,7 @@ class Admin extends Controller
     public function PublishNews(Request $request)
     {
         $systemTime = Times::GetSystemTime();
+        $newsId = $request->param("newsId");
         $title = $request->param("title");
         $abstract = $request->param("abstract");
         $title_one = $request->param("title_one");
@@ -117,10 +120,101 @@ class Admin extends Controller
         $photo_three = $request->param("photo_three");
         $photo_four = $request->param("photo_four");
 
-        $sql = "insert into tdc_news(status, title, content, titleone, contentone, photoone, titletwo, contenttwo, phototwo, titlethree, contentthree, photothree, titlefour, contentfour, photofour, logophoto, publishtime, readtimes) values(0, '" . $title . "', '" . $abstract . "', '" . $title_one . "', '" . $content_one . "', '" . $photo_one. "', '" . $title_two . "', '" . $content_two . "', '" . $photo_two . "', '" . $title_three. "', '" . $content_three . "', '" . $photo_three . "', '" . $title_four . "', '" . $content_four . "', '" . $photo_four . "', '" . $photo_one . "', '" . $systemTime . "', 0)";
-        Db::execute($sql);
+        $news = News::get($newsId);
+        $news->status = 0;
+        $news->title = $title;
+        $news->content = $abstract;
+        $news->titleone = $title_one;
+        $news->contentone = $content_one;
+        $news->photoone = $photo_one;
+        $news->titletwo = $title_two;
+        $news->contenttwo = $content_two;
+        $news->phototwo = $photo_two;
+        $news->titlethree = $title_three;
+        $news->contentthree = $content_three;
+        $news->photothree = $photo_three;
+        $news->logophoto = $photo_one;
+        $news->publishtime = $systemTime;
+        $news->readtimes = 0;
+        $news->save();
+
+
+//        $sql = "insert into tdc_news(status, title, content, titleone, contentone, photoone, titletwo, contenttwo, phototwo, titlethree, contentthree, photothree, titlefour, contentfour, photofour, logophoto, publishtime, readtimes) values(0, '" . $title . "', '" . $abstract . "', '" . $title_one . "', '" . $content_one . "', '" . $photo_one. "', '" . $title_two . "', '" . $content_two . "', '" . $photo_two . "', '" . $title_three. "', '" . $content_three . "', '" . $photo_three . "', '" . $title_four . "', '" . $content_four . "', '" . $photo_four . "', '" . $photo_one . "', '" . $systemTime . "', 0)";
+//        Db::execute($sql);
 
         return Status::ReturnErrorStatus("ERROR_STATUS_SUCCESS");
 
+    }
+
+    public function buildNews(){
+        $news = new News();
+        $news->status = 2;
+        $news->logophoto = "static/image/global/user_logo.png";
+        $news->save();
+
+        $newsId = $news->id;
+
+        return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "", $newsId);
+
+    }
+
+    public function UploadPhoto(Request $request){
+        $fileName = $request->param("fileName");
+        $photoIndex = $request->param("photoIndex");
+        $newsId = $request->param("newsId");
+
+        $file = $request->file("$fileName");
+        if($file){
+            if(!$file->checkImg()){
+                return Status::ReturnErrorStatus("ERROR_STATUS_UPLOADISNOTIMAGE");
+            }
+            $info = $file->move(ROOT_PATH . 'public/static/image/news');
+
+            if($info){
+                $saveFileName = str_replace("\\", "/", $info->getSaveName());
+                $imgurl = '/static/image/news/' . $saveFileName;
+
+                //存入数据库
+                $news = News::get($newsId);
+                switch($photoIndex){
+                    case 0:
+                        $news['photoone'] = $imgurl;
+                        $news["logophoto"] = $imgurl;
+                        break;
+                    case 1:
+                        $news['phototwo'] = $imgurl;
+                        break;
+                    case 2:
+                        $news['photothree'] = $imgurl;
+                        break;
+                }
+
+                $news->save();
+                return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "", $imgurl);
+            }
+        }
+        return Status::ReturnErrorStatus("ERROR_STATUS_FAILED");
+    }
+
+    public function DeletePhoto(Request $request){
+        $photoId = $request->param("photoid");
+        $newsId = $request->param("newsId");
+
+        $news = News::get($newsId);
+        switch($photoId){
+            case 0:
+                $news->photoone = null;
+                $news->logophoto = "static/image/global/user_logo.png";
+                break;
+            case 1:
+                $news->phototwo = null;
+                break;
+            case 2:
+                $news->photothree = null;
+                break;
+        }
+
+        $news->save();
+        return Status::ReturnErrorStatus("ERROR_STATUS_SUCCESS");
     }
 }

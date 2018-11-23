@@ -1,5 +1,6 @@
 // tdc/news/news.js
 var utilRequest = require("../util/request.js");
+var globalData = require("../util/globaldata.js");
 Page({
 
   /**
@@ -7,7 +8,7 @@ Page({
    */
   data: {
     delete_image: "",
-
+    serverHttps: '',
     list: [],
   },
 
@@ -17,7 +18,8 @@ Page({
   onLoad: function (options) {
     var that = this;
     that.setData({
-      delete_image: "../image/admin/delete.png"
+      delete_image: "../image/admin/delete.png",
+      serverHttps: globalData.GetServerHttps(),
     })
 
   },
@@ -88,9 +90,21 @@ Page({
   },
   publish: function(e){
     var that = this;
-    wx.navigateTo({
-      url: '../newsinfo/newsinfo?ispublish=false',
+
+    //新建新闻
+    utilRequest.NetRequest({
+      url: "admin/buildnews",
+      success: function(res){
+        if(res.code == 'ERROR_STATUS_SUCCESS'){
+          var jsoncontent = res.jsoncontent;
+          wx.navigateTo({
+            url: '../newsinfo/newsinfo?ispublish=false&newsId=' + jsoncontent,
+          })
+        }
+      },
+      fail: function(res){}
     })
+
   },
   newsInfo: function(e){
     var that = this;

@@ -109,6 +109,12 @@
       </view>
     </view>
 
+    <view class="photo-view">
+      <view class="photo-item-view" wx:for="{{photos}}" wx:key="">
+        <image class="weui-uploader__img photo-image" src="{{serverHttps + item}}" bindtap="previewImage" id="{{item}}"></image>
+      </view>
+    </view>
+
 
     <view class="evaluate-view">
       <view class="evaluate-title-view">

@@ -2,6 +2,7 @@
 .page{
   margin: 0% 5%;
   width: 90%;
+  margin-bottom: 200rpx;
 }
 .top-view{
   height: 32rpx;
@@ -137,15 +138,16 @@
   margin-left: 10rpx;
 }
 .option-view{
-  position: absolute;
+  position: fixed;
+  bottom: 1rpx;  
   display: flex;
   flex-direction: row;
-  bottom: 1rpx;
   left: 0;
   width: 100%;
   height: 100rpx;
   border-top: #666 solid 2rpx;
   text-align: center;
+  background-color: #FFF;
 }
 .chat-online-view{
   display: inline-block;
@@ -172,7 +174,17 @@
   line-height: 50rpx;
   font-size: 26rpx;
   margin-top: 6rpx;
+  margin-bottom: 120rpx;
 }
 .mine-evaluate-content-view{
   font-size: 28rpx;
+  margin-bottom: 120rpx;
+}
+.photo-view{
+  display: flex;
+  flex-direction: row;
+  margin-top: 50rpx;
+}
+.photo-item-view{
+  margin-right: 30rpx;
 }

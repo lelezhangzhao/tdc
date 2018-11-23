@@ -1,4 +1,4 @@
-let Server = "https://localtdc.com/index.php/tdc/";
+let Server = "https://baofenzhijia.top/index.php/tdc/";
 
 function NetRequest({ url, data, success, fail, complete, method = "POST" }) {
   var session_id = wx.getStorageSync('PHPSESSID');//本地取存储的sessionID

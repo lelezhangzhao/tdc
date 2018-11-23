@@ -2,6 +2,7 @@
 .page{
   margin: 0 5%;
   width: 90%;
+  margin-bottom: 200rpx;
 }
 .title-top-line{
   height: 1rpx;

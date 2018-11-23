@@ -12,6 +12,7 @@ use app\tdc\api\GlobalData as GlobalDataApi;
 use app\tdc\api\Status;
 use app\tdc\api\Times;
 use app\tdc\model\Publish;
+use app\tdc\model\User;
 use think\Controller;
 use think\Session;
 use think\Request;
@@ -184,22 +185,31 @@ class MineTeacher extends Controller{
 
 
         //先更新user
-        $sql = "update tdc_user set tag = '" . $tag . "' introduction = '" . $introduction . "' workaddress = '" . $workaddress . "' where id = $userid";
-        Db::execute($sql);
+        $user = User::get($userid);
 
-        $user = Db::name("user")->where("id", $userid)->find();
+        $user->tag = $tag;
+        $user->introduction = $introduction;
+        $user->workaddress = $workaddress;
+
+        $user->save();
+//        $sql = "update tdc_user set tag = '" . $tag . "', introduction = '" . $introduction . "', workaddress = '" . $workaddress . "' where id = $userid";
+//        Db::execute($sql);
+
+//        $user = Db::name("user")->where("id", $userid)->find();
 
         //插入publish
         $newPublish = new Publish();
         $newPublish->publishobject = 0;
         $newPublish->userid = $userid;
         $newPublish->workaddress = $user["workaddress"];
+        $newPublish->detailworkaddress = $user->detailworkaddress;
         $newPublish->publishtime = $systemTime;
         $newPublish->status = 0;
         $newPublish->evaluateavg = 0;
         $newPublish->evaluatecount = 0;
         $newPublish->tag = $user["tag"];
         $newPublish->introduction = $introduction;
+        $newPublish->photos = $user->photos;
         $newPublish->save();
 
         $newPublishId = $newPublish->id;
@@ -331,8 +341,65 @@ class MineTeacher extends Controller{
 
 
     public function UploadPhoto(Request $request){
-        return $request;
+        $userid = Session::get("userid");
+        $fileName = $request->param("fileName");
+
+        $file = $request->file("$fileName");
+        if($file){
+            if(!$file->checkImg()){
+                return Status::ReturnErrorStatus("ERROR_STATUS_UPLOADISNOTIMAGE");
+            }
+            $info = $file->move(ROOT_PATH . 'public/static/image/photo');
+
+            if($info){
+                $saveFileName = str_replace("\\", "/", $info->getSaveName());
+                $imgurl = '/static/image/photo/' . $saveFileName;
+
+                //存入数据库
+                $user = User::get($userid);
+                $photos = $user["photos"];
+                $photoArr = explode(";", $photos);
+                if(count($photoArr) >= 4){
+                    return Status::ReturnErrorStatus("ERROR_STATUS_PHOTOISFULL");
+                }
+                if($photos == null){
+                    $photos = $imgurl;
+                }else{
+                    $photos = $photos . ";" . $imgurl;
+                }
+                $user["photos"] = $photos;
+
+                $user->save();
+                return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "", $imgurl);
+            }
+        }
+        return Status::ReturnErrorStatus("ERROR_STATUS_FAILED");
     }
+
+    public function DeletePhoto(Request $request){
+        $photoId = $request->param("photoid");
+        $userid = Session::get("userid");
+
+        $user = User::get($userid);
+        $photos = $user["photos"];
+        if($photos == null){
+            return Status::ReturnErrorStatus("ERROR_STATUS_FAILED");
+        }
+        $photoArr = explode(";", $photos);
+        array_splice($photoArr, $photoId, 1);
+        if(count($photoArr) == 0){
+            $photos = null;
+            $user["photos"] = $photos;
+        }else{
+            $photos = implode(";", $photoArr);
+            $user["photos"] = $photos;
+        }
+        $user->save();
+        return Status::ReturnErrorStatus("ERROR_STATUS_SUCCESS");
+    }
+
+
+
 
 //    public function FixTeacherWorkAddress(Request $request){
 //

@@ -1,5 +1,6 @@
 // tdc/newsinfo/newsinfo.js
 var utilRequest = require("../util/request.js");
+var globalData = require("../util/globaldata.js");
 Page({
 
   /**
@@ -18,6 +19,9 @@ Page({
     content_three: "",
     photo_three: "",
 
+    serverHttps: '',
+
+    newsId: "",
 
     hasPhotoOne: false,
     hasPhotoTwo: false,
@@ -31,13 +35,19 @@ Page({
   onLoad: function (options) {
     var that = this;
 
+    that.setData({
+      serverHttps: globalData.GetServerHttps(),
+      newsId: options.newsId,
+    })
+
     var ispublish = options.ispublish;
+
+    
     if(ispublish){
-      var newsid = options.newsId;
       utilRequest.NetRequest({
         url: "find/getfindinfo",
         data: {
-          newsId: newsid,
+          newsId: that.data.newsId,
         },
         success: function(res){
           if(res.code == "ERROR_STATUS_SUCCESS"){
@@ -122,6 +132,7 @@ Page({
     utilRequest.NetRequest({
       url: "admin/publishnews",
       data:{
+        newsId: that.data.newsId,
         title: that.data.title,
         abstract: that.data.abstract,
         title_one: that.data.title_one,
@@ -212,6 +223,7 @@ Page({
   // },
   chooseImage: function (e) {
     var that = this;
+    var photoIndex = e.currentTarget.id;
     wx.chooseImage({
       count: 1,
       sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
@@ -219,41 +231,44 @@ Page({
       success: function (res) {
         // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
         var newPhotoItem = res.tempFilePaths[0];        
-        if(e.currentTarget.id == "1"){
-          that.setData({
-            photo_one: newPhotoItem,
-            hasPhotoOne: true,
-          })
-        }else if(e.currentTarget.id == "2"){
-          that.setData({
-            photo_two: newPhotoItem,
-            hasPhotoTwo: true,
-            
-          })
-        }else if(e.currentTarget.id == "3"){
-          that.setData({
-            photo_three: newPhotoItem,
-            hasPhotoThree: true,
-            
-          })
-        }
         var session_id = wx.getStorageSync('PHPSESSID');//本地取存储的sessionID
         var header = {
           'content-type': 'multipart/form-data', 'Cookie': session_id };
 
-        var url = "";
-        if (that.data.role == 0) {
-          url = globalData.GetServerHttps() + "index.php/tdc/mine_teacher/uploadphoto";
-        } else if (that.data.role == 1) {
-          url = globalData.GetServerHttps() + "index.php/tdc/mine_school/uploadphoto";
-        }
+        var url = that.data.serverHttps + "index.php/tdc/admin/uploadphoto";
         wx.uploadFile({
           url: url,
           filePath: newPhotoItem,
           name: newPhotoItem.substr(60, 10),
           header: header,
+          formData: {
+            "fileName": newPhotoItem.substr(60, 10),
+            "newsId": that.data.newsId,
+            "photoIndex": photoIndex,
+          },
           success(res) {
-            console.log(res);
+            
+            var data = JSON.parse(res.data);
+
+            if (e.currentTarget.id == "0") {
+              that.setData({
+                photo_one: data.jsoncontent,
+                hasPhotoOne: true,
+              })
+            } else if (e.currentTarget.id == "1") {
+              that.setData({
+                photo_two: data.jsoncontent,
+                hasPhotoTwo: true,
+
+              })
+            } else if (e.currentTarget.id == "2") {
+              that.setData({
+                photo_three: data.jsoncontent,
+                hasPhotoThree: true,
+
+              })
+            }
+
           },
           fail(res) {
             console.log(res);
@@ -265,23 +280,125 @@ Page({
   deleteImage: function(e){
     var that = this;
     var id = e.currentTarget.id;
-    if(id == "1"){
-      that.setData({
-        photo_one: "",
-        hasPhotoOne: false,
-      })
-    }else if(id == "2"){
-      that.setData({
-        photo_two: "",
-        hasPhotoTwo: false,
-      })
-    }else if(id == "3"){
-      that.setData({
-        photo_three: "",
-        hasPhotoThree: false,
-      })
-    }
-  }
+    utilRequest.NetRequest({
+      url: "admin/deletephoto",
+      data:{
+        photoid: id,
+        newsId: that.data.newsId,
+      },
+      success: function(res){
+        if(res.code == "ERROR_STATUS_SUCCESS"){
+          if (id == "0") {
+            that.setData({
+              photo_one: "",
+              hasPhotoOne: false,
+            })
+          } else if (id == "1") {
+            that.setData({
+              photo_two: "",
+              hasPhotoTwo: false,
+            })
+          } else if (id == "2") {
+            that.setData({
+              photo_three: "",
+              hasPhotoThree: false,
+            })
+          }
+        }
+      },
+      fail: function(res){}
+    })
+  },
+  // chooseImage: function (e) {
+  //   var that = this;
+  //   wx.chooseImage({
+  //     count: 1,
+  //     sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+  //     sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+  //     success: function (res) {
+  //       // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
+  //       var newPhotoItem = res.tempFilePaths[0];
+
+  //       var session_id = wx.getStorageSync('PHPSESSID');//本地取存储的sessionID
+  //       var header = { 'content-type': 'application/x-www-form-urlencoded', 'Cookie': session_id };
+
+  //       var url = "";
+  //       if (that.data.role == 0) {
+  //         url = globalData.GetServerHttps() + "index.php/tdc/mine_teacher/uploadphoto";
+  //       } else if (that.data.role == 1) {
+  //         url = globalData.GetServerHttps() + "index.php/tdc/mine_school/uploadphoto";
+  //       }
+  //       wx.uploadFile({
+  //         url: url,
+  //         filePath: newPhotoItem,
+  //         name: newPhotoItem.substr(60, 10),
+  //         header: header,
+  //         formData: {
+
+  //           "fileName": newPhotoItem.substr(60, 10),
+  //         },
+  //         success(res) {
+
+  //           var data = JSON.parse(res.data);
+  //           console.log(data);
+  //           if (data.code == "ERROR_STATUS_UPLOADISNOTIMAGE") {
+  //             wx.showToast({
+  //               title: '上传的不是图片',
+  //               icon: "none",
+  //             })
+  //           } else if (data.code == "ERROR_STATUS_FAILED") {
+  //             wx.showToast({
+  //               title: '网络错误，稍后重试',
+  //               icon: "none",
+  //             })
+  //           } else if (data.code == "ERROR_STATUS_SUCCESS") {
+  //             that.data.photos.push(data.jsoncontent);
+  //             that.setData({
+  //               photos: that.data.photos,
+  //             });
+  //             console.log(that.data.photos);
+
+  //           }
+  //         },
+  //         fail(res) {
+  //           console.log(res);
+  //         }
+  //       })
+  //     }
+  //   })
+  // },
+  // deletePhoto: function (e) {
+  //   var that = this;
+  //   var photoId = e.currentTarget.id;
+  //   var url = "";
+  //   if (that.data.role == 0) {
+  //     url = "/mine_teacher/deletephoto";
+  //   } else if (that.data.role == 1) {
+  //     url = "/mine_school/deletephoto";
+  //   }
+
+  //   utilRequest.NetRequest({
+  //     url: url,
+  //     data: {
+  //       photoid: photoId,
+  //     },
+  //     success: function (res) {
+  //       console.log(res);
+  //       if (res.code == 'ERROR_STATUS_SUCCESS') {
+  //         var photos = that.data.photos;
+  //         photos.splice(photoId, 1);
+  //         that.setData({
+  //           photos: photos,
+  //         })
+  //       }
+  //     },
+  //     fail: function (res) {
+
+  //     }
+  //   })
+
+  // }
+
 
 
 })

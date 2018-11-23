@@ -50,7 +50,11 @@ Page({
       success:function(res){
         if(res.code == "ERROR_STATUS_SUCCESS"){
           var jsoncontent = JSON.parse(res.jsoncontent)[0];
-          that.setData({region: jsoncontent.address.split("-")})
+          var region = jsoncontent.address.split("-");
+          region[0] = region[0] != "" ? region[0] : "广东省";
+          region[1] = region[1] != "" ? region[1] : region[0];
+          region[2] = region[2] != "" ? region[2] : region[1];
+          that.setData({ region: region})
         }
       },
       fail:function(res){

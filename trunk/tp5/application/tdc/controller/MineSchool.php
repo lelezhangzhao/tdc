@@ -226,7 +226,7 @@ class MineSchool extends Controller{
         $publish->hirecount = $user->hirecount;
         $publish->hireinfo = $user->hireinfo;
         $publish->requireinfo = $user->requireinfo;
-
+        $publish->photos = $user->photos;
         $publish->dancetype = $user->dancetype;
         $publish->worktype = $user->worktype;
 
@@ -295,9 +295,6 @@ class MineSchool extends Controller{
 
     }
 
-    public function UploadPhoto(Request $request){
-        return 123;
-    }
 
     public function GetSchoolInfo(){
         $userid = Session::get("userid");
@@ -315,6 +312,65 @@ class MineSchool extends Controller{
         return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "", json_encode($result));
 
     }
+
+    public function UploadPhoto(Request $request){
+        $userid = Session::get("userid");
+        $fileName = $request->param("fileName");
+
+        $file = $request->file("$fileName");
+        if($file){
+            if(!$file->checkImg()){
+                return Status::ReturnErrorStatus("ERROR_STATUS_UPLOADISNOTIMAGE");
+            }
+            $info = $file->move(ROOT_PATH . 'public/static/image/photo');
+
+            if($info){
+                $saveFileName = str_replace("\\", "/", $info->getSaveName());
+                $imgurl = '/static/image/photo/' . $saveFileName;
+
+                //存入数据库
+                $user = User::get($userid);
+                $photos = $user["photos"];
+                $photoArr = explode(";", $photos);
+                if(count($photoArr) >= 4){
+                    return Status::ReturnErrorStatus("ERROR_STATUS_PHOTOISFULL");
+                }
+                if($photos == null){
+                    $photos = $imgurl;
+                }else{
+                    $photos = $photos . ";" . $imgurl;
+                }
+                $user["photos"] = $photos;
+
+                $user->save();
+                return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "", $imgurl);
+            }
+        }
+        return Status::ReturnErrorStatus("ERROR_STATUS_FAILED");
+    }
+
+    public function DeletePhoto(Request $request){
+        $photoId = $request->param("photoid");
+        $userid = Session::get("userid");
+
+        $user = User::get($userid);
+        $photos = $user["photos"];
+        if($photos == null){
+            return Status::ReturnErrorStatus("ERROR_STATUS_FAILED");
+        }
+        $photoArr = explode(";", $photos);
+        array_splice($photoArr, $photoId, 1);
+        if(count($photoArr) == 0){
+            $photos = null;
+            $user["photos"] = $photos;
+        }else{
+            $photos = implode(";", $photoArr);
+            $user["photos"] = $photos;
+        }
+        $user->save();
+        return Status::ReturnErrorStatus("ERROR_STATUS_SUCCESS");
+    }
+
 //    public function FixDanceType(Request $request){
 //        $danceType = $request->param("danceType");
 //

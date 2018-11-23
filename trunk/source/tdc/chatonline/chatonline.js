@@ -8,6 +8,9 @@ var user = {};
 var length;
 var zx_info_id;
 var openid_talk;
+
+var intervalId;
+
 Page({
   data: {
     news: '',
@@ -23,6 +26,7 @@ Page({
     userid:null,
     myLogo: '',
     otherLogo: '',
+
   },
 
 
@@ -35,8 +39,6 @@ Page({
   add: function (e) {
     var that = this
     // var sendTime = Date.parse(new Date());
-    console.log(that.data.userid);
-    console.log(that.data.theOtherUserId);
     var msg = {
       fromuserid: that.data.userid,
       touserid: that.data.theOtherUserId,
@@ -44,27 +46,29 @@ Page({
       status: 1,
     };
 
-    wx.sendSocketMessage({
-      data: JSON.stringify(msg),
-      success: function(res){
-        that.setData({
-          message: msg
-        });
-        var row = {};
-        row.content = message;
-        row.fromuserid = that.data.userid;
-        that.data.contentData.push(row);
 
-        that.setData({ contentData: that.data.contentData });        
-      },
-      fail: function (res) {
-        wx.showToast({
-          title: '网络错误,请稍后',
-          icon: "none",
-        })
-      }
 
-    })
+    // wx.sendSocketMessage({
+    //   data: JSON.stringify(msg),
+    //   success: function(res){
+    //     that.setData({
+    //       message: msg
+    //     });
+    //     var row = {};
+    //     row.content = message;
+    //     row.fromuserid = that.data.userid;
+    //     that.data.contentData.push(row);
+
+    //     that.setData({ contentData: that.data.contentData });        
+    //   },
+    //   fail: function (res) {
+    //     wx.showToast({
+    //       title: '网络错误,请稍后',
+    //       icon: "none",
+    //     })
+    //   }
+
+    // })
   },
   onLoad: function (options) {
     var that = this;
@@ -145,7 +149,7 @@ Page({
       }
     })
 
-    that.loadHistoryData()
+    // that.chatInfo();
 
     // wx.onSocketMessage(function(data){
     //   console.log("chatonline onsocketmessage");
@@ -160,11 +164,24 @@ Page({
 
     // })
   },
+  onShow: function(){
+    var that = this;
+    that.loadHistoryData();
+    that.loadChatInfo();
+  },
+  onHide: function(){
+    var that = this;
+    that.unloadChatInfo();
+  },
+  onUnload: function(){
+    var that = this;
+    that.unloadChatInfo();
+  },
   loadHistoryData: function(){
     var that = this;
     utilRequest.NetRequest({
       url: "chat/gethistoryinfo",
-      data: {
+      data:{
         theOtherUserId: that.data.theOtherUserId
       },
       success: function (res) {
@@ -258,6 +275,40 @@ Page({
       // 显示区域的竖直滚动位置
     })
   },
+  loadChatInfo: function(){
+    var that = this;
+    intervalId = setInterval(that.loadUnReadData, 2000);
+  },
+  // chatInfo: function(){
+  //   var that = this;
+  //   utilRequest.NetRequest({
+  //     url: "chat/gethistoryinfo",
+  //     data:{
+  //       theOtherUserId: that.data.theOtherUserId,
+  //     },
+  //     success: function(res){
+  //       if(res.code == "ERROR_STATUS_SUCCESS"){
+  //         var jsoncontent = res.jsoncontent;
+  //         var contentData = [];
+  //         for (var i = 0; i < jsoncontent.length; ++i) {
+  //           var row = {};
+  //           row.content = jsoncontent[i].content;
+  //           row.fromuserid = jsoncontent[i].fromuserid;
+  //           contentData.push(row);
+  //         }
+  //         that.setData({
+  //           contentData: contentData
+  //         });
+
+  //       }
+  //     },
+  //     fail: function(res){}
+  //   })
+
+  // },
+  unloadChatInfo: function(){
+    clearInterval(intervalId);
+  }
   // 选择图片并把图片保存
   // upimg1: function() {
   //   var that = this;

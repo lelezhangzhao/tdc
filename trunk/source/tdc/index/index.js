@@ -35,22 +35,6 @@ Page({
     var that = this;
 
 
-    utilRequest.NetRequest({
-      url: "index/test1",
-      success: function(res){
-      },
-      fail: function(res){},
-    })
-
-    utilRequest.NetRequest({
-      url: "index/test2",
-      success: function (res) {
-        console.log(res);
-      },
-      fail: function (res) { }
-    })
-
-
 
     that.setData({
       address: "天河区",

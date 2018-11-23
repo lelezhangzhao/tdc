@@ -24,7 +24,7 @@ class PublishInfo extends Controller{
         $publishId = $request->param("publishId");
 
 
-        $sql = "select * from (select b.id as publishuserid,b.logo,b.tel,b.name,b.nickname,a.id,a.status,a.workaddress,a.introduction from tdc_publish as a left join tdc_user as b on a.userid = b.id) as d where status = 0 and id = $publishId";
+        $sql = "select * from (select b.id as publishuserid,b.logo,b.tel,b.name,b.nickname,a.id,a.status,a.workaddress,a.introduction,a.photos from tdc_publish as a left join tdc_user as b on a.userid = b.id) as d where status = 0 and id = $publishId";
 
         $result = Db::query($sql);
         if(empty($result)){
@@ -58,12 +58,11 @@ class PublishInfo extends Controller{
         }
         $result[0]["hascollectioned"] = $hasCollectioned;
 
-        $result[0]["tel"] = "1**********";
         if(Session::has("userid")){
             //是否有电话权限
             $fromUserId = Session::get("userid");
             $toUserId = $result[0]["publishuserid"];
-            $sql_tel = "select * from tdc_telpermission where fromuserid = $fromUserId and touserid = $toUserId and status = 0";
+            $sql_tel = "select * from tdc_telpermission where fromuserid = $fromUserId and touserid = $toUserId and (status = 0 or status = 4)";
             $result_tel = Db::query($sql_tel);
             if($fromUserId != $toUserId && empty($result_tel)){
                 $result[0]["tel"] = "1**********";
@@ -77,7 +76,7 @@ class PublishInfo extends Controller{
         $publishId = $request->param("publishId");
 
 
-        $sql = "select * from (select b.id as publishuserid, b.logo, b.tel, b.name, b.nickname, a.id, a.status, a.workaddress, a.introduction, a.wagesbymonthmin, a.wagesbymonthmax, a.wagesbyclassmin, a.wagesbyclassmax, a.wagesfacetoface, a.wagesbymonth, a.wagesbyclass, a.hirecount, a.hireinfo, a.requireinfo, a.tag from tdc_publish as a left join tdc_user as b on a.userid = b.id) as d where status = 0 and id = $publishId";
+        $sql = "select * from (select b.id as publishuserid, b.logo, b.tel, b.name, b.nickname, a.id,a.photos, a.status, a.workaddress, a.introduction, a.wagesbymonthmin, a.wagesbymonthmax, a.wagesbyclassmin, a.wagesbyclassmax, a.wagesfacetoface, a.wagesbymonth, a.wagesbyclass, a.hirecount, a.hireinfo, a.requireinfo, a.tag from tdc_publish as a left join tdc_user as b on a.userid = b.id) as d where status = 0 and id = $publishId";
 
         $result = Db::query($sql);
         if(empty($result)){
@@ -187,17 +186,17 @@ class PublishInfo extends Controller{
 
         $sql = "select * from tdc_telpermission where fromuserid = $fromUserId and touserid = $toUserId";
         $result = Db::query($sql);
-        $telPermissionId = 0;
+//        $telPermissionId = 0;
         if(!empty($result)){
             if($result[0]["status"] != 0){
-                $sql = "update tdc_telpermission set permissiontime = '". $systemTime ."', status = 0 where fromuserid = $fromUserId and touserid = $toUserId";
+                $sql = "update tdc_telpermission set permissiontime = '". $systemTime ."', status = 1 where fromuserid = $fromUserId and touserid = $toUserId";
                 Db::execute($sql);
 
-                $sql_id = "select id from tdc_telpermission where fromuserid = $fromUserId and touserid = $toUserId";
-                $result_id = Db::query($sql_id);
-
-                global $telPermissionId;
-                $telPermissionId = $result_id[0]["id"];
+//                $sql_id = "select id from tdc_telpermission where fromuserid = $fromUserId and touserid = $toUserId";
+//                $result_id = Db::query($sql_id);
+//
+//                global $telPermissionId;
+//                $telPermissionId = $result_id[0]["id"];
             }
         }else{
             $telPermission = new TelPermission();
@@ -207,45 +206,42 @@ class PublishInfo extends Controller{
             $telPermission->status = 1;
             $telPermission->publishid = $publishId;
             $telPermission->save();
-            global $telPermissionId;
-            $telPermissionId = $telPermission->id;
+//            global $telPermissionId;
+//            $telPermissionId = $telPermission->id;
         }
 
-        $users = ChatServer::$users;
-        return GlobalDataApi::$chatServerHasStarted ? 1111 : 1110;
-        return ChatServer::$test;
-        $sql_key = "select chatkey from tdc_user where id = $toUserId";
-        $result_key = Db::query($sql_key);
-        $key = $result_key[0]["chatkey"];
-        if(array_key_exists($key, $users)) {
-
-
-            $ret_msg = array("type" => 2, "id" => $telPermissionId, "fromuserid" => $fromUserId, "sendtime" => $systemTime, "status" => 1, "publishid" => $publishId);
-            $ret_msg = json_encode($ret_msg);
-            $ret_msg = $this->msg_encode($ret_msg);
-            socket_write($users[$key]["socket"], $ret_msg, strlen($ret_msg));
-        }
+//        $sql_key = "select chatkey from tdc_user where id = $toUserId";
+//        $result_key = Db::query($sql_key);
+//        $key = $result_key[0]["chatkey"];
+//        if(array_key_exists($key, $users)) {
+//
+//
+//            $ret_msg = array("type" => 2, "id" => $telPermissionId, "fromuserid" => $fromUserId, "sendtime" => $systemTime, "status" => 1, "publishid" => $publishId);
+//            $ret_msg = json_encode($ret_msg);
+//            $ret_msg = $this->msg_encode($ret_msg);
+//            socket_write($users[$key]["socket"], $ret_msg, strlen($ret_msg));
+//        }
 
         return Status::ReturnJson("ERROR_STATUS_SUCCESS", "申请成功，等待对方确认");
     }
 
-    public function GetTelPermissionInfo(Request $request){
-
-        //别人向我申请的
-        $userid = Session::get("userid");
-        $sql_tomy = "select a.*, b.name, b.role from tdc_telpermission as a join tdc_user as b on a.touserid = b.id where a.touserid = $userid and a.status = 1";
-        $result_tomy = Db::query($sql_tomy);
-
-
-        //我向别人申请的,并且已被授权未读的
-        $sql_frommy = "select a.*, b.name, b.role from tdc_telpermission as a join tdc_user as b on a.fromuserid = b.id where a.fromuserid = $userid and a.status = 4";
-        $result_frommy = Db::query($sql_frommy);
-
-        $telPermission = array("tome" => json_encode($result_tomy), "fromme" => json_encode($result_frommy));
-
-        return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "", json_encode($telPermission));
-
-    }
+//    public function GetTelPermissionInfo(Request $request){
+//
+//        //别人向我申请的
+//        $userid = Session::get("userid");
+//        $sql_tomy = "select a.*, b.name, b.role from tdc_telpermission as a join tdc_user as b on a.touserid = b.id where a.touserid = $userid and a.status = 1";
+//        $result_tomy = Db::query($sql_tomy);
+//
+//
+//        //我向别人申请的,并且已被授权未读的
+//        $sql_frommy = "select a.*, b.name, b.role from tdc_telpermission as a join tdc_user as b on a.fromuserid = b.id where a.fromuserid = $userid and a.status = 4";
+//        $result_frommy = Db::query($sql_frommy);
+//
+//        $telPermission = array("tome" => json_encode($result_tomy), "fromme" => json_encode($result_frommy));
+//
+//        return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "", json_encode($telPermission));
+//
+//    }
 
     public function ChangePermissionStatus(Request $request){
         $permissionid = $request->param("permissionid");
@@ -321,18 +317,18 @@ class PublishInfo extends Controller{
 
     }
 
-    //编码 把消息打包成websocket协议支持的格式
-    private function msg_encode($buffer)
-    {
-        $len = strlen($buffer);
-        if ($len <= 125) {
-            return "\x81" . chr($len) . $buffer;
-        } else if ($len <= 65535) {
-            return "\x81" . chr(126) . pack("n", $len) . $buffer;
-        } else {
-            return "\x81" . char(127) . pack("xxxxN", $len) . $buffer;
-        }
-    }
-
-
+//    //编码 把消息打包成websocket协议支持的格式
+//    private function msg_encode($buffer)
+//    {
+//        $len = strlen($buffer);
+//        if ($len <= 125) {
+//            return "\x81" . chr($len) . $buffer;
+//        } else if ($len <= 65535) {
+//            return "\x81" . chr(126) . pack("n", $len) . $buffer;
+//        } else {
+//            return "\x81" . char(127) . pack("xxxxN", $len) . $buffer;
+//        }
+//    }
+//
+//
 }

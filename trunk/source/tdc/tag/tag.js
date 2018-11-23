@@ -231,6 +231,20 @@ Page({
     that.setData({
       tag: that.data.tag,
     })
+
+    var selDanceType = [];
+    for (var i = 0; i < danceType.length; ++i) {
+      if (danceType[i].hasItem == true) {
+        selDanceType.push(danceType[i].item);
+      }
+    }
+    var pages = getCurrentPages();
+    var prevPage = pages[pages.length - 2];
+    prevPage.setData({
+      tagDanceType: selDanceType,
+    })
+    prevPage.buildTagParsed();
+
   },
   workTypeChange: function(e){
     var that = this;
@@ -246,6 +260,21 @@ Page({
     that.setData({
       tag: that.data.tag
     });
+
+    var selWorkType = [];
+    for (var i = 0; i < workType.length; ++i) {
+      if (workType[i].hasItem == true) {
+        selWorkType.push(workType[i].item);
+      }
+    }
+    var pages = getCurrentPages();
+    var prevPage = pages[pages.length - 2];
+    prevPage.setData({
+      tagWorkType: selWorkType,
+    })
+    prevPage.buildTagParsed();
+
+
   },
   teacherTypeChange: function(e){
     var that = this;
@@ -261,6 +290,20 @@ Page({
     that.setData({
       tag: that.data.tag
     });
+
+    var selTeacherType = [];
+    for (var i = 0; i < teacherType.length; ++i) {
+      if (teacherType[i].hasItem == true) {
+        selTeacherType.push(teacherType[i].item);
+      }
+    }
+    var pages = getCurrentPages();
+    var prevPage = pages[pages.length - 2];
+    prevPage.setData({
+      tagTeacherType: selTeacherType,
+    })
+    prevPage.buildTagParsed();
+
   },
   welfareChange: function(e){
     var that = this;

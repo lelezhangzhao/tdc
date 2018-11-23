@@ -3,6 +3,7 @@
 .page{
   margin: 0 5%;
   width: 90%;
+  margin-bottom: 200rpx;
 }
 .title-view{
   text-align: center;

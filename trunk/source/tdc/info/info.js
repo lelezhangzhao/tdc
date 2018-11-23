@@ -24,6 +24,9 @@ Page({
     logo: null,
     hasPermission: false,
 
+    photos: [],
+    serverHttps: "",
+
     //是否已收藏 
     hasCollectioned: false,
 
@@ -68,6 +71,7 @@ Page({
       seperator_image: "../image/info/seperator.png",
       evaluate_sel_image: "../image/info/evaluate_sel.png",
       evaluate_unsel_image: "../image/info/evaluate_unsel.png",
+      serverHttps: globalData.GetServerHttps(),
     })
 
     that.setData({teacher:options.teacher == "true"});
@@ -303,6 +307,11 @@ Page({
           console.log(res);
           if (res.code == "ERROR_STATUS_SUCCESS") {
             var jsoncontent = JSON.parse(res.jsoncontent)[0];
+
+            var photos = [];
+            if (jsoncontent.photos != null && jsoncontent.photos.length != 0){
+              photos = jsoncontent.photos.split(";");
+            }
             that.setData({
               publishUserId: jsoncontent.publishuserid,
               name: jsoncontent.name,
@@ -314,6 +323,7 @@ Page({
               evaluateList: jsoncontent.evaluatelist,
               logo: globalData.GetServerHttps() + jsoncontent.logo,
               hasCollectioned: jsoncontent.hascollectioned,
+              photos: photos,
             });
 
 
@@ -371,5 +381,20 @@ Page({
         }
       })
     }
-  }
+  },
+  previewImage: function (e) {
+    var that = this;
+    var photos = [];
+    var serverHttps = that.data.serverHttps;
+    
+    for(var i = 0; i < that.data.photos.length; ++i){
+      photos.push(serverHttps + that.data.photos[i]);
+    }
+    console.log(photos);
+    wx.previewImage({
+      current: serverHttps + e.currentTarget.id, // 当前显示图片的http链接
+      urls: photos // 需要预览的图片http链接列表
+    })
+  },
+
 })

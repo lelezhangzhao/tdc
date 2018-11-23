@@ -26,6 +26,8 @@ Page({
     region:[],
     photos:[],
 
+    serverHttps: "",
+
     danceTypes: ["拉丁", "摩登"],
     workTypes: ["全职", "兼职"],
     teacherTypes: ["毕业", "现役", "在校"],
@@ -48,6 +50,7 @@ Page({
     publish_image: null,
     workaddress_angle_image: null,
     hire_info_image: null,
+    delete_image: null,
   },
 
   /**
@@ -62,6 +65,8 @@ Page({
       exit_image: "../image/preview/exit.png",
       publish_image: "../image/preview/publish.png",
       hire_info_image: "../image/preview/hireinfoview.png",
+      delete_image: "../image/preview/delete.png",
+      serverHttps: globalData.GetServerHttps(),
     })
 
     if (app.globalData.userid == null) {
@@ -91,6 +96,12 @@ Page({
               }
             }
             var region = jsoncontent.workaddress.split("-");
+
+            var photos = [];
+            if (jsoncontent.photos != null && jsoncontent.photos.length != 0){
+               photos = jsoncontent.photos.split(";");
+            }
+            console.log(photos);
             that.setData({
               logo: globalData.GetServerHttps() + jsoncontent.logo,
               name: jsoncontent.name,
@@ -104,6 +115,7 @@ Page({
               introduction: jsoncontent.introduction,
               parsedTags: parsedTags,
               introduction_title: "个人简介",
+              photos: photos,
             });
           }
         },
@@ -124,6 +136,11 @@ Page({
               parsedTags.splice(0, 1);
             }
             var region = jsoncontent.workaddress.split("-");
+            var photos = [];
+            if (jsoncontent.photos.length != 0) {
+              photos = jsoncontent.photos.split(";");
+            }
+
             that.setData({
               logo: globalData.GetServerHttps() + jsoncontent.logo,
               name: jsoncontent.name,
@@ -144,6 +161,8 @@ Page({
               wagesbyclassmax: jsoncontent.wagesbyclassmax,
               wagesbyclass: jsoncontent.wagesbyclass,
               wagesfacetoface: jsoncontent.wagesfacetoface,
+              photos: photos,
+
             });
           }
         },
@@ -262,6 +281,7 @@ Page({
           introduction: that.data.introduction,
         },
         success:function(res){
+          console.log(res);
           var title = "";
           if(res.code == "ERROR_STATUS_SUCCESS"){
             title = '发布成功';
@@ -319,11 +339,19 @@ Page({
 
   editTag:function(e){
     var that = this;
+    
+
     var tagDanceType = that.data.tagDanceType.join(",");
     var tagWorkType = that.data.tagWorkType.join(",");
     var tagTeacherType = that.data.tagTeacherType.join(",");
     var tagWelfare = that.data.tagWelfare.join(",");
-    var tag = tagDanceType + ";" + tagWorkType + ";" + tagTeacherType + ";" + tagWelfare;
+    
+    var tag = "";
+    if(that.data.role == 0){
+      tag = tagDanceType + ";" + tagWorkType + ";" + tagTeacherType + ";";
+    }else{
+      tag = tagDanceType + ";" + tagWorkType + ";" + tagTeacherType + ";" + tagWelfare;
+    }
 
     wx.navigateTo({
       url: '../tag/tag?tag=' + tag,
@@ -335,7 +363,13 @@ Page({
     var tagWorkType = that.data.tagWorkType;
     var tagTeacherType = that.data.tagTeacherType;
     var tagWelfare = that.data.tagWelfare;
-    var parsedTags = tagDanceType.concat(tagWorkType).concat(tagTeacherType).concat(tagWelfare);
+
+    var parsedTags = null;
+    if(that.data.role == 0){
+      parsedTags = tagDanceType.concat(tagWorkType).concat(tagTeacherType);
+    }else{
+      parsedTags = tagDanceType.concat(tagWorkType).concat(tagTeacherType).concat(tagWelfare);
+    }
 
     that.setData({
       parsedTags: parsedTags,
@@ -436,9 +470,6 @@ Page({
       success: function (res) {
         // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
         var newPhotoItem = res.tempFilePaths[0];
-        that.setData({
-          photos: that.data.photos.concat(newPhotoItem),
-        });
 
         var session_id = wx.getStorageSync('PHPSESSID');//本地取存储的sessionID
         var header = { 'content-type': 'application/x-www-form-urlencoded', 'Cookie': session_id };
@@ -454,8 +485,32 @@ Page({
           filePath: newPhotoItem,
           name: newPhotoItem.substr(60,10),
           header: header,
+          formData:{
+
+            "fileName": newPhotoItem.substr(60, 10),
+          },
           success(res) {
-            console.log(res);
+            
+            var data = JSON.parse(res.data);
+            console.log(data);
+            if(data.code == "ERROR_STATUS_UPLOADISNOTIMAGE"){
+              wx.showToast({
+                title: '上传的不是图片',
+                icon: "none",
+              })
+            } else if (data.code == "ERROR_STATUS_FAILED"){
+              wx.showToast({
+                title: '网络错误，稍后重试',
+                icon: "none",
+              })
+            } else if (data.code == "ERROR_STATUS_SUCCESS"){
+              that.data.photos.push(data.jsoncontent);
+              that.setData({
+                photos: that.data.photos,
+              });
+              console.log(that.data.photos);
+
+            }
           },
           fail(res){
             console.log(res);
@@ -464,17 +519,48 @@ Page({
       }
     })
   },
-  previewImage: function (e) {
-    wx.previewImage({
-      current: e.currentTarget.id, // 当前显示图片的http链接
-      urls: this.data.photos // 需要预览的图片http链接列表
-    })
-  },
+  // previewImage: function (e) {
+  //   wx.previewImage({
+  //     current: e.currentTarget.id, // 当前显示图片的http链接
+  //     urls: this.data.photos // 需要预览的图片http链接列表
+  //   })
+  // },
   introductionChange: function(e){
     var that = this;
     that.setData({
       introduction: e.detail.value,
     })
+  },
+  deletePhoto: function(e){
+    var that = this;
+    var photoId = e.currentTarget.id;
+    var url = "";
+    if (that.data.role == 0) {
+      url = "/mine_teacher/deletephoto";
+    } else if (that.data.role == 1) {
+      url = "/mine_school/deletephoto";
+    }
+
+    utilRequest.NetRequest({
+      url: url,
+      data:{
+        photoid: photoId,
+      },
+      success: function(res){ 
+        console.log(res);
+        if(res.code == 'ERROR_STATUS_SUCCESS'){
+          var photos = that.data.photos;
+          photos.splice(photoId, 1);
+          that.setData({
+            photos: photos,
+          })
+        }
+      },
+      fail: function(res){
+
+      }
+    })
+
   }
 
 })

@@ -22,12 +22,12 @@
       <view class="weui-uploader__bd">
         <view class="weui-uploader__files" id="uploaderFiles">
           <view wx:if="{{hasPhotoOne}}" class="weui-uploader__file photo-view" >
-            <image class="weui-uploader__img photo" src="{{photo_one}}" mode="aspectFill" id="{{photo_one}}"/>
-            <icon class="photo-delete" type="cancel" size="23"  bindtap="deleteImage" id="1"></icon>
+            <image class="weui-uploader__img photo" src="{{serverHttps + photo_one}}" mode="aspectFill" id="0"/>
+            <icon class="photo-delete" type="cancel" size="23"  bindtap="deleteImage" id="0"></icon>
 
           </view>
           <view wx:else class="weui-uploader__input-box">
-            <view class="weui-uploader__input photo" bindtap="chooseImage" id="1"></view>
+            <view class="weui-uploader__input photo" bindtap="chooseImage" id="0"></view>
           </view>
 
         </view>
@@ -44,12 +44,12 @@
       <view class="weui-uploader__bd">
         <view class="weui-uploader__files" id="uploaderFiles">
           <view wx:if="{{hasPhotoTwo}}" class="weui-uploader__file photo-view" >
-            <image class="weui-uploader__img photo" src="{{photo_two}}" mode="aspectFill" id="{{photo_two}}"/>
-            <icon class="photo-delete" type="cancel" size="23"  bindtap="deleteImage" id="2"></icon>
+            <image class="weui-uploader__img photo" src="{{serverHttps + photo_two}}" mode="aspectFill" id="1"/>
+            <icon class="photo-delete" type="cancel" size="23"  bindtap="deleteImage" id="1"></icon>
 
           </view>
           <view wx:else class="weui-uploader__input-box">
-            <view class="weui-uploader__input photo" bindtap="chooseImage" id="2"></view>
+            <view class="weui-uploader__input photo" bindtap="chooseImage" id="1"></view>
           </view>
 
         </view>
@@ -66,12 +66,12 @@
       <view class="weui-uploader__bd">
         <view class="weui-uploader__files" id="uploaderFiles">
           <view wx:if="{{hasPhotoThree}}" class="weui-uploader__file photo-view" >
-            <image class="weui-uploader__img photo" src="{{photo_three}}" mode="aspectFill" id="{{photo_three}}"/>
-            <icon class="photo-delete" type="cancel" size="23"  bindtap="deleteImage" id="3"></icon>
+            <image class="weui-uploader__img photo" src="{{serverHttps + photo_three}}" mode="aspectFill" id="2"/>
+            <icon class="photo-delete" type="cancel" size="23"  bindtap="deleteImage" id="2"></icon>
 
           </view>
           <view wx:else class="weui-uploader__input-box">
-            <view class="weui-uploader__input photo" bindtap="chooseImage" id="3"></view>
+            <view class="weui-uploader__input photo" bindtap="chooseImage" id="2"></view>
           </view>
 
         </view>

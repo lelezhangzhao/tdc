@@ -119,7 +119,7 @@
   height: 100rpx;
   width: 100rpx;
   border-radius: 50rpx;
-  background-image: url("https://localtdc.com/static/image/login/wx_logo.png");
+  background-image: url("https://baofenzhijia.top/static/image/login/wx_logo.png");
   background-repeat:no-repeat;
   background-size:100% 100%;
 }

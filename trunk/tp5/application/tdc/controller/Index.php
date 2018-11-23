@@ -65,15 +65,6 @@ class Index extends Controller{
 
     }
 
-    public $chatServerHasStarted = false;
-    public function Test1(){
-        while(true){
-            $this->chatServerHasStarted = true;
-        }
-    }
-    public function Test2(){
-        return $this->chatServerHasStarted ?  1111 : 2222;
-    }
 
 
 

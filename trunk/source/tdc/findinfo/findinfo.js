@@ -38,6 +38,7 @@ Page({
         newsId: that.data.newsId
       },
       success: function (res) {
+        console.log(res);
         if (res.code == "ERROR_STATUS_SUCCESS") {
           var jsoncontent = JSON.parse(res.jsoncontent)[0];
           var serverHttps = globalData.GetServerHttps();

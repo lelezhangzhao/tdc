@@ -85,7 +85,6 @@ class Login extends Controller{
 
         $userinfo = json_decode(file_get_contents($url), true);
 
-
         $openid = $userinfo["openid"];
         $session_key = $userinfo["session_key"];
 
@@ -98,7 +97,7 @@ class Login extends Controller{
             $user = new User();
             $user->username = $openid;
             $user->password = $session_key;
-            $user->logo = "static/image/logo/logo.png";
+            $user->logo = "static/image/global/user_logo.png";
             $user->status = 1; //注册，未选择身份
             $user->rmb = 0;
             $user->score = 0;

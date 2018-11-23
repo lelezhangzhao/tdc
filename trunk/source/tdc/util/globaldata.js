@@ -1,4 +1,4 @@
-let Server = "https://localtdc.com/";
+let Server = "https://baofenzhijia.top/";
 
 function GetServerHttps(){
   return Server;

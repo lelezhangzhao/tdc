@@ -21,20 +21,22 @@ class Chat extends Controller{
 
     //获取聊天列表
     public function GetChatList(){
+
+        $result = array("chatList" => $this->GetChat(), "permission" => $this->GetPermission());
+        return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "", json_encode($result));
+    }
+
+    private function GetChat(){
         $userid = Session::get("userid");
 
-//        $sql = "select * from ((select a.fromuserid, a.touserid, a.fromuserid as otherid, a.sendtime, a.isread, a.content, b.name, b.logo from tdc_chat as a join tdc_user as b on a.fromuserid = b.id where a.touserid = $userid) as c) union
-//(select a.fromuserid, a.touserid, a.touserid as otherid, a.sendtime, a.isread, a.content, b.name, b.logo from tdc_chat as a join tdc_user as b on a.touserid = b.id where a.fromuserid = $userid) order by sendtime desc";
         $sql = "select * from ((select a.fromuserid, a.touserid, a.fromuserid as otherid, a.lastsendtime, a.hasunreadmsg, a.briefcontent, b.name as othername, b.logo as otherlogo from tdc_chatassist as a join tdc_user as b on a.fromuserid = b.id where a.touserid = $userid) as c) union
 (select a.fromuserid, a.touserid, a.touserid as otherid, a.lastsendtime, a.hasunreadmsg, a.briefcontent, b.name as othername, b.logo as otherlogo from tdc_chatassist as a join tdc_user as b on a.touserid = b.id where a.fromuserid = $userid) order by lastsendtime desc";
 
-//        $sql = "select a.fromuserid, a.touserid, a.sendtime, a.isread, a.content, b.name, b.logo from tdc_chat as a join tdc_user as b on a.fromuserid = b.id or a.touserid = b.id where a.fromuserid = $userid or a.touserid = $userid order by a.sendtime desc";
         $result = Db::query($sql);
         if(empty($result)){
             return Status::ReturnErrorStatus("ERROR_STATUS_LISTISNULL");
         }
         $needDelete = array();
-        $unique_result = array();
         for($i = 0; $i < count($result); ++$i){
             if(array_key_exists($i, $needDelete)){
                 continue;
@@ -60,30 +62,24 @@ class Chat extends Controller{
             $item["hasunreadmsg"] = $hasunreadmsg;
         }
 
+        return json_encode($result);
+    }
 
-//        foreach($result as $item){
-//            $key = $item["fromuserid"] . ";" . $item["touserid"];
-//            if(!array_key_exists($key, $unique_result)){
-//
-//                if($item["fromuserid"] != $userid){
-//                    $hasunreadmsg = !$item["isread"];
-//                }else{
-//                    $hasunreadmsg = false;
-//                }
-//                $unique_result[$key] = array("content" => $item['content'], "othername" => $item['name'], "otherlogo" => $item['logo'], "otherid" => $item["otherid"], "hasunreadmsg" => $hasunreadmsg);
-//
-//            }
-//        }
-//
-//        $return_result = array();
-//        foreach($unique_result as $key => $value){
-//            $useridarr = explode(";", $key);
-//            $fromuserid = $useridarr[0];
-//            $touserid = $useridarr[1];
-//            $return_result[] = array("fromuserid" => $fromuserid, "touserid" => $touserid, "content" => $value["content"], "othername" => $value["othername"], "otherlogo" => $value["otherlogo"], "otherid" => $value["otherid"], "hasunreadmsg" => $value["hasunreadmsg"]);
-//        }
+    private function GetPermission(){
+        //别人向我申请的
+        $userid = Session::get("userid");
+        $sql_permission = "select * from ((select a.*, b.name, b.role from tdc_telpermission as a join tdc_user as b on a.touserid = b.id where a.touserid = $userid and a.status = 1) as c) union (select a.*, b.name, b.role from tdc_telpermission as a join tdc_user as b on a.fromuserid = b.id where a.fromuserid = $userid and a.status = 4)";
+        $result_permission = Db::query($sql_permission);
 
-        return Status::ReturnJsonWithContent("ERROR_STATUS_SUCCESS", "", json_encode($result));
+
+        //我向别人申请的,并且已被授权未读的
+//        $sql_frommy = "select a.*, b.name, b.role from tdc_telpermission as a join tdc_user as b on a.fromuserid = b.id where a.fromuserid = $userid and a.status = 4";
+//        $result_frommy = Db::query($sql_frommy);
+//
+//        $telPermission = array("tome" => json_encode($result_tomy), "fromme" => json_encode($result_frommy));
+
+        return json_encode($result_permission);
+
     }
 
 
@@ -150,6 +146,7 @@ class Chat extends Controller{
         return Status::ReturnErrorStatus("ERROR_STATUS_LISTISNULL");
     }
 
+
     public function GetHistoryInfo(Request $request){
 //        $publishId = $request->param("publishId");
         $theOtherUserId = $request->param("theOtherUserId");
@@ -201,22 +198,21 @@ class Chat extends Controller{
 
         $userid = Session::get("userid");
 
-        $hasunreadmsg = Db::name("chatassist")->where("fromuserid", $userid)->where("touserid", $theOtherUserId)->value("hasunreadmsg");
-
-        if(empty($hasunreadmsg)){
+        $sql = "select * from tdc_chatassist where fromuserid = $userid and touserid = $theOtherUserId";
+        $result = Db::query($sql);
+        if(empty($sql)){
             //新增记录
-            $sql = "insert into tdc_chatassist(fromuserid, touserid, hasunreadmsg) values ($userid, $theOtherUserId, true)";
+            $sql = "insert into tdc_chatassist(fromuserid, touserid, hasunreadmsg, lastsendtime, briefcontent) values ($userid, $theOtherUserId, true, $systemTime, $content)";
             Db::execute($sql);
         }else{
             //如果hasunreadmsg为false，置为true
-            if($hasunreadmsg == false){
+            if($result[0]["hasunreadmsg"] == false){
                 $sql = "update tdc_chatassist set hasunreadmsg = true where fromuserid = $userid and touserid = $theOtherUserId";
                 Db::execute($sql);
             }
         }
 
         //插入chat表
-//        $sql = "insert into tdc_chat(content, fromuserid, touserid, sendtime, isread) values('123', 3, 1, '2018-10-11 10:00:00', false)";
         $sql = "insert into tdc_chat(content, fromuserid, touserid, sendtime, isread) values ($content, $userid, $theOtherUserId,'" . $systemTime . "', false);";
 
         Db::execute($sql);
