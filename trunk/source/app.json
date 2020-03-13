@@ -70,5 +70,6 @@
         "selectedIconPath": "tdc/image/main/mine_sel.png"
       }
     ]
-  }
+  },
+  "sitemapLocation": "sitemap.json"
 }

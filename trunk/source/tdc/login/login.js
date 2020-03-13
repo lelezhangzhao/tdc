@@ -131,7 +131,7 @@ Page({
     }else if(password.trim().length > 30){
       warn = "密码最多30个字符";
     }
-    password = utilMd5.hexMD5(password);
+    // password = utilMd5.hexMD5(password);
 
     //captcha
     if(captcha === null || captcha.trim().length === 0){
@@ -176,6 +176,8 @@ Page({
           title = "用户名格式错误";
         } else if (res.code == "ERROR_STATUS_USERNAMEORPASSWORDERROR") {
           title = "用户名或密码错误";
+        } else{
+          title = res.code;
         }
         if (title !== null) {
           wx.showToast({ title: title, icon: "none" });
