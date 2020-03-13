@@ -70,7 +70,7 @@ App({
     loginType: 0, //0->账号密码 1->微信
     userid:null,
     role:null,
-    server: "https://baofenzhijia.top/",
+    server: "http://10.8.172.79/public",
     windowHeight: null,
     windowWidth: null,
     pixelRatio: null,
