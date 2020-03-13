@@ -47,30 +47,30 @@ class Register extends Controller{
         $username = $request->param("username");
         $password = $request->param("password");
         $tel = $request->param("tel");
-        $telIdentify = $request->param("telIdentify");
+        //$telIdentify = $request->param("telIdentify");
 
 
 
         //和获取验证码的手机号相同
-        if(false === Session::has("registerTel")){
-            return Status::ReturnErrorStatus("ERROR_STATUS_NOTGETTELIDENTIFY");
-        }
+        //if(false === Session::has("registerTel")){
+            //return Status::ReturnErrorStatus("ERROR_STATUS_NOTGETTELIDENTIFY");
+        //}
 
-        $registerTel = Session::get("registerTel");
-        if(preg_match("/^1\d{10}$/", $tel) === 0){
-            return Status::ReturnErrorStatus("ERROR_STATUS_TELFORMATERROR");
-        }
-        if($registerTel !== $tel){
-            return Status::ReturnErrorStatus("ERROR_STATUS_TELISNOTEQUAL");
-        }
+        //$registerTel = Session::get("registerTel");
+        //if(preg_match("/^1\d{10}$/", $tel) === 0){
+            //return Status::ReturnErrorStatus("ERROR_STATUS_TELFORMATERROR");
+        //}
+        //if($registerTel !== $tel){
+            //return Status::ReturnErrorStatus("ERROR_STATUS_TELISNOTEQUAL");
+        //}
 
         //两次手机号相同，删除session
-        Session::delete("registerTel");
+        //Session::delete("registerTel");
 
         //手机验证码
-        if(false === TelIdentify::TelIdentifyOk($telIdentify)){
-            return Status::ReturnErrorStatus("ERROR_STATUS_TELIDENTIFYERROR");
-        }
+        //if(false === TelIdentify::TelIdentifyOk($telIdentify)){
+            //return Status::ReturnErrorStatus("ERROR_STATUS_TELIDENTIFYERROR");
+        //}
 
 
         //用户名合法
@@ -103,7 +103,7 @@ class Register extends Controller{
         $user->sex = 0;
         $user->name = "姓名";
         $user->nickname = "昵称";
-        $user->tel = "电话";
+        $user->tel = $tel;
         $user->address = "广东省-广州市-天河区";
         $user->detailaddress = "广东省广州市天河区";
         $user->workaddress = "广东省-广州市-天河区";
@@ -127,7 +127,7 @@ class Register extends Controller{
         Db::execute($sql);
 
         $sql = "insert into tdc_search(userid) values ($userid)";
-        Db:;execute($sql);
+        Db::execute($sql);
 
 
 
