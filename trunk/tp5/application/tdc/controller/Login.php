@@ -39,6 +39,7 @@ class Login extends Controller{
         }
         if($user->password !== $password){
             return Status::ReturnErrorStatus("ERROR_STATUS_USERNAMEORPASSWORDERROR");
+
         }
         //登录成功
         $user->lastlogintime = $currentTime;

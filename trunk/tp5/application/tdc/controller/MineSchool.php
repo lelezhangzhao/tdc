@@ -162,7 +162,7 @@ class MineSchool extends Controller{
 
         $wagesbymonth = $request->param("wagesbymonth");
         $wagesbymonthmin = $request->param("wagesbymonthmin");
-        $wagesbymonthmax = $request->param("wagesbmonthmax");
+        $wagesbymonthmax = $request->param("wagesbymonthmax");
         $wagesbyclass = $request->param("wagesbyclass");
         $wagesbyclassmin = $request->param("wagesbyclassmin");
         $wagesbyclassmax = $request->param("wagesbyclassmax");
@@ -234,12 +234,20 @@ class MineSchool extends Controller{
 
         $newPublishId = $publish->id;
 
+        if($user["publishid"] != ""){
+            $userPublishId = $user["publishid"] . ";" . $newPublishId;
+        }else{
+            $userPublishId = $newPublishId;
+        }
+
+        /*
         if($publishLen == 0){
             $publishid = $newPublishId;
         }else{
             $publishid = $publishid . ";" . $newPublishId;
         }
-        $user->publishid = $publishid;
+        */
+        $user->publishid = $userPublishId;
 
         $user->save();
 
