@@ -155,7 +155,11 @@ Page({
         begin: that.data.begin
       },
       success: function (res) {
-        console.log(res);
+        //console.log(res);
+        if(res.jsoncontent == "")
+        {
+          return;
+        }
         var jsoncontent = JSON.parse(res.jsoncontent);
 
         that.setData({ hiEvalList: jsoncontent });
