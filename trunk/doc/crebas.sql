@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2018/10/8 13:50:26                           */
+/* Created on:     2020/3/11 19:27:18                           */
 /*==============================================================*/
 
 
@@ -8,23 +8,25 @@ drop table if exists tdc_arbitration;
 
 drop table if exists tdc_chat;
 
+drop table if exists tdc_chatassist;
+
 drop table if exists tdc_collection;
 
 drop table if exists tdc_evaluate;
 
 drop table if exists tdc_history;
 
+drop table if exists tdc_hot;
+
 drop table if exists tdc_news;
 
 drop table if exists tdc_publish;
 
-drop table if exists tdc_publish_school;
-
-drop table if exists tdc_publish_teacher;
-
 drop table if exists tdc_search;
 
 drop table if exists tdc_tag;
+
+drop table if exists tdc_telpermission;
 
 drop table if exists tdc_user;
 
@@ -56,7 +58,7 @@ create table tdc_arbitration
    arbitrationtime      datetime,
    primary key (id)
 )
-type = InnoDB
+
 auto_increment = 0;
 
 alter table tdc_arbitration comment '仲裁';
@@ -67,18 +69,35 @@ alter table tdc_arbitration comment '仲裁';
 create table tdc_chat
 (
    id                   int not null auto_increment,
-   content              varchar(100),
+   content              varchar(200),
    fromuserid           int,
-   touserind            int,
+   touserid             int,
    sendtime             datetime,
-   readtime             datetime,
    isread               bool,
    primary key (id)
 )
-type = InnoDB
+
 auto_increment = 0;
 
 alter table tdc_chat comment '用户登录时，删除一个月以前的聊天记录';
+
+/*==============================================================*/
+/* Table: tdc_chatassist                                        */
+/*==============================================================*/
+create table tdc_chatassist
+(
+   id                   int not null auto_increment,
+   fromuserid           int,
+   touserid             int,
+   hasunreadmsg         bool,
+   lastsendtime         datetime,
+   briefcontent         varchar(30),
+   primary key (id)
+)
+
+auto_increment = 0;
+
+alter table tdc_chatassist comment '聊天辅助表，记录是否有未读信息';
 
 /*==============================================================*/
 /* Table: tdc_collection                                        */
@@ -90,10 +109,10 @@ create table tdc_collection
    publishid            varchar(1000),
    primary key (id)
 )
-type = InnoDB
+
 auto_increment = 0;
 
-alter table tdc_collection comment '最多二十个收藏';
+alter table tdc_collection comment '最多十个收藏';
 
 /*==============================================================*/
 /* Table: tdc_evaluate                                          */
@@ -101,21 +120,17 @@ alter table tdc_collection comment '最多二十个收藏';
 create table tdc_evaluate
 (
    id                   int not null auto_increment,
-   evalutor             int,
-   evaluated            int,
-   evaluteobject        int comment '评价对象
-            0 对老师评价
-            1 对机构评价',
+   userid               int,
    publishid            int,
    score                int,
    content              varchar(100),
-   evalutetime          datetime,
+   evaluatetime         datetime,
    disabledtime         datetime,
    status               int comment '0 评论
             1 管理员删除',
    primary key (id)
 )
-type = InnoDB
+
 auto_increment = 0;
 
 /*==============================================================*/
@@ -128,10 +143,24 @@ create table tdc_history
    publishid            varchar(1000) comment '以;号分隔的publishid',
    primary key (id)
 )
-type = InnoDB
+
 auto_increment = 0;
 
 alter table tdc_history comment '最多十个历史';
+
+/*==============================================================*/
+/* Table: tdc_hot                                               */
+/*==============================================================*/
+create table tdc_hot
+(
+   id                   int not null auto_increment,
+   keywords             varchar(30) comment '搜索热点,最多存储10个
+            以;号分隔 ',
+   count                int,
+   primary key (id)
+)
+
+auto_increment = 0;
 
 /*==============================================================*/
 /* Table: tdc_news                                              */
@@ -139,20 +168,32 @@ alter table tdc_history comment '最多十个历史';
 create table tdc_news
 (
    id                   int not null auto_increment,
-   title                varchar(30),
-   titleone             varchar(30),
+   status               int comment '0 正在显示
+            1 不显示
+            2 编辑保存
+            3 删除
+            ',
+   logophoto            varchar(100),
+   title                varchar(100),
+   content              varchar(500),
+   titleone             varchar(100),
    contentone           varchar(500),
-   titletwo             varchar(30),
+   photoone             varchar(100),
+   titletwo             varchar(100),
    contenttwo           varchar(500),
-   titlethree           varchar(30),
+   phototwo             varchar(100),
+   titlethree           varchar(100),
    contentthree         varchar(500),
-   photos               varchar(200),
+   photothree           varchar(100),
+   titlefour            varchar(100),
+   contentfour          varchar(500),
+   photofour            varchar(100),
    publishtime          datetime,
    deletetime           datetime,
    readtimes            int comment '阅读次数',
    primary key (id)
 )
-type = InnoDB
+
 auto_increment = 0;
 
 /*==============================================================*/
@@ -164,12 +205,9 @@ create table tdc_publish
    publishobject        int comment '发布对象
             0 老师发布
             1 机构发布',
-   publishid            int comment 'publishobject == 0
-            publishid指tdc_publish_teacher的id
-            
-            publishobject ==1 
-            publishid 指tdc_publish_school的id',
    userid               int,
+   workaddress          varchar(100),
+   detailworkaddress    varchar(100),
    publishtime          datetime,
    deletetime           datetime,
    disabletime          datetime,
@@ -177,26 +215,11 @@ create table tdc_publish
             1 不显示
             2 删除
             3 管理员删除',
-   evaluateavg          float(2,2),
+   evaluateavg          float(5,2),
    evaluatecount        int,
    tag                  varchar(50),
-   primary key (id)
-)
-type = InnoDB
-auto_increment = 0;
-
-alter table tdc_publish comment '发布';
-
-/*==============================================================*/
-/* Table: tdc_publish_school                                    */
-/*==============================================================*/
-create table tdc_publish_school
-(
-   id                   int not null auto_increment,
-   workaddress          varchar(100),
    introduction         varchar(1000),
-   hirecount            int,
-   photos               varchar(200),
+   photos               varchar(1000),
    wagesbymonthmin      float(12,2),
    wagesbymonthmax      float(12,2),
    wagesbyclassmin      float(12,2),
@@ -204,27 +227,17 @@ create table tdc_publish_school
    wagesfacetoface      bool,
    wagesbymonth         bool,
    wagesbyclass         bool,
+   hirecount            int comment '招聘人数',
+   hireinfo             varchar(50) comment '招聘拉丁/摩登全职/兼职老师3位',
+   requireinfo          varchar(50) comment '在校;现役;毕业;XX年教学经验',
+   dancetype            varchar(20),
+   worktype             varchar(20),
    primary key (id)
 )
-type = InnoDB
+
 auto_increment = 0;
 
-/*==============================================================*/
-/* Table: tdc_publish_teacher                                   */
-/*==============================================================*/
-create table tdc_publish_teacher
-(
-   id                   int not null auto_increment,
-   workaddress          varchar(100),
-   introduction         varchar(1000),
-   photos               varchar(200) comment '照片路径，最多4 个
-            以;号分隔',
-   primary key (id)
-)
-type = InnoDB
-auto_increment = 0;
-
-alter table tdc_publish_teacher comment '老师的发布信息';
+alter table tdc_publish comment '发布';
 
 /*==============================================================*/
 /* Table: tdc_search                                            */
@@ -237,7 +250,7 @@ create table tdc_search
             以;号分隔 ',
    primary key (id)
 )
-type = InnoDB
+
 auto_increment = 0;
 
 alter table tdc_search comment '最多十个搜索记录';
@@ -254,7 +267,28 @@ create table tdc_tag
    welfare              varchar(100),
    primary key (id)
 )
-type = InnoDB
+
+auto_increment = 0;
+
+/*==============================================================*/
+/* Table: tdc_telpermission                                     */
+/*==============================================================*/
+create table tdc_telpermission
+(
+   id                   int not null auto_increment,
+   fromuserid           int,
+   touserid             int,
+   permissiontime       datetime,
+   status               int comment '0 有权限
+            1 权限申请
+            2 用户拒绝
+            3 权限已过期
+            4 已授权，未读
+            ',
+   publishid            int comment '从publishid发布申请的电话',
+   primary key (id)
+)
+
 auto_increment = 0;
 
 /*==============================================================*/
@@ -265,6 +299,7 @@ create table tdc_user
    id                   int not null auto_increment,
    username             varchar(30),
    name                 varchar(10),
+   iswxuser             bool,
    nickname             varchar(30),
    password             varchar(32),
    logo                 varchar(50),
@@ -284,22 +319,38 @@ create table tdc_user
             2 机构',
    birthday             datetime,
    address              varchar(100),
+   detailaddress        varchar(100),
    workaddress          varchar(100),
+   detailworkaddress    varchar(100),
    tag                  varchar(50) comment '标签顺序：
             舞种
             工作时间 兼/全
             老师要求 在校/现役
             福利 包吃/包住
             大项以;分隔，小项以,分隔',
-   photos               varchar(200),
+   photos               varchar(1000),
    registertime         datetime,
    lastlogintime        datetime,
    logouttime           datetime,
-   evaluateavg          float(2,2) comment '评价分-平均',
+   evaluateavg          float(5,2) comment '评价分-平均',
    evaluatecount        int comment '评价人数',
    publishid            varchar(100) comment '发布的ID，以;分隔',
+   wagesbymonthmin      float(12,2),
+   wagesbymonthmax      float(12,2),
+   wagesbyclassmin      float(12,2),
+   wagesbyclassmax      float(12,2),
+   wagesfacetoface      bool,
+   wagesbymonth         bool,
+   wagesbyclass         bool,
+   hirecount            int comment '招聘人数',
+   hireinfo             varchar(50) comment '招聘拉丁/摩登全职/兼职老师3位',
+   requireinfo          varchar(50) comment '在校;现役;毕业;XX年教学经验',
+   dancetype            varchar(20),
+   worktype             varchar(20),
+   cahtuniqueid         varchar(100),
+   chatkey              varchar(13),
    primary key (id)
 )
-type = InnoDB
+
 auto_increment = 0;
 

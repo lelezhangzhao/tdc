@@ -1,4 +1,4 @@
-let Server = "http://10.8.172.79/public/";
+let Server = "http://localhost/public/";
 
 function GetServerHttps(){
   return Server;

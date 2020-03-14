@@ -137,7 +137,7 @@ Page({
             }
             var region = jsoncontent.workaddress.split("-");
             var photos = [];
-            if (jsoncontent.photos.length != 0) {
+            if (jsoncontent.photos != null && jsoncontent.photos.length != 0) {
               photos = jsoncontent.photos.split(";");
             }
 
