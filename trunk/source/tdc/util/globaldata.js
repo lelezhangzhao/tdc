@@ -1,4 +1,4 @@
-let Server = "https://baofenzhijia.top/";
+let Server = "http://localhost/public/";
 
 function GetServerHttps(){
   return Server;

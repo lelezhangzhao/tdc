@@ -1,4 +1,3 @@
-// let Server = "localhost/index.php/tdc/";
 let Server = "http://localhost/public/index.php/tdc/";
 
 function NetRequest({ url, data, success, fail, complete, method = "POST" }) {

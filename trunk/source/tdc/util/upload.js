@@ -1,4 +1,4 @@
-var Server = "https://baofenzhijia.top/index.php/tdc/";
+var Server = "http://localhost/public/index.php/tdc/";
 
 function uploadFile(url, filePath, name, formData = { openid: "test" }) {
 

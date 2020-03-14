@@ -197,7 +197,7 @@ Page({
     }
 
     //两次密码一致，加密密码
-    password = utilMd5.hexMD5(password);
+    //password = utilMd5.hexMD5(password);
 
     //tel
     if (tel === null || tel.trim().length === 0) {
