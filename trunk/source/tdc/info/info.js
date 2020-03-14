@@ -318,6 +318,7 @@ Page({
               nickName: jsoncontent.nickname,
               tel: jsoncontent.tel,
               hasPermission: jsoncontent.tel.indexOf("*") == -1,
+              address: jsoncontent.address,
               workaddress: jsoncontent.workaddress,
               introduction: jsoncontent.introduction,
               evaluateList: jsoncontent.evaluatelist,

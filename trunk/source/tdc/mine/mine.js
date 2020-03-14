@@ -144,7 +144,7 @@ Page({
       url = "mine_teacher/getpublishlist";
       
     } else if (that.data.role == 1) {
-      url = "mine_school/getpublishlist";Gl484526
+      url = "mine_school/getpublishlist";
       
     }
     utilRequest.NetRequest({

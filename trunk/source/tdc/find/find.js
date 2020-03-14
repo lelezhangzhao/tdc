@@ -1,6 +1,7 @@
 // tdc/find/find.js
 
 var utilRequest = require("../util/request.js");
+var utilGloabl = require("../util/globaldata.js");
 
 Page({
 
@@ -8,7 +9,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-    newsList:null
+    newsList:null,
+    serverHttps: "",
   },
 
   /**
@@ -22,7 +24,11 @@ Page({
         if(res.code == "ERROR_STATUS_SUCCESS"){
           console.log(res);
           var jsoncontent = JSON.parse(res.jsoncontent);
-          that.setData({ newsList: jsoncontent });
+          that.setData({
+             newsList: jsoncontent,
+            serverHttps: utilGloabl.GetServerHttps(),
+
+              });
         } else if (res.code == "ERROR_STATUS_LISTISNULL"){
           
         }

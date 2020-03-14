@@ -32,7 +32,6 @@ Component({
       value: "TDC",
     }
 
-
   },
 
   /**

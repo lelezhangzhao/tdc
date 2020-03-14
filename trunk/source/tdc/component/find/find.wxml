@@ -10,6 +10,6 @@
   </view>
 
   <view class="right-view">
-    <image class="logo-view" src="{{serverHttps + logo_photo}}"></image>
+    <image class="logo-view" src="{{logo_photo}}"></image>
   </view>
 </view>

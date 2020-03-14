@@ -106,6 +106,7 @@ Page({
               logo: globalData.GetServerHttps() + jsoncontent.logo,
               name: jsoncontent.name,
               nickName: jsoncontent.nickname,
+              address: jsoncontent.address,
               tel: jsoncontent.tel,
               tagDanceType: tagDanceType,
               tagWorkType: tagWorkType,
@@ -145,6 +146,7 @@ Page({
               logo: globalData.GetServerHttps() + jsoncontent.logo,
               name: jsoncontent.name,
               tel: jsoncontent.tel,
+              address: jsoncontent.address,
               tagWelfare: tagWelfare,
               region: region,
               introduction: jsoncontent.introduction,
@@ -490,9 +492,9 @@ Page({
             "fileName": newPhotoItem.substr(60, 10),
           },
           success(res) {
-            
+            console.log(res.data);
             var data = JSON.parse(res.data);
-            console.log(data);
+            
             if(data.code == "ERROR_STATUS_UPLOADISNOTIMAGE"){
               wx.showToast({
                 title: '上传的不是图片',
