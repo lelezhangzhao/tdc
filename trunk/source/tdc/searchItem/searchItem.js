@@ -1,6 +1,8 @@
 // tdc/searchTeacher/searchTeacher.js
 var app = getApp();
 var utilRequest = require("../util/request.js");
+var utilGloabl = require("../util/globaldata.js");
+
 Page({
 
   /**
@@ -20,7 +22,7 @@ Page({
 
     angle_image: "",
 
-
+    serverHttps:"",
     itemList:null,
     
     searchType:0, //0->teacher 1->school
@@ -42,6 +44,7 @@ Page({
       teacherType: 0,
       searchType: searchType,
       angle_image: "../image/search/angle.png",
+      serverHttps: utilGloabl.GetServerHttps(),
     });
 
     //区域
