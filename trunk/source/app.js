@@ -70,7 +70,7 @@ App({
     loginType: 0, //0->账号密码 1->微信
     userid:null,
     role:null,
-    server: "http://10.8.172.79/public",
+    server: "http://localhost/public",
     windowHeight: null,
     windowWidth: null,
     pixelRatio: null,

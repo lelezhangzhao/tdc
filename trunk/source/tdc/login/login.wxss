@@ -119,7 +119,7 @@
   height: 100rpx;
   width: 100rpx;
   border-radius: 50rpx;
-  background-image: url("http://10.8.172.79/public/static/image/login/wx_logo.png");
+  background-image: url("http://localhost/public/static/image/login/wx_logo.png");
   background-repeat:no-repeat;
   background-size:100% 100%;
 }
