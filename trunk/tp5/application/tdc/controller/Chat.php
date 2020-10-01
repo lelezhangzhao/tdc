@@ -29,13 +29,16 @@ class Chat extends Controller{
     private function GetChat(){
         $userid = Session::get("userid");
 
-        $sql = "select * from ((select a.fromuserid, a.touserid, a.fromuserid as otherid, a.lastsendtime, a.hasunreadmsg, a.briefcontent, b.name as othername, b.logo as otherlogo from tdc_chatassist as a join tdc_user as b on a.fromuserid = b.id where a.touserid = $userid) as c) union
-(select a.fromuserid, a.touserid, a.touserid as otherid, a.lastsendtime, a.hasunreadmsg, a.briefcontent, b.name as othername, b.logo as otherlogo from tdc_chatassist as a join tdc_user as b on a.touserid = b.id where a.fromuserid = $userid) order by lastsendtime desc";
+        $sql = "select * from (
+(select a.fromuserid, a.touserid, a.fromuserid as otherid, a.lastsendtime, a.hasunreadmsg, a.briefcontent, b.name as othername, b.logo as otherlogo from tdc_chatassist as a join 
+tdc_user as b on a.fromuserid = b.id where a.touserid = $userid) as c) union
+(select a.fromuserid, a.touserid, a.touserid as otherid, a.lastsendtime, a.hasunreadmsg, a.briefcontent, b.name as othername, b.logo as otherlogo from tdc_chatassist as a join 
+tdc_user as b on a.touserid = b.id where a.fromuserid = $userid) order by lastsendtime desc";
 
         $result = Db::query($sql);
-        if(empty($result)){
-            return Status::ReturnErrorStatus("ERROR_STATUS_LISTISNULL");
-        }
+//        if(empty($result)){
+//            return Status::ReturnErrorStatus("ERROR_STATUS_LISTISNULL");
+//        }
         $needDelete = array();
         for($i = 0; $i < count($result); ++$i){
             if(array_key_exists($i, $needDelete)){
@@ -68,7 +71,9 @@ class Chat extends Controller{
     private function GetPermission(){
         //别人向我申请的
         $userid = Session::get("userid");
-        $sql_permission = "select * from ((select a.*, b.name, b.role from tdc_telpermission as a join tdc_user as b on a.touserid = b.id where a.touserid = $userid and a.status = 1) as c) union (select a.*, b.name, b.role from tdc_telpermission as a join tdc_user as b on a.fromuserid = b.id where a.fromuserid = $userid and a.status = 4)";
+        $sql_permission = "select * from (
+(select a.*, b.name, b.role from tdc_telpermission as a join tdc_user as b on a.touserid = b.id where a.touserid = $userid and a.status = 1) as c) 
+union (select a.*, b.name, b.role from tdc_telpermission as a join tdc_user as b on a.fromuserid = b.id where a.fromuserid = $userid and a.status = 4)";
         $result_permission = Db::query($sql_permission);
 
 

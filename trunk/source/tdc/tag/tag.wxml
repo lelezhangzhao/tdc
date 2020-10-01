@@ -2,7 +2,7 @@
 <view class="page">
   <view class="type-view" wx:if="{{role == 0}}">
     <view class="title-view">
-      <label>舞钟</label>
+      <label>舞种</label>
     </view>
     <view class="content-view" >
       <view class="content-item-view"  wx:for="{{tag.danceType}}" wx:key="">
