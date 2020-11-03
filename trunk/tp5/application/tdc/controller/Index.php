@@ -18,7 +18,7 @@ use think\Db;
 
 
 class Index extends Controller{
-    private $chatServer;
+//    private $chatServer;
 
     public function DeleteSocket(Request $request){
         $userid = Session::get("userid");

@@ -64,6 +64,7 @@ if(typeof(WebSocket)=='undefined'){
             }
 
             //收到消息
+
             websocket.onmessage = function(event) {
                 var msg = JSON.parse(event.data);  //解析收到的json消息数据
                 console.log(msg);

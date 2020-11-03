@@ -11,6 +11,7 @@ namespace app\tdc\controller;
 use app\tdc\api\Status;
 use app\tdc\api\Times;
 
+use app\tdc\model\User;
 use think\Controller;
 use think\Request;
 use think\Db;
@@ -205,7 +206,7 @@ union (select a.*, b.name, b.role from tdc_telpermission as a join tdc_user as b
 
         $sql = "select * from tdc_chatassist where fromuserid = $userid and touserid = $theOtherUserId";
         $result = Db::query($sql);
-        if(empty($sql)){
+        if(empty($result)){
             //新增记录
             $sql = "insert into tdc_chatassist(fromuserid, touserid, hasunreadmsg, lastsendtime, briefcontent) values ($userid, $theOtherUserId, true, $systemTime, $content)";
             Db::execute($sql);
@@ -226,4 +227,11 @@ union (select a.*, b.name, b.role from tdc_telpermission as a join tdc_user as b
         return Status::ReturnJson("ERROR_STATUS_SUCCESS", "发送成功");
     }
 
+//    public function GetUserInfoById(Request $request){
+//        $userid = $request->param("id");
+//        $sql = "select"
+//        $user = User::where("id", $userid)->find();
+//        return Status::ReturnJson("ERROR_STATUS_SUCCESS", json_encode($user));
+//
+//    }
 }

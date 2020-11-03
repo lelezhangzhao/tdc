@@ -737,7 +737,7 @@ class Route
         $rules = self::$rules['domain'];
         // 开启子域名部署 支持二级和三级域名
         if (!empty($rules)) {
-            $host = $request->host(true);
+            $host = $request->host();
             if (isset($rules[$host])) {
                 // 完整域名或者IP配置
                 $item = $rules[$host];
@@ -1506,7 +1506,7 @@ class Route
             App::$modulePath = APP_PATH . (Config::get('app_multi_module') ? $request->module() . DS : '');
         } else {
             // 路由到模块/控制器/操作
-            $result = self::parseModule($route, isset($option['convert']) ? $option['convert'] : false);
+            $result = self::parseModule($route);
         }
         // 开启请求缓存
         if ($request->isGet() && isset($option['cache'])) {
@@ -1527,10 +1527,9 @@ class Route
      * 解析URL地址为 模块/控制器/操作
      * @access private
      * @param string    $url URL地址
-     * @param bool      $convert 是否自动转换URL地址
      * @return array
      */
-    private static function parseModule($url, $convert = false)
+    private static function parseModule($url)
     {
         list($path, $var) = self::parseUrlPath($url);
         $action           = array_pop($path);
@@ -1544,7 +1543,7 @@ class Route
         // 设置当前请求的路由变量
         Request::instance()->route($var);
         // 路由到模块/控制器/操作
-        return ['type' => 'module', 'module' => [$module, $controller, $action], 'convert' => $convert];
+        return ['type' => 'module', 'module' => [$module, $controller, $action], 'convert' => false];
     }
 
     /**

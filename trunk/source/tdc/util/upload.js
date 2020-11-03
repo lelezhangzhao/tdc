@@ -1,4 +1,6 @@
-var Server = "http://localhost/public/index.php/tdc/";
+var globalData = require("../util/globaldata.js");
+
+var Server = globalData.GetServerHttps() + "index.php/tdc/";
 
 function uploadFile(url, filePath, name, formData = { openid: "test" }) {
 

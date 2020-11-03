@@ -30,7 +30,7 @@ page {
   margin-bottom: 30rpx;
 }
 
-.xiahuaxia {
+.bottom_line {
   width: 80%;
   text-align: center;
   margin: 0 auto;

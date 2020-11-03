@@ -2,6 +2,7 @@
 
 var utilRequest = require("../util/request.js");
 var utilGloabl = require("../util/globaldata.js");
+var pubSub = require("../util/watch.js")
 
 Page({
 
@@ -12,7 +13,6 @@ Page({
     newsList:null,
     serverHttps: "",
   },
-
   /**
    * 生命周期函数--监听页面加载
    */

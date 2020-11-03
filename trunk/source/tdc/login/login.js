@@ -156,20 +156,8 @@ Page({
         
         if (res.code == "ERROR_STATUS_SUCCESS") {
         var jsoncontent = JSON.parse(res.jsoncontent);
-          app.globalData.userid = jsoncontent.userid;
-          app.globalData.role = jsoncontent.role;
-          that.setData({
-            userid: jsoncontent.userid,
-          })
-          if(jsoncontent.role == 0 || jsoncontent.role == 1){
-            wx.switchTab({
-              url: '../index/index',
-            });
-          }else if(jsoncontent.role == 2){
-            wx.redirectTo({
-              url: '../admin/admin',
-            })
-          }
+          that.loginSuccess(jsoncontent.userid, jsoncontent.role, jsoncontent.role);
+
           
           // that.connectSocket();
         } else if (res.code == "ERROR_STATUS_USERNAMEFORMATERROR") {
@@ -221,21 +209,22 @@ Page({
             
             if(res.code == "ERROR_STATUS_SUCCESS"){
               var jsoncontent = JSON.parse(res.jsoncontent);
-              app.globalData.userid = jsoncontent.userid;
-              app.globalData.loginType = 1;
-              that.setData({
-                userid: jsoncontent.userid,
-              })
-              if (jsoncontent.role == null) {
-                wx.redirectTo({
-                  url: '../registerJump/registerJump',
-                })
-              }
+              that.loginSuccess(jsoncontent.userid, jsoncontent.role, jsoncontent.role);
+              // app.globalData.userid = jsoncontent.userid;
+              // app.globalData.loginType = 1;
+              // that.setData({
+              //   userid: jsoncontent.userid,
+              // })
+              // if (jsoncontent.role == null) {
+              //   wx.redirectTo({
+              //     url: '../registerJump/registerJump',
+              //   })
+              // }
 
-              app.globalData.role = jsoncontent.role;
-              wx.switchTab({
-                url: '../index/index',
-              })
+              // app.globalData.role = jsoncontent.role;
+              // wx.switchTab({
+              //   url: '../index/index',
+              // })
               // that.connectSocket();
 
             }else if(res.code == "ERROR_STATUS_WXREGISTERSUCCESS"){
@@ -326,6 +315,42 @@ Page({
       fail: res => {
       }
     });
+  },
+  loginSuccess: function(userid, loginType, role){
+    var that = this;
+    app.globalData.userid = userid;
+    app.globalData.loginType = loginType;
+    app.globalData.role = role;
+    that.setData({
+      userid: userid,
+    })
+
+    if(role == 0 || role == 1){
+      wx.switchTab({
+        url: '../index/index',
+      });
+    }else if(role == 2){
+      wx.redirectTo({
+        url: '../admin/admin',
+      })
+    }else if(role == null){
+      wx.redirectTo({
+        url: '../registerJump/registerJump',
+      })
+    }
+
+    //发送login
+    var login_msg = {
+      type: "login",
+      id: app.globalData.userid,
+    }
+    wx.sendSocketMessage({
+      data: JSON.stringify(login_msg),
+      success(){
+        console.log("login success");
+      }
+    })
+    
   },
   // connectSocket: function(){
   //   var that = this;

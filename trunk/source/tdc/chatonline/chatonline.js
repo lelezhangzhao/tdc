@@ -1,5 +1,6 @@
 var utilRequest = require("../util/request.js");
 var globalData = require("../util/globaldata.js");
+var pubSub = require("../util/watch.js")
 
 var app = getApp();
 var message = '';
@@ -40,35 +41,35 @@ Page({
     var that = this
     // var sendTime = Date.parse(new Date());
     var msg = {
-      fromuserid: that.data.userid,
-      touserid: that.data.theOtherUserId,
+      type: "msg",
+      id: that.data.userid,
+      other_id: that.data.theOtherUserId,
       msg: message,
-      status: 1,
+      // status: 1,
     };
 
+    wx.sendSocketMessage({
+      data: JSON.stringify(msg),
+      success: function(res){
+        that.setData({
+          message: ""
+        });
+        var row = {};
+        row.content = message;
+        row.fromuserid = that.data.userid;
+        that.data.contentData.push(row);
 
+        that.setData({ contentData: that.data.contentData });       
+        that.bottom(); 
+      },
+      fail: function (res) {
+        wx.showToast({
+          title: '网络错误,请稍后',
+          icon: "none",
+        })
+      }
 
-    // wx.sendSocketMessage({
-    //   data: JSON.stringify(msg),
-    //   success: function(res){
-    //     that.setData({
-    //       message: msg
-    //     });
-    //     var row = {};
-    //     row.content = message;
-    //     row.fromuserid = that.data.userid;
-    //     that.data.contentData.push(row);
-
-    //     that.setData({ contentData: that.data.contentData });        
-    //   },
-    //   fail: function (res) {
-    //     wx.showToast({
-    //       title: '网络错误,请稍后',
-    //       icon: "none",
-    //     })
-    //   }
-
-    // })
+    })
   },
   onLoad: function (options) {
     var that = this;
@@ -168,6 +169,7 @@ Page({
     var that = this;
     that.loadHistoryData();
     that.loadChatInfo();
+
   },
   onHide: function(){
     var that = this;
@@ -198,6 +200,7 @@ Page({
           that.setData({ 
             contentData: that.data.contentData 
           });
+          that.bottom();
 
         }
       },
@@ -205,7 +208,6 @@ Page({
 
       }
     });
-    that.bottom();
   },
   // 页面加载  
   loadUnReadData: function () {
@@ -277,7 +279,8 @@ Page({
   },
   loadChatInfo: function(){
     var that = this;
-    intervalId = setInterval(that.loadUnReadData, 2000);
+    pubSub.subscribe("msg", that.processMsg);  
+    // intervalId = setInterval(that.loadUnReadData, 2000);
   },
   // chatInfo: function(){
   //   var that = this;
@@ -307,7 +310,12 @@ Page({
 
   // },
   unloadChatInfo: function(){
-    clearInterval(intervalId);
+    pubSub.off("msg");
+    // clearInterval(intervalId);
+  },
+  processMsg: function(content){
+    console.log(content);
+    loadUnReadData();
   }
   // 选择图片并把图片保存
   // upimg1: function() {

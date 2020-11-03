@@ -41,7 +41,8 @@
           <label class="font-size-normal third-part-account-style" >第三方账号快速登录</label>
           <image src="{{login_input}}" class="login-input-line login-third-part-line-right"></image>
         </view>
-        <button class="wxlogin-button" open-type='getUserInfo' bindgetuserinfo="login_by_wx"></button>       
+        <button class="wxlogin-button" open-type='getUserInfo' bindgetuserinfo="login_by_wx" style='background-image:url(../image/login/wx_logo.png);' plain='true' opacity='0' padding='0' border='none'>
+        </button>       
         <label class="font-size-small wx-login-style" >微信登录</label>
       </view>
     </view>

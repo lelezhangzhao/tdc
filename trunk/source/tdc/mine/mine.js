@@ -63,6 +63,9 @@ Page({
    */
   onShow: function () {
     var that = this;
+    if (app.globalData.userid == null) {
+      return;
+    }
 
     that.setData({
       role: app.globalData.role,

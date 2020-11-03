@@ -1,4 +1,5 @@
-let Server = "http://localhost/public/index.php/tdc/";
+var globalData = require("../util/globaldata.js");
+let Server = globalData.GetServerHttps() + "index.php/tdc/";
 
 function NetRequest({ url, data, success, fail, complete, method = "POST" }) {
   var session_id = wx.getStorageSync('PHPSESSID');//本地取存储的sessionID

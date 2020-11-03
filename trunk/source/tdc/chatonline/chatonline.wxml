@@ -1,6 +1,6 @@
 <!--tdc/chat/chat.wxml-->
 <view class='news'>
-  <view class='xiahuaxian1 xiahuaxia'></view>
+  <view class='bottom_line'></view>
   <view class="historycon">
     <scroll-view scroll-y="true" scroll-top="{{scrollTop}}" class="history" wx:for="{{contentData}}" wx:key=''>
       <block wx:if="{{item.fromuserid == userid}}">
