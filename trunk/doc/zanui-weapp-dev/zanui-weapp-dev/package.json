@@ -62,7 +62,7 @@
     "postcss-calc": "^6.0.1",
     "postcss-easy-import": "^3.0.0",
     "precss": "^2.0.0",
-    "shelljs": "^0.7.8",
+    "shelljs": "^0.8.5",
     "wedoc": "0.0.16"
   }
 }
